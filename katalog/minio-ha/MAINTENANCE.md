@@ -28,7 +28,6 @@ What was customized (what differs from the helm template command):
 - Added `preferredDuringSchedulingIgnoredDuringExecution` anti-affinity configuration on the StatefulSet pods
 - Added `cpu: 100m` to the requests of the StatefulSet pods
 - Added a custom init job to create buckets and add 7 day retention
-- The container images are rewritten with Kustomize, remember to update them
 
 Review the differences between `minio-built.yaml` and `deploy.yaml`, make the customization described above and replace `deploy.yaml` with the contents of `minio-built.yaml`.
 
