@@ -16,7 +16,7 @@ metadata:
   name: minio-logging-console
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -37,7 +37,7 @@ metadata:
   name: minio-logging
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
     monitoring: "true"
@@ -59,7 +59,7 @@ metadata:
   name: minio-logging-svc
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -81,7 +81,7 @@ metadata:
   name: minio-logging
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -121,7 +121,7 @@ spec:
       serviceAccountName: minio-sa
       containers:
         - name: minio
-          image: registry.sighup.io/fury/minio:RELEASE.2024-04-18T19-09-19Z
+          image: registry.sighup.io/fury/minio:RELEASE.2025-02-28T09-55-16Z
           imagePullPolicy: IfNotPresent
           command: [
             "/bin/sh",
@@ -188,7 +188,7 @@ metadata:
   name: minio-logging-cluster
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -209,7 +209,7 @@ metadata:
   name: minio-logging
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
