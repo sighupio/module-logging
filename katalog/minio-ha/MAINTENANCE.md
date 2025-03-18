@@ -4,7 +4,7 @@ To maintain the MinIO package, you should follow these steps.
 
 1. Take note of the latest chart version from [Main Minio repository releases](https://github.com/minio/minio/releases).
 2. Take note also of the latest pushed version of both [`fury/minio`](https://registry.sighup.io/harbor/projects/37/repositories/minio/artifacts-tab`) and [`fury/minio/mc`](https://registry.sighup.io/harbor/projects/37/repositories/minio%2Fmc/artifacts-tab) images in our Harbor registry
-    - If necessary, add a newer version on our [fury-images](https://github.com/sighupio/fury-images) git repo
+    - If necessary, add a newer version on our [fury-distribution-container-image-sync](https://github.com/sighupio/fury-distribution-container-image-sync/blob/main/modules/dr/images.yml#L102) git repo
 
 3. Run the following commands:
 
