@@ -1,0 +1,90 @@
+# Copyright (c) 2025-present ReeVo S.p.A. All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+#
+auth_enabled: false
+bloom_build:
+  builder:
+    planner_address: loki-bloom-planner-headless.logging.svc.cluster.local:9095
+  enabled: false
+bloom_gateway:
+  client:
+    addresses: dnssrvnoa+_grpc._tcp.loki-bloom-gateway-headless.logging.svc.cluster.local
+  enabled: false
+common:
+  compactor_address: 'http://loki-compactor:3100'
+  path_prefix: /var/loki
+  replication_factor: 1
+  storage:
+    s3:
+      bucketnames: loki
+      insecure: true
+      s3: http://minio:minio123@minio-logging.logging.svc.cluster.local:9000
+      s3forcepathstyle: true
+frontend:
+  scheduler_address: loki-query-scheduler.logging.svc.cluster.local:9095
+  tail_proxy_url: http://loki-querier.logging.svc.cluster.local:3100
+frontend_worker:
+  scheduler_address: loki-query-scheduler.logging.svc.cluster.local:9095
+index_gateway:
+  mode: simple
+ingester:
+  chunk_encoding: snappy
+limits_config:
+  allow_structured_metadata: true
+  max_cache_freshness_per_query: 10m
+  query_timeout: 300s
+  reject_old_samples: true
+  reject_old_samples_max_age: 168h
+  split_queries_by_interval: 15m
+  volume_enabled: true
+  max_label_names_per_series: 30
+memberlist:
+  join_members:
+  - loki-memberlist
+  - loki-distributed-memberlist
+pattern_ingester:
+  enabled: true
+querier:
+  max_concurrent: 4
+query_range:
+  align_queries_with_step: true
+runtime_config:
+  file: /etc/loki/runtime-config/runtime-config.yaml
+schema_config:
+  configs:
+  - from: "2020-10-24"
+    index:
+      period: 24h
+      prefix: index_
+    object_store: s3
+    schema: v11
+    store: boltdb-shipper
+  - from: "2024-12-01"
+    index:
+      period: 24h
+      prefix: index_
+    object_store: s3
+    schema: v13
+    store: tsdb
+server:
+  grpc_listen_port: 9095
+  http_listen_port: 3100
+  http_server_read_timeout: 600s
+  http_server_write_timeout: 600s
+storage_config:
+  bloom_shipper:
+    working_directory: /var/loki/data/bloomshipper
+  boltdb_shipper:
+    index_gateway_client:
+      server_address: dns+loki-index-gateway-headless.logging.svc.cluster.local:9095
+  hedging:
+    at: 250ms
+    max_per_second: 20
+    up_to: 3
+  tsdb_shipper:
+    index_gateway_client:
+      server_address: dns+loki-index-gateway-headless.logging.svc.cluster.local:9095
+tracing:
+  enabled: false
+
