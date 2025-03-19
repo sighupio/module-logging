@@ -101,18 +101,6 @@ spec:
         app: minio
         release: minio-logging
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: "release"
-                      operator: In
-                      values:
-                        - minio-logging
-                topologyKey: "kubernetes.io/hostname"
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
@@ -157,6 +145,18 @@ spec:
               memory: 512Mi
           securityContext:
             readOnlyRootFilesystem: false
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: release
+                  operator: In
+                  values:
+                  - minio-logging
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       volumes:
         - name: minio-user
           secret:

@@ -25,8 +25,6 @@ What was customized (what differs from the helm template command):
 
 - Secret `minio-logging` is generated from Kustomize, so it must be removed from `minio-built.yaml`
 - ConfigMap `minio-logging` is removed as it was not used
-- Added `preferredDuringSchedulingIgnoredDuringExecution` anti-affinity configuration on the StatefulSet pods
-- Added `cpu: 100m` to the requests of the StatefulSet pods
 - Added a custom init job to create buckets and add 7 day retention
 
 Review the differences between `minio-built.yaml` and `deploy.yaml`, make the customization described above and replace `deploy.yaml` with the contents of `minio-built.yaml`.
