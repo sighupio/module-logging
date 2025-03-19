@@ -176,7 +176,7 @@ spec:
           runAsGroup: 1000
           runAsNonRoot: true
           runAsUser: 1000
-        image: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards:2.19.1"
+        image: "registry.sighup.io/fury/opensearchproject/opensearch:2.19.1"
         imagePullPolicy: "IfNotPresent"
         readinessProbe:
           failureThreshold: 3

@@ -25,7 +25,7 @@ extraEnvs:
     value: "true"
 
 image:
-  repository: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards"
+  repository: "registry.sighup.io/fury/opensearchproject/opensearch"
   # override image tag, which is .Chart.AppVersion by default
   tag: ""
   pullPolicy: "IfNotPresent"

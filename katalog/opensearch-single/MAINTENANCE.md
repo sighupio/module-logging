@@ -9,7 +9,7 @@ To maintain the OpenSearch package, you should follow these steps.
 3. Run the following commands:
 
   ```bash
-  VERSION=2.28.0 # update this to the latest chart version
+  VERSION=2.32.0 # update this to the latest chart version
   IMAGE_TAG="2.19.1" # update this to the latest fury/opensearchproject/opensearch image tag
   helm repo add opensearch https://opensearch-project.github.io/helm-charts/
   helm repo update
@@ -18,7 +18,7 @@ To maintain the OpenSearch package, you should follow these steps.
   ```
 
   > [!TIP]
-  > Chart v2.28.0 uses OpenSearch v2.19.1
+  > Chart v2.32.0 uses OpenSearch v2.19.1
 
 The provided values will deploy a custom `fsgroups` initContainer, because the one provided with vanilla values
 does not change the `fs.file-max` value with `sysctl`.
