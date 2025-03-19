@@ -1,0 +1,177 @@
+# Copyright OpenSearch Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Default values for opensearch-dashboards.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+---
+clusterName: "opensearch-cluster"
+nodeGroup: "master"
+singleNode: false
+masterService: "opensearch-cluster-master"
+roles:
+  - master
+  - ingest
+  - data
+  - remote_cluster_client
+replicas: 1
+opensearchHome: /usr/share/opensearch
+config: null
+extraEnvs:
+  - name: DISABLE_INSTALL_DEMO_CONFIG
+    value: "true"
+  - name: DISABLE_PERFORMANCE_ANALYZER_AGENT_CLI
+    value: "true"
+
+image:
+  repository: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards"
+  # override image tag, which is .Chart.AppVersion by default
+  tag: ""
+  pullPolicy: "IfNotPresent"
+
+opensearchJavaOpts: "-Xms2G -Xmx2G"
+
+resources:
+  limits:
+    cpu: 2000m
+    memory: 4G
+  requests:
+    cpu: 1500m
+    memory: 3G
+
+networkHost: "0.0.0.0"
+
+persistence:
+  enabled: true
+  # Set to false to disable the `fsgroup-volume` initContainer that will update permissions on the persistent disk.
+  enableInitChown: false
+  accessModes:
+    - ReadWriteOnce
+  size: 30Gi
+  
+extraVolumes:
+  - name: config
+    configMap:
+      name: opensearch-cluster-master-config
+extraVolumeMounts:
+- name: config
+  mountPath: /usr/share/opensearch/config/opensearch.yml
+  subPath: opensearch.yml
+
+extraContainers:
+  - name: exporter
+    image: "quay.io/prometheuscommunity/elasticsearch-exporter"
+    args:
+      - '--es.uri=http://localhost:9200'
+      - '--collector.clustersettings'
+      - '--es.indices'
+      - '--collector.snapshots'
+      - '--web.listen-address=:9108'
+    ports:
+      - containerPort: 9108
+        name: metrics
+    resources:
+      limits:
+        cpu: 200m
+        memory: 400Mi
+      requests:
+        cpu: 100m
+        memory: 200Mi
+
+extraInitContainers:
+  - name: fsgroup-volume
+    image: alpine
+    command: ['sh', '-c']
+    args:
+      - |
+        sysctl -a
+        MAX_MAP_COUNT=$(sysctl -a | grep max_map_count | cut -d " " -f3)
+        if [ "$MAX_MAP_COUNT" -gt "262143" ]; then
+          echo "Nothing to do, vm.max_map_count value is high enough"
+        else
+          echo "Changing vm.max_map_count value to 262144"
+          sysctl -w vm.max_map_count=262144
+          sysctl -p
+        fi
+        FILE_MAX=$(sysctl -a | grep file-max | cut -d " " -f3)
+        if [ "$FILE_MAX" -gt "524287" ]; then
+          echo "Nothing to do, fs.file-max value is high enough"
+        else
+          echo "Changing fs.file-max value to 524288"
+          sysctl -w fs.file-max=524288
+          sysctl -p
+        fi
+        chown -R 1000:1000 /usr/share/opensearch/data
+    securityContext:
+      privileged: true
+      runAsUser: 0
+    volumeMounts:
+      - name: "opensearch-cluster-master"
+        mountPath: /usr/share/opensearch/data
+
+antiAffinityTopologyKey: "kubernetes.io/hostname"
+antiAffinity: "soft"
+
+podManagementPolicy: "Parallel"
+enableServiceLinks: true
+
+protocol: http
+httpPort: 9200
+transportPort: 9300
+metricsPort: 9108
+httpHostPort: ""
+transportHostPort: ""
+
+service:
+  type: ClusterIP
+  httpPortName: http
+  transportPortName: transport
+  metricsPortName: metrics
+
+updateStrategy: RollingUpdate
+
+maxUnavailable: 1
+
+podSecurityContext:
+  fsGroup: 1000
+  runAsUser: 1000
+
+securityContext:
+  capabilities:
+    drop:
+      - ALL
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+startupProbe:
+  tcpSocket:
+    port: 9200
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 30
+
+livenessProbe: {}
+
+readinessProbe:
+  tcpSocket:
+    port: 9200
+  periodSeconds: 5
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+ingress:
+  enabled: false
+
+networkPolicy:
+  create: false
+
+  http:
+    enabled: false
+
+# We create out own SM
+serviceMonitor:
+  enabled: false
