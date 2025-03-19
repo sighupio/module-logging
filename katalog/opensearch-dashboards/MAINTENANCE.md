@@ -22,6 +22,7 @@ To maintain the Opensearch Dashboards package, you should follow these steps.
 
 What was customized:
 
+- removed Helm labels
 - opensearch-dashboards created with secretGenerator
 - security plugin is disabled with a custom command for the container, we expect security on the ingress level or configured manually (in consequence `OPENSEARCH_HOSTS` is switched to http)
 
