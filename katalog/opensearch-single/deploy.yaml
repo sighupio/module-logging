@@ -242,7 +242,7 @@ spec:
         - --es.indices
         - --collector.snapshots
         - --web.listen-address=:9108
-        image: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter:1.8.0
+        image: quay.io/prometheuscommunity/elasticsearch-exporter
         name: exporter
         ports:
         - containerPort: 9108
