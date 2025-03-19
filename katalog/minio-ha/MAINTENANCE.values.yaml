@@ -38,7 +38,18 @@ ingress:
 consoleIngress:
   enabled: false
 
-affinity: {}
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+              - key: "release"
+                operator: In
+                values:
+                  - minio-logging
+          topologyKey: "kubernetes.io/hostname"
 topologySpreadConstraints: []
 
 ## Add stateful containers to have security context, if enabled MinIO will run as this
@@ -61,6 +72,7 @@ podLabels: {}
 ##
 resources:
   requests:
+    cpu: 100m
     memory: 512Mi
 
 ## List of users to be created after minio install
