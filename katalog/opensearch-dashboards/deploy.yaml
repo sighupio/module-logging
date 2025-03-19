@@ -159,6 +159,9 @@ metadata:
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
 spec:
+  namespaceSelector:
+    matchNames:
+    - logging
   selector:
     matchLabels:
       name: opensearch-dashboards
