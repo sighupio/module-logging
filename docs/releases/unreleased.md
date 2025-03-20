@@ -10,8 +10,8 @@ This update is a major version that adds support for the Kubernetes version 1.32
 | ----------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------ |
 | `opensearch`            | [`v2.17.1`](https://github.com/opensearch-project/OpenSearch/releases/tag/2.12.0)                  | `2.12.0`                       |
 | `opensearch-dashboards` | [`v2.17.1`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/2.12.0)       | `2.12.0`                       |
-| `logging-operator`      | [`v5.2.0`](https://github.com/kube-logging/logging-operator/releases/tag/5.2.0)                    | `4.10.0`                        |
-| `loki-distributed`      | [`v2.9.10`](https://github.com/grafana/loki/releases/tag/v2.9.10)                                  | `2.9.2`                        |
+| `logging-operator`      | [`v5.2.0`](https://github.com/kube-logging/logging-operator/releases/tag/5.2.0)                    | `4.10.0`                       |
+| `loki-distributed`      | [`v3.4.2`](https://github.com/grafana/loki/releases/tag/v3.4.2)                                    | `2.9.10`                       |
 | `minio-ha`              | [`RELEASE.2025-02-28T09-55-16Z`](https://github.com/minio/minio/tree/RELEASE.2025-02-28T09-55-16Z) | `RELEASE.2024-10-13T13-34-11Z` |
 
 ## Bug Fixes and Changes 🐛
@@ -23,7 +23,8 @@ This update is a major version that adds support for the Kubernetes version 1.32
 
 ## Breaking Changes 💔
 
-None/TBD
+Starting with the vTBD of the Logging Core Module Loki version has been bumped to 3.4.2. Please refer to [`loki documentation`](https://grafana.com/docs/loki/v3.4.x/setup/upgrade/)
+for the complete release notes.
 
 ## Update Guide 🦮
 
