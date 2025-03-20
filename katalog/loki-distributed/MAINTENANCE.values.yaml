@@ -23,6 +23,8 @@ loki:
     aws:
       s3: http://minio:minio123@minio.logging.svc.cluster.local/loki
       s3forcepathstyle: true
+  image:
+    tag: 3.4.2
 
 # ServiceMonitor configuration
 serviceMonitor:
