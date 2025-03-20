@@ -15,6 +15,7 @@ To maintain the OpenSearch package, you should follow these steps.
   helm repo update
   helm pull opensearch/opensearch --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/opensearch
   helm template opensearch /tmp/opensearch/ --values MAINTENANCE.values.yaml --set "image.tag"="$IMAGE_TAG" -n logging > opensearch-built.yaml
+  IMAGE_TAG="$IMAGE_TAG" yq -i '(.images[] | select(.name == "opensearchproject/opensearch-dashboards")).newTag |= env(IMAGE_TAG)' kustomization.yaml
   ```
 
   > [!TIP]

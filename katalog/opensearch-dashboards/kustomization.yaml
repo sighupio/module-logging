@@ -12,6 +12,11 @@ resources:
   - deploy.yaml
   - index-patterns-cronjob.yml
 
+images:
+  - name: opensearchproject/opensearch-dashboards
+    newName: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+    newTag: "2.19.1"
+
 secretGenerator:
   - name: opensearch-dashboards
     files:
