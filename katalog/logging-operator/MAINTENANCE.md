@@ -15,11 +15,8 @@ To maintain the Logging Operator package, you should follow these steps.
   helm template logging-operator /tmp/logging-operator/ --values MAINTENANCE.values.yaml --api-versions "monitoring.coreos.com/v1" --set "image.tag"="$IMAGE_TAG" -n logging > logging-operator-built.yaml
   cp /tmp/logging-operator/crds/* ./crds
   cd ./crds; for file in $(ls logging*); do kustomize edit add resource $file 2>/dev/null; done; cd .. # ensure we add new CRDs (if any) to the kustomization file
+  addlicense -c "SIGHUP s.r.l" -v -l bsd . # install with "go install github.com/google/addlicense@v1.1.1"
   ```
-
-> [!NOTE]
->
-> Remember to put back the license headers inside the CRDs files!
 
 What was customized (what differs from the helm template command):
 
