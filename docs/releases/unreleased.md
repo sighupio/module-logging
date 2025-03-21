@@ -8,7 +8,7 @@ This update is a major version that adds support for the Kubernetes version 1.32
 
 | Component               | Supported Version                                                                                   | Previous Version |
 | ----------------------- | --------------------------------------------------------------------------------------------------- | ---------------- |
-| `opensearch`            | [`v2.19.1`](https://github.com/opensearch-project/OpenSearch/releases/tag/2.19.1)                   | `2.19.1`         |
+| `opensearch`            | [`v2.19.1`](https://github.com/opensearch-project/OpenSearch/releases/tag/2.19.1)                   | `2.17.1`         |
 | `opensearch-dashboards` | [`v2.19.1`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/2.19.1)        | `2.17.1`         |
 | `logging-operator`      | [`v4.10.0`](https://github.com/kube-logging/logging-operator/releases/tag/4.10.0)                   | `4.5.6`          |
 | `loki-distributed`      | [`v2.9.10`](https://github.com/grafana/loki/releases/tag/v2.9.10)                                   | `2.9.2`          |
