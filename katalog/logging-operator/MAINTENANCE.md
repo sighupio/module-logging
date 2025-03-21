@@ -13,7 +13,6 @@ To maintain the Logging Operator package, you should follow these steps.
   IMAGE_TAG="5.2.0" # update this to the latest fury/banzaicloud/logging-operator image tag
   helm pull oci://ghcr.io/kube-logging/helm-charts/logging-operator --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/logging-operator
   helm template logging-operator /tmp/logging-operator/ --values MAINTENANCE.values.yaml --api-versions "monitoring.coreos.com/v1" --set "image.tag"="$IMAGE_TAG" -n logging > logging-operator-built.yaml
-  rm ./crds/logging*
   cp /tmp/logging-operator/crds/* ./crds
   cd ./crds; for file in $(ls logging*); do kustomize edit add resource $file 2>/dev/null; done; cd .. # ensure we add new CRDs (if any) to the kustomization file
   ```
