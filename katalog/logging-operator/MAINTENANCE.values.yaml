@@ -1,0 +1,81 @@
+# Copyright (c) 2025 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+
+# Default values for logging-operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+image:
+  repository: registry.sighup.io/fury/banzaicloud/logging-operator
+  tag: ""
+  pullPolicy: IfNotPresent
+
+env: []
+volumes: []
+volumeMounts: []
+
+extraArgs:
+  - -enable-leader-election=true
+imagePullSecrets: []
+
+http:
+  port: 8080
+  service:
+    type: ClusterIP
+    clusterIP: None
+    labels: {}
+
+rbac:
+  enabled: true
+  retainOnDelete: false
+  # serviceAccountName: custom
+
+monitoring:
+  serviceMonitor:
+    enabled: true
+
+    additionalLabels: {}
+    metricRelabelings: []
+    relabelings: []
+
+## This defaults to non root user with uid 1000 and gid 2000.	*v1.PodSecurityContext	false
+podSecurityContext: {}
+#  runAsNonRoot: true
+#  runAsUser: 1000
+#  fsGroup: 2000
+
+securityContext: {}
+#  allowPrivilegeEscalation: false
+#  readOnlyRootFilesystem: true
+  # capabilities:
+  #   drop: ["ALL"]
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+topologySpreadConstraints: []
+
+strategy: {}
+
+podLabels: {}
+
+logging:
+  enabled: false
+
+testReceiver:
+  enabled: false
+
+extraManifests: []
