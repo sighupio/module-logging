@@ -35,19 +35,6 @@ Then, Kustomize will automate the following changes:
 - security plugin is disabled via ConfigMap, we expect security on the ingress level or configured manually
 - change the `alpine` and `elasticsearch-exporter` images to use our Harbor registry
 
-> [!WARNING]
-> OpenSearch fails to start when running the AMD64 image on ARM64 machines (Apple Silicon like M1 and such). The kernel does not support
-> `seccomp` and that makes some init checks fail.
-> Workarounds:
->
-> 1. Use temporarily the image from upstream instead of the one we sync that has compatibility with ARM64
-> 2. Add the following snippet to the config or set the option via environment variables:
->
->    ```yaml
->    bootstrap:
->      system_call_filter: false
->    ```
-
 Cleanup:
 
 ```bash
