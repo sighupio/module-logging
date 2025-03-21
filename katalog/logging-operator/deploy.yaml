@@ -380,3 +380,30 @@ spec:
             - name: http
               containerPort: 8080
       serviceAccountName: logging-operator
+---
+# Source: logging-operator/templates/service_monitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: logging-operator
+  namespace: logging
+  labels:
+    app.kubernetes.io/name: logging-operator
+    helm.sh/chart: logging-operator-5.2.0
+    app.kubernetes.io/instance: logging-operator
+    app.kubernetes.io/version: "5.2.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: logging-operator
+      helm.sh/chart: logging-operator-5.2.0
+      app.kubernetes.io/instance: logging-operator
+      app.kubernetes.io/version: "5.2.0"
+      app.kubernetes.io/managed-by: Helm
+  endpoints:
+  - port: http
+    path: /metrics
+  namespaceSelector:
+    matchNames:
+    - logging
