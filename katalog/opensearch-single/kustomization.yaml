@@ -10,8 +10,7 @@ images:
   - name: quay.io/prometheuscommunity/elasticsearch-exporter
     newName: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter
     newTag: "v1.8.0"
-  - name: opensearchproject/opensearch-dashboards
-    newName: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+  - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
     newTag: "2.19.1"
   - name: alpine
     newName: registry.sighup.io/fury/alpine
