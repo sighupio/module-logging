@@ -17,6 +17,10 @@ To maintain the Logging Operator package, you should follow these steps.
   cd ./crds; for file in $(ls logging*); do kustomize edit add resource $file 2>/dev/null; done; cd .. # ensure we add new CRDs (if any) to the kustomization file
   ```
 
+> [!NOTE]
+>
+> Remember to put back the license headers inside the CRDs files!
+
 What was customized (what differs from the helm template command):
 
 - Removed openshift-related permissions from ClusterRole
