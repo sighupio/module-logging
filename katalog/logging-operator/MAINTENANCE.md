@@ -2,27 +2,32 @@
 
 To maintain the Logging Operator package, you should follow these steps.
 
-Download the latest compressed archive of the `logging-operator` chart.
+1. Take note of the latest chart version from [`logging-operator` chart](https://github.com/kube-logging/logging-operator/releases).
+2. Take note also of the latest pushed version of the [`fury/banzaicloud/logging-operator`](https://registry.sighup.io/harbor/projects/37/repositories/banzaicloud%2Flogging-operator/artifacts-tab`) image in our Harbor registry
+    - If necessary, add a newer version on our [fury-distribution-container-image-sync](https://github.com/sighupio/fury-distribution-container-image-sync/blob/main/modules/logging/images.yml#L156) git repo
+
+3. Run the following commands:
+
+  ```bash
+  VERSION=5.2.0 # update this to the latest chart version
+  IMAGE_TAG="5.2.0" # update this to the latest fury/banzaicloud/logging-operator image tag
+  helm pull oci://ghcr.io/kube-logging/helm-charts/logging-operator --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/logging-operator
+  helm template logging-operator /tmp/logging-operator/ --values MAINTENANCE.values.yaml --api-versions "monitoring.coreos.com/v1" --set "image.tag"="$IMAGE_TAG" -n logging > logging-operator-built.yaml
+  rm ./crds/logging*
+  cp /tmp/logging-operator/crds/* ./crds
+  cd ./crds; for file in $(ls logging*); do kustomize edit add resource $file 2>/dev/null; done; cd .. # ensure we add new CRDs (if any) to the kustomization file
+  ```
+
+What was customized (what differs from the helm template command):
+
+- Removed openshift-related permissions from ClusterRole
+- Removed some labels in rbac resources
+
+Review the differences between `logging-operator-built.yaml` and `deploy.yaml`, make the customization described above and replace `deploy.yaml` with the contents of `minio-built.yaml`.
+
+Cleanup:
 
 ```bash
-helm pull oci://ghcr.io/kube-logging/helm-charts/logging-operator
+rm logging-operator-built.yaml
+rm -rf /tmp/logging-operator
 ```
-
-Extract to a folder of your choice, for example: `/tmp/logging-operator`.
-
-```bash
-tar xfz logging-operator-*.tgz -C /tmp
-```
-
-Run the following command:
-
-```bash
-helm template logging-operator /tmp/logging-operator/ -n logging > logging-operator-built.yaml
-```
-
-With the `logging-operator-built.yaml` file, check differences with the current `deploy.yml` file and change accordingly.
-
-Notice that requests and limits have been added to the operator deployment.
-
-Eventually update CRDs in the `./crds` folder with the CRDs from the directory
-`/tmp/logging-operator/crds`.
