@@ -24,7 +24,7 @@ spec:
                   - ALL
               runAsNonRoot: true
               runAsUser: 1000
-            image: opensearchproject/opensearch-dashboards
+            image: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
             imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
