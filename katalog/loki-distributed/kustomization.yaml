@@ -10,7 +10,7 @@ namespace: logging
 
 resources:
   - datasource
-  - deploy-new.yaml
+  - deploy.yaml
   - service-monitor.yaml
 
 images:
@@ -25,3 +25,6 @@ secretGenerator:
   - name: loki
     files:
       - configs/config.yaml
+  - name: minio-credentials
+    envs:
+      - minio-credentials.env

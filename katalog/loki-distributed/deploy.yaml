@@ -676,6 +676,7 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=distributor
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -686,6 +687,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -877,6 +881,7 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=querier
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -887,6 +892,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -985,6 +993,7 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=query-frontend
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -995,6 +1004,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1088,6 +1100,7 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=query-scheduler
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -1098,6 +1111,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1322,6 +1338,7 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=compactor
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -1332,6 +1349,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1436,6 +1456,7 @@ spec:
           args:
             - -config.file=/etc/loki/config/config.yaml
             - -target=index-gateway
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -1446,6 +1467,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1548,6 +1572,7 @@ spec:
             - -config.file=/etc/loki/config/config.yaml
             - -ingester.availability-zone=zone-default
             - -target=ingester
+            - -config.expand-env=true
           ports:
             - name: http-metrics
               containerPort: 3100
@@ -1558,6 +1583,9 @@ spec:
             - name: http-memberlist
               containerPort: 7946
               protocol: TCP
+          envFrom:
+            - secretRef:
+                name: minio-credentials
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
