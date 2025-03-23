@@ -20,6 +20,8 @@ This update is a major version that adds support for the Kubernetes version 1.32
 - Updated MinIO to version `RELEASE.2025-02-28T09-55-16Z`
 - Updated Logging Operator to version `5.2.0`
 - Added a ServiceMonitor resource for Logging Operator
+- Updated Loki to version `3.4.2`
+- Changed Loki upstream chart to `helm-loki`
 
 ## Breaking Changes 💔
 
