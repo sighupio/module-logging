@@ -1,0 +1,159 @@
+---
+# Source: loki/templates/prometheusrule.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: loki
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+spec:
+  groups:
+    []
+---
+# Source: loki/templates/compactor/servicemonitor-compactor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-compactor
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: compactor
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: compactor
+  endpoints:
+    - port: http-metrics
+      scheme: http
+---
+# Source: loki/templates/distributor/servicemonitor-distributor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-distributor
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: distributor
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: distributor
+  endpoints:
+    - port: http-metrics
+      scheme: http
+---
+# Source: loki/templates/ingester/servicemonitor-ingester.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-ingester
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: ingester
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: ingester
+  endpoints:
+    - port: http-metrics
+      scheme: http
+---
+# Source: loki/templates/querier/servicemonitor-querier.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-querier
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: querier
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: querier
+  endpoints:
+    - port: http-metrics
+      scheme: http
+---
+# Source: loki/templates/query-frontend/servicemonitor-query-frontend.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-query-frontend
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: query-frontend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: query-frontend
+  endpoints:
+    - port: http-metrics
+      scheme: http
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-query-scheduler
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: query-scheduler
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: query-scheduler
+  endpoints:
+    - port: http-metrics
+      scheme: http
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: loki-index-gateway
+  labels:
+    helm.sh/chart: loki-6.28.0
+    app.kubernetes.io/name: loki-distributed
+    app.kubernetes.io/instance: loki-distributed
+    app.kubernetes.io/version: "3.4.2"
+    app.kubernetes.io/component: index-gateway
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: loki-distributed
+      app.kubernetes.io/instance: loki-distributed
+      app.kubernetes.io/component: index-gateway
+  endpoints:
+    - port: http-metrics
+      scheme: http
