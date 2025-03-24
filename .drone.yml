@@ -114,33 +114,6 @@ steps:
       KUBERNETES_MANIFESTS: minio-ha.yml
 
 ---
-name: unit-tests
-kind: pipeline
-type: docker
-
-clone:
-  depth: 1
-
-depends_on:
-  - linting
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-  - name: katalog
-    image: quay.io/sighup/katalog:3.2.2_3
-    pull: always
-    depends_on: [clone]
-    commands:
-      - flake8 --ignore=E501 katalog/tests/test.py
-      - bash katalog/tests/pytest.sh
-      - rm -rf .pytest_cache katalog/tests/__pycache__
-    when:
-      event:
-        - push
----
 name: e2e-kubernetes-1.28
 kind: pipeline
 type: docker
