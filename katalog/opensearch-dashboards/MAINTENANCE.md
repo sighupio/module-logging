@@ -15,7 +15,7 @@ To maintain the Opensearch Dashboards package, you should follow these steps.
   helm repo update
   helm pull opensearch/opensearch-dashboards --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/opensearch-dashboards
   helm template opensearch-dashboards /tmp/opensearch-dashboards/ --values MAINTENANCE.values.yaml --set "image.tag"="$IMAGE_TAG" -n logging > opensearch-dashboards-built.yaml
-  IMAGE_TAG="$IMAGE_TAG" yq -i '(.images[] | select(.name == "opensearchproject/opensearch-dashboards")).newTag |= env(IMAGE_TAG)' kustomization.yaml
+  IMAGE_TAG="$IMAGE_TAG" yq -i '(.images[] | select(.name == "*opensearchproject/opensearch-dashboards")).newTag |= env(IMAGE_TAG)' kustomization.yaml
   ```
 
   > [!TIP]
