@@ -25,6 +25,6 @@ secretGenerator:
   - name: loki
     files:
       - configs/config.yaml
-  - name: minio-credentials
+  - name: minio-credentials-loki
     envs:
       - minio-credentials.env

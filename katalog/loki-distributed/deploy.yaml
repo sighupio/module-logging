@@ -689,7 +689,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -894,7 +894,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1006,7 +1006,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1113,7 +1113,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1351,7 +1351,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1469,7 +1469,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -1585,7 +1585,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: minio-credentials
+                name: minio-credentials-loki
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
