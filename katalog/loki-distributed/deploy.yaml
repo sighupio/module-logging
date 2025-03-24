@@ -604,7 +604,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: loki-memberlist
+  name: loki-distributed-memberlist
   namespace: logging
   labels:
     helm.sh/chart: loki-6.28.0
