@@ -2,23 +2,21 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../configs/kubernetes
+- ../../configs/kubernetes
 
 namespace: logging
 
-patchesJson6902:
-  - target:
-      group: logging.banzaicloud.io
-      version: v1beta1
-      kind: ClusterOutput
-      name: kubernetes
-      namespace: logging
-    path: cluster-output-json-patch.yml
 
-patchesStrategicMerge:
-  - cluster-output.yml
+patches:
+- path: cluster-output-json-patch.yml
+  target:
+    group: logging.banzaicloud.io
+    kind: ClusterOutput
+    name: kubernetes
+    namespace: logging
+    version: v1beta1
+- path: cluster-output.yml
