@@ -5,29 +5,21 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: logging
-
 images:
   - name: quay.io/prometheuscommunity/elasticsearch-exporter
     newName: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter
     newTag: "v1.8.0"
-  - name: opensearchproject/opensearch
-    newName: registry.sighup.io/fury/opensearchproject/opensearch
-    newTag: "2.17.1"
-  - name: opensearchproject/opensearch-dashboards
-    newName: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
-    newTag: "2.17.1"
+  - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+    newTag: "2.19.1"
   - name: alpine
     newName: registry.sighup.io/fury/alpine
     newTag: "3.14"
-
 resources:
   - deploy.yaml
   - sm.yml
   - rules.yml
   - ism-policy-cronjob.yml
-
 configMapGenerator:
   - name: opensearch-cluster-master-config
     files:

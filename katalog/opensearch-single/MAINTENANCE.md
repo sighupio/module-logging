@@ -2,51 +2,44 @@
 
 To maintain the OpenSearch package, you should follow these steps.
 
-Download the latest zip from [OpenSearch Helm Charts][opensearch-helm-charts].
+1. Take note of the latest chart version from [Opensearch Helm Charts][opensearch-helm-charts].
+2. Take note also of the latest pushed version of the [`fury/opensearchproject/opensearch`](https://registry.sighup.io/harbor/projects/37/repositories/opensearchproject%2Fopensearch/artifacts-tab`) image in our Harbor registry
+    - If necessary, add a newer version on our [fury-distribution-container-image-sync](https://github.com/sighupio/fury-distribution-container-image-sync/blob/main/modules/logging/images.yml#L36) git repo
 
-Extract to a folder of your choice, for example: `/tmp/opensearch`.
+3. Run the following commands:
 
-Alternatively you can download the chart with:
+  ```bash
+  VERSION=2.32.0 # update this to the latest chart version
+  IMAGE_TAG="2.19.1" # update this to the latest fury/opensearchproject/opensearch image tag
+  helm repo add opensearch https://opensearch-project.github.io/helm-charts/
+  helm repo update
+  helm pull opensearch/opensearch --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/opensearch
+  helm template opensearch /tmp/opensearch/ --values MAINTENANCE.values.yaml --set "image.tag"="$IMAGE_TAG" -n logging > opensearch-built.yaml
+  IMAGE_TAG="$IMAGE_TAG" yq -i '(.images[] | select(.name == "*opensearchproject/opensearch-dashboards")).newTag |= env(IMAGE_TAG)' kustomization.yaml
+  ```
 
-```bash
-helm repo add opensearch https://opensearch-project.github.io/helm-charts/
-helm pull opensearch/opensearch --version 2.26.0 --untar --untardir /tmp # this command will download the chart in /tmp/opensearch
-```
+  > [!TIP]
+  > Chart v2.32.0 uses OpenSearch v2.19.1
 
-> [!TIP]
-> Chart v2.26.0 uses OpenSearch v2.17.1
+The provided values will deploy a custom `fsgroups` initContainer, because the one provided with vanilla values
+does not change the `fs.file-max` value with `sysctl`.
+We also added a custom sidecar container to export Prometheus metrics. We are using this strategy because the [prometheus-exporter](https://github.com/Aiven-Open/prometheus-exporter-plugin-for-opensearch) plugin is not compatible with the latest versions of OpenSearch yet.
 
-Run the following command:
+Manual changes from the output of `helm template`:
 
-```bash
-helm template opensearch /tmp/opensearch -n logging > opensearch-built.yaml
-```
-
-With the `opensearch-built.yaml` file, check differences with the current `deploy.yml` file and change accordingly.
-
-What was customized:
-
-- default storage from 8Gi to 30Gi
 - removed helm release labels
-- replace initContainer definition
-- configured requests and limits + java opts for xms and xmx
-- added prometheus exporter
+
+Then, Kustomize will automate the following changes:
+
 - added custom prometheus AlertRules
-- changed metrics port to 9108
-- opensearch-cluster-master-config created with configMapGenerator instead of in-line configMap
-- security plugin is disabled, we expect security on the ingress level or configured manually
+- security plugin is disabled via ConfigMap, we expect security on the ingress level or configured manually
+- change the `alpine` and `elasticsearch-exporter` images to use our Harbor registry
 
-> [!WARNING]
-> OpenSearch fails to start when running the AMD64 image on ARM64 machines (Apple Silicon like M1 and such). The kernel does not support
-> `seccomp` and that makes some init checks fail.
-> Workarounds:
->
-> 1. Use temporarily the image from upstream instead of the one we sync that has compatibility with ARM64
-> 2. Add the following snippet to the config or set the option via environment variables:
+Cleanup:
 
-```yaml
-bootstrap:
-  system_call_filter: false
+```bash
+rm opensearch-built.yaml
+rm -rf /tmp/opensearch
 ```
 
 [opensearch-helm-charts]: https://github.com/opensearch-project/helm-charts/releases
