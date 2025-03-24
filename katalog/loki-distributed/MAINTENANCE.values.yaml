@@ -45,7 +45,9 @@ loki:
     #  admin: admin
     type: s3
     s3:
-      s3: http://minio:minio123@minio-logging.logging.svc.cluster.local:9000
+      endpoint: http://minio-logging.logging.svc.cluster.local:9000
+      access_key_id: ${MINIO_ACCESS_KEY:-minio}
+      secret_access_key: ${MINIO_SECRET_KEY:-minio123}
       s3ForcePathStyle: true
       insecure: true
     object_store:
