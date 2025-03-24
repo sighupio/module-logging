@@ -45,6 +45,9 @@ spec:
     protocol: TCP
     name: http
     targetPort: 5601
+  - name: metrics
+    protocol: TCP
+    port: 9601
   selector:
     app: opensearch-dashboards
     release: "opensearch-dashboards"
@@ -74,6 +77,13 @@ spec:
       securityContext:
         {}
       serviceAccountName: opensearch-dashboards-dashboards
+      volumes:
+        # Currently some extra blocks accept strings
+        # to continue with backwards compatibility this is being kept
+        # whilst also allowing for yaml to be specified too.
+        - name: opensearch-dashboards
+          secret:
+            secretName: opensearch-dashboards
       containers:
       - name: dashboards
         securityContext:
@@ -82,7 +92,7 @@ spec:
             - ALL
           runAsNonRoot: true
           runAsUser: 1000
-        image: "opensearchproject/opensearch-dashboards"
+        image: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards:2.19.1"
         imagePullPolicy: "IfNotPresent"
         readinessProbe:
           failureThreshold: 10
@@ -132,10 +142,31 @@ spec:
             cpu: 100m
             memory: 512M
         volumeMounts:
-          - name: opensearch-dashboards
-            mountPath: /usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
+          # Currently some extra blocks accept strings
+          # to continue with backwards compatibility this is being kept
+          # whilst also allowing for yaml to be specified too.
+          - mountPath: /usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
+            name: opensearch-dashboards
             subPath: opensearch_dashboards.yml
-      volumes:
-        - name: opensearch-dashboards
-          secret:
-            secretName: opensearch-dashboards
+---
+# Source: opensearch-dashboards/templates/serviceMonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: opensearch-dashboards-service-monitor
+  namespace: logging
+  labels:
+    app.kubernetes.io/name: opensearch-dashboards
+    app.kubernetes.io/instance: opensearch-dashboards
+spec:
+  namespaceSelector:
+    matchNames:
+    - logging
+  selector:
+    matchLabels:
+      name: opensearch-dashboards
+      instance: opensearch-dashboards
+  endpoints:
+  - port: metrics
+    interval: 10s
+    path: /_prometheus/metrics

@@ -8,14 +8,13 @@ kind: Kustomization
 
 namespace: logging
 
-images:
-  - name: opensearchproject/opensearch-dashboards
-    newName: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
-    newTag: "2.17.1"
-
 resources:
   - deploy.yaml
   - index-patterns-cronjob.yml
+
+images:
+  - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+    newTag: "2.19.1"
 
 secretGenerator:
   - name: opensearch-dashboards

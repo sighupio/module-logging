@@ -11,5 +11,5 @@ namespace: logging
 resources:
   - ../opensearch-single
 
-patchesStrategicMerge:
-  - triple.yml
+patches:
+  - path: triple.yml
