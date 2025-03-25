@@ -31,7 +31,21 @@ for the complete release notes.
 
 ## Update Guide 🦮
 
-⚠ TBD
+### Before upgrading Loki from 2.9.10 to 3.4.2
+
+When upgrading Loki the Ingester StatefulSet needs to be scaled to 2 replicas before executing the upgrade. This can be done using the following command:
+
+```bash
+kubectl scale sts -n logging loki-distributed-ingester --replicas=2
+```
+
+Once the StatefulSet has been scaled a patch needs to be applied to add the `-ingester.flush-on-shutdown=true` and the `-log.level=debug` flags on the Ingester. This will allow the ingester to flush logs that still need to be pushed to the long term storage. The patch can be applied with the following command:
+
+```bash
+kubectl patch statefulset loki-distributed-ingester -n logging --type='json' -p="[{\"op\":\"replace\",\"path\":\"/spec/template/spec/containers/0/args\",\"value\":[\"-config.file=/etc/loki/config/config.yaml\",\"-ingester.flush-on-shutdown=true\",\"-log.level=debug\",\"-target=ingester\"]}]"
+```
+
+Once the StatefulSet is stable and the patch has been applied the upgrade can be executed.
 
 ### Upgrade using the distribution
 
