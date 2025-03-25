@@ -1,6 +1,6 @@
 # Loki Distributed
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 Loki is a horizontally scalable, highly available, multi-tenant log aggregation system inspired by Prometheus.
 It is designed to be very cost effective and easy to operate.
@@ -10,8 +10,8 @@ It does not index the contents of the logs, but rather a set of labels for each 
 
 - Kubernetes >= `1.24.0`
 - Kustomize >= `v3.10.0`
-- [prometheus-operator from KFD monitoring module][prometheus-operator]
-- [grafana from KFD monitoring module][grafana] (module version `>=1.15.0`)
+- [prometheus-operator from SD monitoring module][prometheus-operator]
+- [grafana from SD monitoring module][grafana] (module version `>=1.15.0`)
 - [minio-ha](../minio-ha)
 
 > Prometheus Operator is necessary since we configure a `ServiceMonitor` to make
@@ -62,7 +62,7 @@ To see the logs, navigate in Grafana to the [explore section][grafana-explore-do
 [grafana-explore-doc]: https://grafana.com/docs/grafana/latest/explore/
 [loki-gh]: https://github.com/grafana/loki
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 ## License
 

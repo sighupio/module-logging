@@ -1,6 +1,6 @@
 # Logging Operated
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 The Logging operated package deploys the Fluentd and Fluent-bit stack via Logging operator CRDs.
 It also deploys a MinIO instance for storing all the logs rejected from the configured outputs.
@@ -40,7 +40,7 @@ These MinIO instances are configured to have a 7-day file retention.
 [logging-operator]: https://github.com/sighup-io/fury-kubernetes-logging/blob/master/katalog/logging-operator
 [prometheus-operator]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/prometheus-operator
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 ## License
 

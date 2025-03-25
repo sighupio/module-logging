@@ -1,6 +1,6 @@
 # OpenSearch Dashboards
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 OpenSearch Dashboards is an open-source analytics and visualization platform for OpenSearch.
 OpenSearch Dashboards lets you perform advanced data analysis and visualize data in a variety
@@ -48,7 +48,7 @@ Links
 [opensearch-dashboards-doc]: https://opensearch.org/docs/latest/dashboards/index/
 [opensearch-dashboards-github]: https://github.com/opensearch-project/OpenSearch-Dashboards
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 ## License
 

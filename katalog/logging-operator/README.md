@@ -1,6 +1,6 @@
 # Logging Operator
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 Logging operator for Kubernetes based on Fluentd and Fluent-bit.
 
@@ -20,7 +20,7 @@ and a Fluentd StatefulSet that receive logs from Fluent-bit and send them to var
 
 ## Configuration
 
-In Kubernetes Fury Distribution, Logging operator is deployed with the following default configuration:
+In SIGHUP Distribution, Logging operator is deployed with the following default configuration:
 
 - Replica number: `1`
 - Resource limits are `100m` for CPU and `500Mi` for memory
@@ -40,7 +40,7 @@ for OpenSearch Flow/Clusterflow and Output/ClusterOutput configuration and [loki
 
 [logging-operator-github]: https://github.com/banzaicloud/logging-operator
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 ## License
 
