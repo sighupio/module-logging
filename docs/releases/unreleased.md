@@ -33,9 +33,12 @@ for the complete release notes.
 
 ### Before upgrading Loki from 2.9.10 to 3.4.2
 
-When upgrading Loki the Ingester StatefulSet needs to be scaled to 2 replicas before executing the upgrade. This can be done using the following command:
+When upgrading Loki the Ingester StatefulSet needs to be scaled to at least 2 replicas before executing the upgrade to avoid losing logs that have not been flushed to a remote storage yet. Notice that the ingester has an HPA defined and could already be scaled.
 
 ```bash
+# check the number of current replicas:
+$ kubectl get statefulsets.apps -n logging loki-distributed-ingester -o jsonpath={.status.currentReplicas}
+# scale up if necessary:
 kubectl scale sts -n logging loki-distributed-ingester --replicas=2
 ```
 
