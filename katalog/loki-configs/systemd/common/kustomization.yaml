@@ -2,23 +2,21 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../../configs/systemd/common
+- ../../../configs/systemd/common
 
 namespace: logging
 
-patchesJson6902:
-  - target:
-      group: logging.banzaicloud.io
-      version: v1beta1
-      kind: Output
-      name: systemd-common
-      namespace: logging
-    path: output-json-patch.yml
 
-patchesStrategicMerge:
-  - output.yml
+patches:
+- path: output-json-patch.yml
+  target:
+    group: logging.banzaicloud.io
+    kind: Output
+    name: systemd-common
+    namespace: logging
+    version: v1beta1
+- path: output.yml

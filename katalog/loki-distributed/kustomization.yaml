@@ -10,17 +10,21 @@ namespace: logging
 
 resources:
   - datasource
-  - deploy.yml
+  - deploy.yaml
+  - service-monitor.yaml
 
 images:
   - name: docker.io/grafana/loki
     newName: registry.sighup.io/fury/grafana/loki
-    newTag: 2.9.10
+    newTag: 3.4.2
   - name: docker.io/nginxinc/nginx-unprivileged
     newName: registry.sighup.io/fury/nginxinc/nginx-unprivileged
-    newTag: 1.20.2-alpine
+    newTag: 1.27.3-alpine
 
 secretGenerator:
-  - name: loki-distributed
+  - name: loki
     files:
       - configs/config.yaml
+  - name: minio-credentials-loki
+    envs:
+      - minio-credentials.env

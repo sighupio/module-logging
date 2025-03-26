@@ -52,7 +52,7 @@ steps:
       - clone
 
   - name: render-manifests
-    image: quay.io/sighup/e2e-testing:1.1.0_3.12.0_1.31.1_3.10.0_4.33.3
+    image: quay.io/sighup/e2e-testing:2.24.17_1.1.0_3.12.0_1.32.2_5.6.0_4.33.3
     pull: always
     depends_on:
       - clone
@@ -74,7 +74,7 @@ steps:
       - render-manifests
     commands:
       # we use --ignore-deprecations because we don't want the CI to fail when the API has not been removed yet.
-      - /pluto detect $${KUBERNETES_MANIFESTS} --ignore-deprecations --target-versions=k8s=v1.29.0
+      - /pluto detect $${KUBERNETES_MANIFESTS} --ignore-deprecations --target-versions=k8s=v1.32.0
     environment:
       KUBERNETES_MANIFESTS: opensearch-triple.yml
 
@@ -112,108 +112,6 @@ steps:
     name: check-deprecated-apis-minio-ha
     environment:
       KUBERNETES_MANIFESTS: minio-ha.yml
-
----
-name: unit-tests
-kind: pipeline
-type: docker
-
-clone:
-  depth: 1
-
-depends_on:
-  - linting
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-  - name: katalog
-    image: quay.io/sighup/katalog:3.2.2_3
-    pull: always
-    depends_on: [clone]
-    commands:
-      - flake8 --ignore=E501 katalog/tests/test.py
-      - bash katalog/tests/pytest.sh
-      - rm -rf .pytest_cache katalog/tests/__pycache__
-    when:
-      event:
-        - push
----
-name: e2e-kubernetes-1.28
-kind: pipeline
-type: docker
-
-depends_on:
-  - linting
-
-clone:
-  depth: 1
-
-platform:
-  os: linux
-  arch: amd64
-
-trigger:
-  ref:
-    include:
-      - refs/tags/**
-
-steps:
-  - name: Create Kind Cluster
-    image: quay.io/sighup/dind-kind-kubectl-kustomize:0.20.0_1.29.1_3.10.0
-    pull: always
-    depends_on: [clone]
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    environment:
-      KIND_CONFIG: ./katalog/tests/kind/config.yml
-      CLUSTER_VERSION: v1.28.0
-      KUBECONFIG: kubeconfig-128
-      CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-128
-    commands:
-      # NOTE: kind's `--wait` flag that waits for the control-plane ot be ready
-      # does not work when disabling the default CNI. It will always go in timeout.
-      - kind create cluster --name $${CLUSTER_NAME} --image registry.sighup.io/fury/kindest/node:$${CLUSTER_VERSION} --config $${KIND_CONFIG}
-      # save the kubeconfig so we can use it from other steps.
-      - kind get kubeconfig --name $${CLUSTER_NAME} > $${KUBECONFIG}
-
-  - name: End-to-End Tests
-    # KUBECTL 1.25.3 - KUSTOMIZE 3.5.3 - HELM 3.1.1 - YQ 4.21.1 - ISTIOCTL 1.9.4 - FURYCTL 0.9.0 - BATS 1.1.0
-    image: quay.io/sighup/e2e-testing:1.1.0_0.11.0_3.1.1_1.9.4_1.26.3_3.5.3_4.33.3
-    pull: always
-    network_mode: host
-    environment:
-      KUBECONFIG: kubeconfig-128
-    depends_on: ["Create Kind Cluster"]
-    commands:
-      # wait for Kind cluster to be ready
-      - until kubectl get serviceaccount default > /dev/null 2>&1; do echo "waiting for control-plane" && sleep 1; done
-      - bats -t katalog/tests/tests.sh
-
-  - name: Destroy Kind Cluster
-    image: quay.io/sighup/dind-kind-kubectl-kustomize:0.20.0_1.29.1_3.10.0
-    volumes:
-      - name: dockersock
-        path: /var/run/docker.sock
-    environment:
-      CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-128
-    commands:
-      # does not matter if the command fails
-      - kind delete cluster --name $${CLUSTER_NAME} || true
-    depends_on:
-      - End-to-End Tests
-    when:
-      status:
-        - success
-        - failure
-
-volumes:
-  - name: dockersock
-    host:
-      path: /var/run/docker.sock
 
 ---
 name: e2e-kubernetes-1.29
@@ -437,6 +335,80 @@ volumes:
     host:
       path: /var/run/docker.sock
 ---
+name: e2e-kubernetes-1.32
+kind: pipeline
+type: docker
+
+depends_on:
+  - linting
+
+clone:
+  depth: 1
+
+platform:
+  os: linux
+  arch: amd64
+
+trigger:
+  ref:
+    include:
+      - refs/tags/**
+
+steps:
+  - name: Create Kind Cluster
+    image: quay.io/sighup/dind-kind-kubectl-kustomize:0.27.0_1.32.2_5.6.0
+    pull: always
+    depends_on: [clone]
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      KIND_CONFIG: ./katalog/tests/kind/config.yml
+      CLUSTER_VERSION: v1.32.2
+      KUBECONFIG: kubeconfig-132
+      CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-132
+    commands:
+      # NOTE: kind's `--wait` flag that waits for the control-plane ot be ready
+      # does not work when disabling the default CNI. It will always go in timeout.
+      - kind create cluster --name $${CLUSTER_NAME} --image registry.sighup.io/fury/kindest/node:$${CLUSTER_VERSION} --config $${KIND_CONFIG}
+      # save the kubeconfig so we can use it from other steps.
+      - kind get kubeconfig --name $${CLUSTER_NAME} > $${KUBECONFIG}
+
+  - name: End-to-End Tests
+    # AWSCLI 2.24.17 - BATS 1.1.0 - HELM 3.12.0 - KUBECTL 1.32.2 - KUSTOMIZE 5.6.0 - YQ 4.33.3
+    image: quay.io/sighup/e2e-testing:2.24.17_1.1.0_3.12.0_1.32.2_5.6.0_4.33.3
+    pull: always
+    network_mode: host
+    environment:
+      KUBECONFIG: kubeconfig-132
+    depends_on: ["Create Kind Cluster"]
+    commands:
+      # wait for Kind cluster to be ready
+      - until kubectl get serviceaccount default > /dev/null 2>&1; do echo "waiting for control-plane" && sleep 1; done
+      - bats -t katalog/tests/tests.sh
+
+  - name: Destroy Kind Cluster
+    image: quay.io/sighup/dind-kind-kubectl-kustomize:0.27.0_1.32.2_5.6.0
+    volumes:
+      - name: dockersock
+        path: /var/run/docker.sock
+    environment:
+      CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-132
+    commands:
+      # does not matter if the command fails
+      - kind delete cluster --name $${CLUSTER_NAME} || true
+    depends_on:
+      - End-to-End Tests
+    when:
+      status:
+        - success
+        - failure
+
+volumes:
+  - name: dockersock
+    host:
+      path: /var/run/docker.sock
+---
 name: release
 kind: pipeline
 type: docker
@@ -445,10 +417,10 @@ clone:
   depth: 1
 
 depends_on:
-  - e2e-kubernetes-1.28
   - e2e-kubernetes-1.29
   - e2e-kubernetes-1.30
   - e2e-kubernetes-1.31
+  - e2e-kubernetes-1.32
 
 platform:
   os: linux

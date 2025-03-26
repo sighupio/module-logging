@@ -16,7 +16,7 @@ metadata:
   name: minio-logging-console
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -37,7 +37,7 @@ metadata:
   name: minio-logging
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
     monitoring: "true"
@@ -59,7 +59,7 @@ metadata:
   name: minio-logging-svc
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -81,7 +81,7 @@ metadata:
   name: minio-logging
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -101,18 +101,6 @@ spec:
         app: minio
         release: minio-logging
     spec:
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: "release"
-                      operator: In
-                      values:
-                        - minio-logging
-                topologyKey: "kubernetes.io/hostname"
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
@@ -121,7 +109,7 @@ spec:
       serviceAccountName: minio-sa
       containers:
         - name: minio
-          image: registry.sighup.io/fury/minio:RELEASE.2024-04-18T19-09-19Z
+          image: registry.sighup.io/fury/minio:RELEASE.2025-02-28T09-55-16Z
           imagePullPolicy: IfNotPresent
           command: [
             "/bin/sh",
@@ -157,6 +145,18 @@ spec:
               memory: 512Mi
           securityContext:
             readOnlyRootFilesystem: false
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: release
+                  operator: In
+                  values:
+                  - minio-logging
+              topologyKey: kubernetes.io/hostname
+            weight: 100
       volumes:
         - name: minio-user
           secret:
@@ -188,7 +188,7 @@ metadata:
   name: minio-logging-cluster
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:
@@ -209,7 +209,7 @@ metadata:
   name: minio-logging
   labels:
     app: minio
-    chart: minio-5.3.0
+    chart: minio-5.4.0
     release: minio-logging
     heritage: Helm
 spec:

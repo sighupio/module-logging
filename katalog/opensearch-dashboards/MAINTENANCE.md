@@ -2,33 +2,38 @@
 
 To maintain the Opensearch Dashboards package, you should follow these steps.
 
-Download the latest zip from [Opensearch Helm Charts][opensearch-helm-charts].
+1. Take note of the latest chart version from [Opensearch Helm Charts][opensearch-helm-charts].
+2. Take note also of the latest pushed version of the [`fury/opensearchproject/opensearch-dashboards`](https://registry.sighup.io/harbor/projects/37/repositories/opensearchproject%2Fopensearch-dashboards/artifacts-tab`) image in our Harbor registry
+    - If necessary, add a newer version on our [fury-distribution-container-image-sync](https://github.com/sighupio/fury-distribution-container-image-sync/blob/main/modules/logging/images.yml#L36) git repo
 
-Extract to a folder of your choice, for example: `/tmp/opensearch-dashboards`.
+3. Run the following commands:
 
-Alternatively you can download the chart with:
+  ```bash
+  VERSION=2.28.0 # update this to the latest chart version
+  IMAGE_TAG="2.19.1" # update this to the latest fury/opensearchproject/opensearch-dashboards image tag
+  helm repo add opensearch https://opensearch-project.github.io/helm-charts/
+  helm repo update
+  helm pull opensearch/opensearch-dashboards --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/opensearch-dashboards
+  helm template opensearch-dashboards /tmp/opensearch-dashboards/ --values MAINTENANCE.values.yaml --set "image.tag"="$IMAGE_TAG" -n logging > opensearch-dashboards-built.yaml
+  IMAGE_TAG="$IMAGE_TAG" yq -i '(.images[] | select(.name == "*opensearchproject/opensearch-dashboards")).newTag |= env(IMAGE_TAG)' kustomization.yaml
+  ```
 
-```bash
-helm repo add opensearch https://opensearch-project.github.io/helm-charts/
-helm pull opensearch/opensearch-dashboards --version 2.24.0 --untar --untardir /tmp # this command will download the chart in /tmp/opensearch-dashboards
-```
-
-> [!TIP]
-> Chart v2.16.0 uses OpenSearch Dashboards v2.12.0
-
-Run the following command:
-
-```bash
-helm template opensearch-dashboards /tmp/opensearch-dashboards -n logging > opensearch-dashboards-built.yaml
-```
-
-With the `opensearch-dashboards-built.yaml` file, check differences with the current `deploy.yml` file and change accordingly.
+  > [!TIP]
+  > Chart v2.28.0 uses OpenSearch Dashboards v2.19.1
 
 What was customized:
 
-- configured requests and limits
-- added prometheus exporter
+- removed Helm labels
 - opensearch-dashboards created with secretGenerator
-- security plugin is disabled, we expect security on the ingress level or configured manually (in consequence `OPENSEARCH_HOSTS` is switched to http)
+- security plugin is disabled with a custom command for the container, we expect security on the ingress level or configured manually (in consequence `OPENSEARCH_HOSTS` is switched to http)
+
+Review the differences between `opensearch-dashboards-built.yaml` and `deploy.yaml`, make the customization described above and replace `deploy.yaml` with the contents of `opensearch-dashboards-built.yaml`.
+
+Cleanup:
+
+```bash
+rm opensearch-dashboards-built.yaml
+rm -rf /tmp/opensearch-dashboards
+```
 
 [opensearch-helm-charts]: https://github.com/opensearch-project/helm-charts/releases
