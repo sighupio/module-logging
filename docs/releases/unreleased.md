@@ -26,8 +26,9 @@ This update is a major version that adds support for the Kubernetes version 1.32
 
 ## Breaking Changes 💔
 
-Starting with the v4.1.0 of the Logging Core Module Loki version has been bumped to 3.4.2. Please refer to [`loki documentation`](https://grafana.com/docs/loki/v3.4.x/setup/upgrade/)
-for the complete release notes.
+Starting with the v5.0.0 of the Logging Core Module, Loki version has been bumped to 3.4.2.
+
+If you are using this module without customizations, the upgrade will be seamless without breaking changes. If you applied a customization to the [`config.yaml`](katalog/loki-distributed/configs/config.yaml), you can refer to the [`loki documentation`](https://grafana.com/docs/loki/v3.4.x/setup/upgrade/) for information about the changes that you will need to include before updating.
 
 ## Update Guide 🦮
 
@@ -58,7 +59,7 @@ To upgrade the module using the distribution please refer to the [`official docu
 
 ℹ️ **Note:** Manually upgrading the module is deprecated. It is reccommended to use [`fury distribution`](https://github.com/sighupio/fury-distribution)
 
-To upgrade the module run:
+To upgrade the module, follow the steps describe previously in the [Update guide](#update-guide-), then run:
 
 ```bash
 kustomize build | kubectl apply -f -
