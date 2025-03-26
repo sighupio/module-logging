@@ -1,4 +1,4 @@
-# Logging Core Module Release v4.1.0
+# Logging Core Module Release v5.0.0
 
 Welcome to the latest release of the `logging` module of [`Kubernetes Fury Distribution`](https://github.com/sighupio/fury-distribution) maintained by team SIGHUP.
 
