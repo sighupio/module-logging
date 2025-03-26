@@ -22,5 +22,6 @@ What was customized (what differs from the helm template command):
 - The ServiceMonitors are not supported anymore with the new chart (they can still be used, when created manually, but will not be created automatically
   when using the new chart). Hence they have been moved into the service-monitor.yaml file.
 - The components follow the `loki-distributed` naming to maintain compatibility with existing resources.
+- The `loki-memberlist` Service has been renamed to `loki-distributed-memberlist` to maintain compatibility.
 
 [github-releases]: https://github.com/grafana/helm-charts/releases?q=loki-distributed&expanded=true
