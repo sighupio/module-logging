@@ -1,7 +1,11 @@
 <!-- markdownlint-disable MD033 MD045 -->
-<h1>
-    <img src="https://github.com/sighupio/fury-distribution/blob/main/docs/assets/fury-epta-white.png?raw=true" align="left" width="90" style="margin-right: 15px"/>
-    Kubernetes Fury Logging
+<h1 align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/sighupio/distribution/refs/heads/main/docs/assets/white-logo.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/sighupio/distribution/refs/heads/main/docs/assets/black-logo.png">
+  <img alt="Shows a black logo in light color mode and a white one in dark color mode." src="https://raw.githubusercontent.com/sighupio/distribution/refs/heads/main/docs/assets/white-logo.png">
+</picture><br/>
+  Logging Module
 </h1>
 <!-- markdownlint-enable MD033 MD045 -->
 
@@ -9,15 +13,15 @@
 ![License](https://img.shields.io/github/license/sighupio/fury-kubernetes-logging?label=License)
 ![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
-**Kubernetes Fury Logging** provides a logging stack for the [Kubernetes Fury Distribution (KFD)][kfd-repo].
+**Logging Module** provides a logging stack for the [SIGHUP Distribution (SD)][kfd-repo].
 
-If you are new to KFD please refer to the [official documentation][kfd-docs] on how to get started with KFD.
+If you are new to SD please refer to the [official documentation][kfd-docs] on how to get started with SD.
 
 ## Overview
 
-**Kubernetes Fury Logging** uses a collection of open source tools to provide the most resilient and robust logging stack for the cluster.
+**Logging Module** uses a collection of open source tools to provide the most resilient and robust logging stack for the cluster.
 
 The central piece of the stack is the open source search engine [opensearch][opensearch-page], combined
 with its analytics and visualization platform [opensearch-dashboards][opensearch-dashboards-page].
@@ -29,11 +33,11 @@ All the components are deployed in the `logging` namespace in the cluster.
 
 High level diagram of the stack:
 
-![logging module](docs/images/diagram.png "Kubernetes Fury Logging")
+![logging module](docs/images/diagram.png "Logging Module")
 
 ## Packages
 
-The following packages are included in the Kubernetes Fury Logging module:
+The following packages are included in the Logging Module module:
 
 | Package                                                | Version                        | Description                                                                          |
 | ------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------------------ |
@@ -66,7 +70,7 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
 
 | Tool                        | Version    | Description                                                                                                                                                    |
 | --------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [furyctl][furyctl-repo]     | `>=0.25.0` | The recommended tool to download and manage KFD modules and their packages. To learn more about `furyctl` read the [official documentation][furyctl-repo].     |
+| [furyctl][furyctl-repo]     | `>=0.25.0` | The recommended tool to download and manage SD modules and their packages. To learn more about `furyctl` read the [official documentation][furyctl-repo].     |
 | [kustomize][kustomize-repo] | `>=3.10.0` | Packages are customized using `kustomize`. To learn how to create your customization layer with `kustomize`, please refer to the [repository][kustomize-repo]. |
 
 ### Deployment with OpenSearch
@@ -185,7 +189,7 @@ If you need to specify tolerations and/or node selectors, you can find some snip
 [kfd-docs]: https://docs.kubernetesfury.com/docs/distribution/
 [compatibility-matrix]: https://github.com/sighupio/fury-kubernetes-logging/blob/master/docs/COMPATIBILITY_MATRIX.md
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 <!-- <FOOTER> -->
 

@@ -1,6 +1,6 @@
 # OpenSearch Triple
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 OpenSearch is an open-source distributed search and analytics engine used for
 log analytics. This package deploys a three-node OpenSearch cluster on
@@ -53,7 +53,7 @@ kustomize build | kubectl apply -f -
 [opensearch-doc]: https://opensearch.org/docs/latest
 [prometheus-operator]: https://github.com/sighupio/fury-kubernetes-monitoring/tree/master/katalog/prometheus-operator
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 ## License
 

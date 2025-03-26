@@ -1,6 +1,6 @@
 # OpenSearch Single
 
-<!-- <KFD-DOCS> -->
+<!-- <SD-DOCS> -->
 
 OpenSearch is an open-source distributed search and analytics engine used for
 log analytics. This package deploys a single node OpenSearch cluster on
@@ -65,7 +65,7 @@ Since we are configuring a `ServiceMonitor` in this package, the following Prome
 [opensearch-doc]: https://opensearch.org/docs/latest
 [prometheus-operator]: https://github.com/sighupio/fury-kubernetes-monitoring/tree/master/katalog/prometheus-operator
 
-<!-- </KFD-DOCS> -->
+<!-- </SD-DOCS> -->
 
 ## License
 
