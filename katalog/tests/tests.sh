@@ -11,10 +11,10 @@ set -o pipefail
 
 @test "applying monitoring" {
   info
-  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v2.0.1/katalog/prometheus-operator/crds/0podmonitorCustomResourceDefinition.yaml
-  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v2.0.1/katalog/prometheus-operator/crds/0prometheusruleCustomResourceDefinition.yaml
-  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v2.0.1/katalog/prometheus-operator/crds/0servicemonitorCustomResourceDefinition.yaml
-  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v2.0.1/katalog/prometheus-operator/crds/0probeCustomResourceDefinition.yaml
+  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v3.3.1/katalog/prometheus-operator/crds/0podmonitorCustomResourceDefinition.yaml
+  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v3.3.1/katalog/prometheus-operator/crds/0prometheusruleCustomResourceDefinition.yaml
+  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v3.3.1/katalog/prometheus-operator/crds/0servicemonitorCustomResourceDefinition.yaml
+  kubectl apply -f https://raw.githubusercontent.com/sighupio/fury-kubernetes-monitoring/v3.3.1/katalog/prometheus-operator/crds/0probeCustomResourceDefinition.yaml
 }
 
 @test "testing logging-operator apply" {
@@ -150,7 +150,29 @@ set -o pipefail
 @test "check loki-distributed querier" {
   info
   test(){
-    data=$(kubectl get sts -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-querier" and .status.replicas == .status.readyReplicas )')
+    data=$(kubectl get deploy -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-querier" and .status.replicas == .status.readyReplicas )')
+    if [ "${data}" == "" ]; then return 1; fi
+  }
+  loop_it test 400 6
+  status=${loop_it_result}
+  [[ "$status" -eq 0 ]]
+}
+
+@test "check loki-distributed query-scheduler" {
+  info
+  test(){
+    data=$(kubectl get deploy -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-query-scheduler" and .status.replicas == .status.readyReplicas )')
+    if [ "${data}" == "" ]; then return 1; fi
+  }
+  loop_it test 400 6
+  status=${loop_it_result}
+  [[ "$status" -eq 0 ]]
+}
+
+@test "check loki-distributed index-gateway" {
+  info
+  test(){
+    data=$(kubectl get sts -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-index-gateway" and .status.replicas == .status.readyReplicas )')
     if [ "${data}" == "" ]; then return 1; fi
   }
   loop_it test 400 6
