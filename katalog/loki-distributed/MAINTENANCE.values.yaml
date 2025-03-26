@@ -15,8 +15,8 @@ global:
   #       name: mysecret
   extraEnvFrom:
     - secretRef:
-        name: minio-credentials
-
+        name: minio-credentials-loki
+nameOverride: loki-distributed
 # -- Deployment mode lets you specify how to deploy Loki.
 # There are 3 options:
 # - SingleBinary: Loki is deployed as a single binary, useful for small installs typically without HA, up to a few tens of GB/day.
