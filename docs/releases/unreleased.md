@@ -1,6 +1,6 @@
 # Logging Core Module Release v5.0.0
 
-Welcome to the latest release of the `logging` module of [`Kubernetes Fury Distribution`](https://github.com/sighupio/fury-distribution) maintained by team SIGHUP.
+Welcome to the latest release of the `logging` module of [`SIGHUP Distribution`](https://github.com/sighupio/distribution) maintained by team SIGHUP.
 
 This update is a major version that adds support for the Kubernetes version 1.32.
 
@@ -57,7 +57,7 @@ To upgrade the module using the distribution please refer to the [`official docu
 
 ### Manual Upgrade
 
-ℹ️ **Note:** Manually upgrading the module is deprecated. It is reccommended to use [`Sighup distribution`](https://github.com/sighupio/distribution)
+ℹ️ **Note:** Manually upgrading the module is deprecated. It is reccommended to use [`SIGHUP distribution`](https://github.com/sighupio/distribution)
 
 To upgrade the module, follow the steps describe previously in the [Update guide](#update-guide-), then run:
 
