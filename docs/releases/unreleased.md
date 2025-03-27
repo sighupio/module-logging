@@ -36,17 +36,23 @@ If you are using this module without customizations, the upgrade will be seamles
 
 When upgrading Loki the Ingester StatefulSet needs to be scaled to at least 2 replicas before executing the upgrade to avoid losing logs that have not been flushed to a remote storage yet. Notice that the ingester has an HPA defined and could already be scaled.
 
-```bash
-# check the number of current replicas:
-$ kubectl get statefulsets.apps -n logging loki-distributed-ingester -o jsonpath={.status.currentReplicas}
-# scale up if necessary:
-kubectl scale sts -n logging loki-distributed-ingester --replicas=2
-```
+Once the StatefulSet has been scaled a patch needs to be applied to add the `-ingester.flush-on-shutdown=true` and the `-log.level=debug` flags on the Ingester. This will allow the ingester to flush logs that still need to be pushed to the long term storage.
 
-Once the StatefulSet has been scaled a patch needs to be applied to add the `-ingester.flush-on-shutdown=true` and the `-log.level=debug` flags on the Ingester. This will allow the ingester to flush logs that still need to be pushed to the long term storage. The patch can be applied with the following command:
+You can achieve this by using the following script:
 
 ```bash
+
+ingester_replicas=$(kubectl get statefulsets.apps -n logging loki-distributed-ingester -o jsonpath={.status.currentReplicas})
+
+if [ "${ingester_replicas}" -lt "2" ]; then
+  kubectl scale sts -n logging loki-distributed-ingester --replicas=2
+  kubectl wait -n logging statefulset/loki-distributed-ingester --for=jsonpath='{.status.availableReplicas}'=2 --timeout=5m
+fi
+
 kubectl patch statefulset loki-distributed-ingester -n logging --type='json' -p="[{\"op\":\"replace\",\"path\":\"/spec/template/spec/containers/0/args\",\"value\":[\"-config.file=/etc/loki/config/config.yaml\",\"-ingester.flush-on-shutdown=true\",\"-log.level=debug\",\"-target=ingester\"]}]"
+
+kubectl rollout status -n logging statefulset/loki-distributed-ingester
+
 ```
 
 Once the StatefulSet is stable and the patch has been applied the upgrade can be executed.
