@@ -10,7 +10,7 @@
 <!-- markdownlint-enable MD033 MD045 -->
 
 ![Release](https://img.shields.io/badge/Latest%20Release-v5.0.0-blue)
-![License](https://img.shields.io/github/license/sighupio/fury-kubernetes-logging?label=License)
+![License](https://img.shields.io/github/license/sighupio/module-logging?label=License)
 ![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)
 
 <!-- <SD-DOCS> -->
@@ -199,7 +199,7 @@ Before contributing, please read first the [Contributing Guidelines](docs/CONTRI
 
 ### Reporting Issues
 
-In case you experience any problems with the module, please [open a new issue](https://github.com/sighupio/fury-kubernetes-logging/issues/new/choose).
+In case you experience any problems with the module, please [open a new issue](https://github.com/sighupio/module-logging/issues/new/choose).
 
 ## License
 
