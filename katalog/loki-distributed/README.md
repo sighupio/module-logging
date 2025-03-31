@@ -6,6 +6,11 @@ Loki is a horizontally scalable, highly available, multi-tenant log aggregation 
 It is designed to be very cost effective and easy to operate.
 It does not index the contents of the logs, but rather a set of labels for each log stream.
 
+> [!NOTE]
+> This package is named Loki Distributed because it was created using the upstream chart with the same name.
+> From version 5.0.0 of the logging module the package has been migrated to use the `Loki` chart instead as
+> upstream.
+
 ## Requirements
 
 - Kubernetes >= `1.24.0`
