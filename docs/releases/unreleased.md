@@ -10,7 +10,7 @@ Welcome to the latest release of the `logging` module of [`SIGHUP Distribution`]
 
 ## Bug Fixes and Changes 🐛
 
-- [[#TBD](https://github.com/sighupio/module-logging/pull/TBD)]: This PR adds the retention to Loki stack. The retention period for logs stored in Loki is 30 days. Users can edit this with a common patch.
+- [[#186](https://github.com/sighupio/module-logging/pull/186)]: This PR adds the retention period to Loki stack. The retention period for logs stored in Loki is 30 days.
 
 
 ## Breaking Changes 💔
