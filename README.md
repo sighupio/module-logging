@@ -9,7 +9,7 @@
 </h1>
 <!-- markdownlint-enable MD033 MD045 -->
 
-![Release](https://img.shields.io/badge/Latest%20Release-v5.0.0-blue)
+![Release](https://img.shields.io/badge/Latest%20Release-v5.1.0-blue)
 ![License](https://img.shields.io/github/license/sighupio/module-logging?label=License)
 ![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)
 
@@ -80,17 +80,17 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
     ```yaml
     bases:
       - name: logging/opensearch-single
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/opensearch-dashboards
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/logging-operator
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/logging-operated
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: minio/minio-ha
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/configs
-        version: "v5.0.0"
+        version: "v5.1.0"
     ```
 
     > See `furyctl` [documentation][furyctl-repo] for additional details about `Furyfile.yml` format.
@@ -127,17 +127,17 @@ kustomize build . | kubectl apply --server-side -f -
     ```yaml
     bases:
       - name: logging/loki-distributed
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/logging-operator
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/logging-operated
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: minio/minio-ha
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/configs
-        version: "v5.0.0"
+        version: "v5.1.0"
       - name: logging/loki-configs
-        version: "v5.0.0"
+        version: "v5.1.0"
     ```
 
     > See `furyctl` [documentation][furyctl-repo] for additional details about `Furyfile.yml` format.
@@ -183,11 +183,11 @@ If you need to specify tolerations and/or node selectors, you can find some snip
 [fluentbit-page]: https://fluentbit.io/
 [fluentd-page]: https://www.fluentd.org/
 [loki-page]: https://grafana.com/oss/loki/
-[kfd-repo]: https://github.com/sighupio/fury-distribution
+[kfd-repo]: https://github.com/sighupio/distribution
 [furyctl-repo]: https://github.com/sighupio/furyctl
 [kustomize-repo]: https://github.com/kubernetes-sigs/kustomize
-[kfd-docs]: https://docs.kubernetesfury.com/docs/distribution/
-[compatibility-matrix]: https://github.com/sighupio/fury-kubernetes-logging/blob/master/docs/COMPATIBILITY_MATRIX.md
+[kfd-docs]: https://docs.sighup.io/docs/distribution/
+[compatibility-matrix]: https://github.com/sighupio/module-logging/blob/master/docs/COMPATIBILITY_MATRIX.md
 
 <!-- </SD-DOCS> -->
 
