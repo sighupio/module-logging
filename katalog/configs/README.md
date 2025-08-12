@@ -1,22 +1,23 @@
 # Logging operator configs for OpenSearch
 
-This package is a collection of logging operator Flow/ClusterFlow and Output/ClusterOutput configs to be used together with OpenSearch.
+This package is a collection of logging operator Flow/ClusterFlow and Output/ClusterOutput configs to be used together with **OpenSearch**.
+
+> [WARNING!]
+> This package cannot be used together with `loki-configs` package, one excludes the other.
 
 ## Requirements
 
-- Kustomize >= `3.5.3`
+- Kustomize >= `5.6.0`
 - [logging-operated](../logging-operated)
 - [logging-operator](../logging-operator)
 
 ## Configuration
 
-> ⚠️ This package cannot be used together with `loki-configs` package, one excludes the other.
-
 Configurations available:
 
 - [configs](configs): all the configurations.
 - [configs/kubernetes](configs/kubernetes): only the cluster wide pods logging configuration (infrastructural namespaced excluded).
-- [configs/infra](configs/infra): only the infrastructural namespaces logs  
+- [configs/infra](configs/infra): only the infrastructural namespaces logs
 - [configs/ingress-nginx](configs/ingress-nginx): only the nginx-ingress-controller logging configuration.
 - [configs/audit](configs/audit): all the Kubernetes audit logs related configurations (with master selector and tolerations).
 - [configs/events](configs/events): all the Kubernetes events related configurations (with master selector and tolerations).
@@ -26,7 +27,7 @@ Configurations available:
 
 ## Deployment
 
-You can deploy all the configurations by running the following command in the root of the project:
+You can deploy all the configurations by running the following command in the `configs` folder:
 
 ```shell
 kustomize build | kubectl apply -f -
