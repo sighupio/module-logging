@@ -18,6 +18,7 @@ Welcome to the latest release of the `logging` module of [`SIGHUP Distribution`]
 - [[#189](https://github.com/sighupio/module-logging/pull/189)]: Fixed a bug with `minio-ha`, where the image for the `mc` utility was missing the tag and using latest in consequence. This could lead to issues when upstream releases breaking changes.
 - Logging Operated: Increased fluentd's default resource requests (1 CPU, 700 Mi Memory) and limits (2 CPU, 1.5 Gi Memory) and fluentbit's default requests (CPU: 100m, Memory: 100M) based on latest usage statistics on production clusters.
 - Configs: Increased the overall flush threads count on all the output plugins to improve flush performance over the network.
+- Loki Configs: Increased the overall flush threads count on all the output plugins to improve flush performance over the network.
 
 ## Breaking Changes 💔
 
