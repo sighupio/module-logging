@@ -2,7 +2,7 @@
 
 This package is a collection of logging operator Flow/ClusterFlow and Output/ClusterOutput configs to be used together with **OpenSearch**.
 
-> [WARNING!]
+> [!WARNING]
 > This package cannot be used together with `loki-configs` package, one excludes the other.
 
 ## Requirements

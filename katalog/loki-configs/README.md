@@ -10,7 +10,7 @@ This package is a collection of logging operator Flow/ClusterFlow and Output/Clu
 
 ## Configuration
 
-> [WARNING!]
+> [!WARNING]
 > This package cannot be used together with `configs` package, one excludes the other.
 
 Configurations available (patched from the base [configs](../configs) ) :
