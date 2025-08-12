@@ -42,11 +42,11 @@ spec:
       prometheusRules: true
     resources:
       limits:
-        cpu: 1000m
-        memory: 600Mi
+        cpu: 2000m
+        memory: 1500Mi
       requests:
-        cpu: 300m
-        memory: 400Mi
+        cpu: 1000m
+        memory: 700Mi
   controlNamespace: logging
 ---
 apiVersion: logging.banzaicloud.io/v1beta1
@@ -80,7 +80,7 @@ spec:
       memory: 300M
     requests:
       cpu: 100m
-      memory: 50M
+      memory: 100M
   positiondb:
     hostPath:
       path: /var/log/infra-fluentbit-pos
