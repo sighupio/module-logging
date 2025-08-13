@@ -1,28 +1,29 @@
 # Logging operator configs for Loki
 
-This package is a collection of logging operator Flow/ClusterFlow and Output/ClusterOutput configs to be used together with Loki.
+This package is a collection of logging operator Flow/ClusterFlow and Output/ClusterOutput configs to be used together with **Loki**.
 
 ## Requirements
 
-- Kustomize >= `3.5.3`
+- Kustomize >= `5.6.0`
 - [logging-operated](../logging-operated)
 - [logging-operator](../logging-operator)
 
 ## Configuration
 
-> ⚠️ This package cannot be used together with `configs` package, one excludes the other.
+> [!WARNING]
+> This package cannot be used together with `configs` package, one excludes the other.
 
 Configurations available (patched from the base [configs](../configs) ) :
 
-- [configs](configs): all the configurations.
-- [configs/kubernetes](configs/kubernetes): only the cluster wide pods logging configuration (infrastructural namespaced excluded).
-- [configs/infra](configs/infra): only the infrastructural namespaces logs  
-- [configs/ingress-nginx](configs/ingress-nginx): only the nginx-ingress-controller logging configuration.
-- [configs/audit](configs/audit): all the Kubernetes audit logs related configurations (with master selector and tolerations).
-- [configs/events](configs/events): all the Kubernetes events related configurations (with master selector and tolerations).
-- [configs/systemd](configs/systemd): all the systemd related configurations.
-- [configs/systemd/kubelet](configs/systemd/common): kubelet, docker, ssh systemd service logs configuration.
-- [configs/systemd/etcd](configs/systemd/etcd): only the etcd service logs configuration (with master selector and tolerations).
+- [loki-configs](loki-configs): all the configurations.
+- [loki-configs/kubernetes](loki-configs/kubernetes): only the cluster wide pods logging configuration (infrastructural namespaced excluded).
+- [loki-configs/infra](loki-configs/infra): only the infrastructural namespaces logs
+- [loki-configs/ingress-nginx](loki-configs/ingress-nginx): only the nginx-ingress-controller logging configuration.
+- [loki-configs/audit](loki-configs/audit): all the Kubernetes audit logs related configurations (with master selector and tolerations).
+- [loki-configs/events](loki-configs/events): all the Kubernetes events related configurations (with master selector and tolerations).
+- [loki-configs/systemd](loki-configs/systemd): all the systemd related configurations.
+- [loki-configs/systemd/kubelet](loki-configs/systemd/common): kubelet, docker, ssh systemd service logs configuration.
+- [loki-configs/systemd/etcd](loki-configs/systemd/etcd): only the etcd service logs configuration (with master selector and tolerations).
 
 ## Deployment
 

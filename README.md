@@ -37,7 +37,7 @@ High level diagram of the stack:
 
 ## Packages
 
-The following packages are included in the Logging Module module:
+The following packages are included in the Logging module:
 
 | Package                                                | Version                        | Description                                                                          |
 | ------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------------------ |
@@ -66,11 +66,17 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
 
 ## Usage
 
+> [!NOTE]
+> Instructions below are for deploying the module using a legacy version of furyctl, that required manual intervention and managing each module individually.
+>
+> Latest versions of furyctl automate the whole cluster lifecycle and it is recommended to use the latest version of furyctl instead.
+
+
 ### Prerequisites
 
 | Tool                        | Version    | Description                                                                                                                                                    |
 | --------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [furyctl][furyctl-repo]     | `>=0.25.0` | The recommended tool to download and manage SD modules and their packages. To learn more about `furyctl` read the [official documentation][furyctl-repo].     |
+| [furyctl][furyctl-repo]     | `>=0.25.0` | The recommended tool to download and manage SD modules and their packages. To learn more about `furyctl` read the [official documentation][furyctl-repo].      |
 | [kustomize][kustomize-repo] | `>=3.10.0` | Packages are customized using `kustomize`. To learn how to create your customization layer with `kustomize`, please refer to the [repository][kustomize-repo]. |
 
 ### Deployment with OpenSearch
