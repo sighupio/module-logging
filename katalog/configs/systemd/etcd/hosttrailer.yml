@@ -14,7 +14,7 @@ spec:
       maxEntries: 100
       systemdFilter: etcd.service
       containerOverrides:
-        image: registry.sighup.io/fury/fluent/fluent-bit:3.1.8
+        image: registry.sighup.io/fury/fluent/fluent-bit:4.0.3
   workloadMetaOverrides: {}
   workloadOverrides:
     affinity:

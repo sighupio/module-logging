@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -11,9 +11,9 @@ metadata:
   namespace: logging
   labels:
     app.kubernetes.io/name: logging-operator
-    helm.sh/chart: logging-operator-5.2.0
+    helm.sh/chart: logging-operator-6.0.3
     app.kubernetes.io/instance: logging-operator
-    app.kubernetes.io/version: "5.2.0"
+    app.kubernetes.io/version: "6.0.3"
     app.kubernetes.io/managed-by: Helm
 ---
 # Source: logging-operator/templates/clusterrole.yaml
@@ -167,6 +167,7 @@ rules:
 - apiGroups:
   - logging.banzaicloud.io
   resources:
+  - axosyslogs
   - clusterflows
   - clusteroutputs
   - flows
@@ -174,7 +175,6 @@ rules:
   - fluentdconfigs
   - loggingroutes
   - loggings
-  - nodeagents
   - outputs
   - syslogngclusterflows
   - syslogngclusteroutputs
@@ -192,6 +192,7 @@ rules:
 - apiGroups:
   - logging.banzaicloud.io
   resources:
+  - axosyslogs/status
   - clusterflows/status
   - clusteroutputs/status
   - flows/status
@@ -199,7 +200,6 @@ rules:
   - fluentdconfigs/status
   - loggingroutes/status
   - loggings/status
-  - nodeagents/status
   - outputs/status
   - syslogngclusterflows/status
   - syslogngclusteroutputs/status
@@ -256,6 +256,22 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - telemetry.kube-logging.dev
+  resources:
+  - bridges
+  - collectors
+  - outputs
+  - subscriptions
+  - tenants
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 ---
 # Source: logging-operator/templates/userrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -302,9 +318,9 @@ metadata:
   name: logging-operator
   labels:
     app.kubernetes.io/name: logging-operator
-    helm.sh/chart: logging-operator-5.2.0
+    helm.sh/chart: logging-operator-6.0.3
     app.kubernetes.io/instance: logging-operator
-    app.kubernetes.io/version: "5.2.0"
+    app.kubernetes.io/version: "6.0.3"
     app.kubernetes.io/managed-by: Helm
 subjects:
   - kind: ServiceAccount
@@ -323,9 +339,9 @@ metadata:
   namespace: logging
   labels:
     app.kubernetes.io/name: logging-operator
-    helm.sh/chart: logging-operator-5.2.0
+    helm.sh/chart: logging-operator-6.0.3
     app.kubernetes.io/instance: logging-operator
-    app.kubernetes.io/version: "5.2.0"
+    app.kubernetes.io/version: "6.0.3"
     app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
@@ -347,9 +363,9 @@ metadata:
   namespace: logging
   labels:
     app.kubernetes.io/name: logging-operator
-    helm.sh/chart: logging-operator-5.2.0
+    helm.sh/chart: logging-operator-6.0.3
     app.kubernetes.io/instance: logging-operator
-    app.kubernetes.io/version: "5.2.0"
+    app.kubernetes.io/version: "6.0.3"
     app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
@@ -365,7 +381,7 @@ spec:
     spec:
       containers:
         - name: logging-operator
-          image: "registry.sighup.io/fury/banzaicloud/logging-operator:5.2.0"
+          image: "registry.sighup.io/fury/banzaicloud/logging-operator:6.0.3"
           args:
             - -enable-leader-election=true
           imagePullPolicy: IfNotPresent
@@ -389,17 +405,17 @@ metadata:
   namespace: logging
   labels:
     app.kubernetes.io/name: logging-operator
-    helm.sh/chart: logging-operator-5.2.0
+    helm.sh/chart: logging-operator-6.0.3
     app.kubernetes.io/instance: logging-operator
-    app.kubernetes.io/version: "5.2.0"
+    app.kubernetes.io/version: "6.0.3"
     app.kubernetes.io/managed-by: Helm
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: logging-operator
-      helm.sh/chart: logging-operator-5.2.0
+      helm.sh/chart: logging-operator-6.0.3
       app.kubernetes.io/instance: logging-operator
-      app.kubernetes.io/version: "5.2.0"
+      app.kubernetes.io/version: "6.0.3"
       app.kubernetes.io/managed-by: Helm
   endpoints:
   - port: http
