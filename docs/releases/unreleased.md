@@ -2,7 +2,7 @@
 
 Welcome to the latest release of the `logging` module of [`SIGHUP Distribution`](https://github.com/sighupio/distribution) maintained by team SIGHUP by ReeVo.
 
-This release delivers enhanced logging capabilities with improved performance, expanded Kubernetes compatibility, and better resource management. The update brings significant improvements to log collection and processing while maintaining backward compatibility for most configurations.
+This release delivers enhanced logging capabilities with improved performance, Kubernetes 1.33 compatibility, and better resource management. The update brings significant improvements to log collection and processing while maintaining backward compatibility for most configurations.
 
 
 ## Component Images 🚢
