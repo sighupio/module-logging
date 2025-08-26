@@ -44,8 +44,6 @@ Fixed a critical bug [[#189](https://github.com/sighupio/module-logging/pull/189
 ## Breaking Changes 💔
 
 - **NodeAgent CRD Removal**: The NodeAgent CRD has been deprecated and removed in logging-operator v6.0.x. All NodeAgent functionality has been replaced by HostTailer resources which provide enhanced capabilities for system log collection.
-- **HostTailer Configuration Updates**: All HostTailer configurations now require Fluent Bit 4.0.3 or later. Existing HostTailer configurations will need to be updated to use the new image versions.
-- **Kubernetes Version Support**: Minimum supported Kubernetes version remains 1.22.0 as per logging-operator v6.0.3 requirements.
 
 ## Update Guide 🦮
 
