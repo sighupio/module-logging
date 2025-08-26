@@ -7,7 +7,7 @@ It also deploys a MinIO instance for storing all the logs rejected from the conf
 
 ## Requirements
 
-- Kubernetes >= `1.24.0`
+- Kubernetes >= `1.22.0`
 - Kustomize >= `v5.6.0`
 - [logging-operator][logging-operator]
 - [prometheus-operator][prometheus-operator]
@@ -15,7 +15,9 @@ It also deploys a MinIO instance for storing all the logs rejected from the conf
 
 ## Image repository and tag
 
-- Logging operator: `ghcr.io/kube-logging/logging-operator:4.10.0`
+- Fluentd: `ghcr.io/kube-logging/logging-operator/fluentd:6.0.3-full`
+- Fluent Bit: `ghcr.io/fluent/fluent-bit:4.0.3`
+- Config Reloader: `ghcr.io/kube-logging/logging-operator/config-reloader:6.0.3`
 
 ## Configuration
 

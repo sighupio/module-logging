@@ -10,12 +10,12 @@ and a Fluentd StatefulSet that receive logs from Fluent-bit and send them to var
 
 ## Requirements
 
-- Kubernetes >= `1.24.0`
+- Kubernetes >= `1.22.0`
 - Kustomize >= `v3.5.3`
 
 ## Image repository and tag
 
-- Logging operator: `ghcr.io/kube-logging/logging-operator:4.10.0`
+- Logging operator: `ghcr.io/kube-logging/logging-operator:6.0.3`
 - Logging operator repo: [Logging operator on GitHub][logging-operator-github]
 
 ## Configuration
@@ -38,7 +38,7 @@ for OpenSearch Flow/Clusterflow and Output/ClusterOutput configuration and [loki
 
 <!-- Links -->
 
-[logging-operator-github]: https://github.com/banzaicloud/logging-operator
+[logging-operator-github]: https://github.com/kube-logging/logging-operator
 
 <!-- </SD-DOCS> -->
 
