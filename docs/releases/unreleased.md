@@ -17,10 +17,6 @@ This release delivers enhanced logging capabilities with improved performance, K
 
 ## New Features 🎉
 
-### Kubernetes 1.33 Support
-
-This release adds support for Kubernetes 1.33.x, expanding the compatibility matrix to support Kubernetes versions 1.22 through 1.33.
-
 ### Logging Operator and Logging Operated
 
 Updated logging-operator from v5.2.0 to v6.0.3 with enhanced Kubernetes 1.33 compatibility and improved performance. The stack now includes:
