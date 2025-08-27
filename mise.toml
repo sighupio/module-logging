@@ -1,0 +1,94 @@
+# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+[tools]
+kind = "0.29.0"    
+kubectl = "1.33.4" 
+kustomize = "5.6.0"
+helm = "3.15.0"    
+yq = "4.43.1"      
+go = "1.23"        
+bats = "1.11.0"    
+dyff = "1.9.0"    
+drone = "1.9.0"
+"ubi:google/addlicense" = "v1.1.1"     
+
+# Development task definitions
+[tasks.add-license]
+description = "Add license headers to all files"
+run = '''
+echo "📄 Adding license headers..."
+addlicense -c "SIGHUP s.r.l" -y "2017-present" -v -l bsd .
+echo "✅ License headers added!"
+'''
+
+[tasks.validate-manifests]
+description = "Validate all manifests can be built"
+run = '''
+echo "🔍 Validating manifest builds..."
+kustomize build katalog/opensearch-single > /dev/null && echo "  ✅ opensearch-single"
+kustomize build katalog/opensearch-triple > /dev/null && echo "  ✅ opensearch-triple"
+kustomize build katalog/opensearch-dashboards > /dev/null && echo "  ✅ opensearch-dashboards"
+kustomize build katalog/logging-operator > /dev/null && echo "  ✅ logging-operator"
+kustomize build katalog/logging-operated > /dev/null && echo "  ✅ logging-operated"
+kustomize build katalog/configs > /dev/null && echo "  ✅ configs"
+kustomize build katalog/loki-configs > /dev/null && echo "  ✅ loki-configs"
+kustomize build katalog/loki-distributed > /dev/null && echo "  ✅ loki-distributed"
+kustomize build katalog/minio-ha > /dev/null && echo "  ✅ minio-ha"
+echo "✅ All manifests validated!"
+'''
+
+[tasks.setup]
+description = "Complete development environment setup"
+run = '''
+echo "🚀 Setting up development environment..."
+mise run add-license
+mise run validate-manifests
+echo "✅ Development environment ready!"
+'''
+
+[tasks.e2e]
+description = "Run complete E2E test suite with Kind cluster (K8s 1.33)"
+run = '''
+#!/bin/bash
+set -e
+
+echo "🚀 Starting E2E Test Suite for Module Logging"
+echo "============================================="
+
+# Configuration
+KUBE_VERSION="1.33.0"
+export DRONE_BUILD_NUMBER="${DRONE_BUILD_NUMBER:-9999}"
+export DRONE_REPO_NAME="${DRONE_REPO_NAME:-module-logging}"
+CLUSTER_NAME="${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${KUBE_VERSION}"
+KUBECONFIG_PATH="$(pwd)/kubeconfig-e2e"
+
+# Cleanup function
+cleanup() {
+  echo "🧹 Cleaning up..."
+  kind delete cluster --name "${CLUSTER_NAME}" 2>/dev/null || true
+  rm -f "${KUBECONFIG_PATH}"
+}
+
+# Trap to ensure cleanup on exit (success or failure)
+trap cleanup EXIT
+
+echo "📦 Step 1: Creating Kind cluster (K8s ${KUBE_VERSION})..."
+kind create cluster --name "${CLUSTER_NAME}" --config "./katalog/tests/kind/config.yml"
+
+echo "📋 Step 2: Setting up kubeconfig..."
+kind get kubeconfig --name "${CLUSTER_NAME}" > "${KUBECONFIG_PATH}"
+export KUBECONFIG="${KUBECONFIG_PATH}"
+
+echo "⏳ Step 3: Waiting for cluster to be ready..."
+until kubectl get serviceaccount default > /dev/null 2>&1; do 
+  echo "   Waiting for control-plane..." 
+  sleep 2
+done
+
+echo "🧪 Step 4: Running BATS E2E tests..."
+bats -t ./katalog/tests/tests.sh
+
+echo "✅ E2E tests completed successfully!"
+'''

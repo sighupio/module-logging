@@ -7,7 +7,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.17.2
+    controller-gen.kubebuilder.io/version: v0.18.0
   name: syslogngclusteroutputs.logging.banzaicloud.io
 spec:
   group: logging.banzaicloud.io
@@ -74,7 +74,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -358,7 +358,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -626,7 +626,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -675,7 +675,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -937,7 +937,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -954,6 +954,11 @@ spec:
                     type: integer
                   host:
                     type: string
+                  ip-protocol:
+                    enum:
+                    - 4
+                    - 6
+                    type: integer
                   persist_name:
                     type: string
                   port:
@@ -1207,7 +1212,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -1448,7 +1453,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -1468,6 +1473,8 @@ spec:
                   retries:
                     type: integer
                   template:
+                    type: string
+                  tenant-id:
                     type: string
                   time_reopen:
                     type: integer
@@ -1515,7 +1522,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -1633,7 +1640,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -2039,7 +2046,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -2126,7 +2133,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -2201,6 +2208,8 @@ spec:
                     type: boolean
                   compresslevel:
                     type: integer
+                  content_type:
+                    type: string
                   disk_buffer:
                     properties:
                       compaction:
@@ -2216,7 +2225,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -2227,6 +2236,8 @@ spec:
                     type: object
                   flush_grace_period:
                     type: integer
+                  kms_key:
+                    type: string
                   log-fifo-size:
                     type: integer
                   max_object_size:
@@ -2243,6 +2254,8 @@ spec:
                     type: string
                   retries:
                     type: integer
+                  role:
+                    type: string
                   secret_key:
                     properties:
                       mountFrom:
@@ -2280,6 +2293,8 @@ spec:
                             x-kubernetes-map-type: atomic
                         type: object
                     type: object
+                  server_side_encryption:
+                    type: string
                   storage_class:
                     type: string
                   template:
@@ -2330,7 +2345,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -2694,7 +2709,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -2934,7 +2949,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -3137,7 +3152,7 @@ spec:
                       mem_buf_size:
                         format: int64
                         type: integer
-                      q_out_size:
+                      qout_size:
                         format: int64
                         type: integer
                       reliable:
@@ -3154,6 +3169,11 @@ spec:
                     type: integer
                   host:
                     type: string
+                  ip-protocol:
+                    enum:
+                    - 4
+                    - 6
+                    type: integer
                   persist_name:
                     type: string
                   port:

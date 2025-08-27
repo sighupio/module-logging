@@ -57,8 +57,7 @@ set -o pipefail
 @test "check opensearch-single" {
   info
   test(){
-    data=$(kubectl get sts -n logging -l app.kubernetes.io/name=opensearch -o json | jq '.items[] | select(.metadata.name == "opensearch-cluster-master" and .status.replicas == .status.readyReplicas)')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_sts_ready "opensearch-cluster-master" "logging"
   }
   loop_it test 60 5
   status=${loop_it_result}
@@ -68,8 +67,7 @@ set -o pipefail
 @test "check fluentbit" {
   info
   test(){
-    data=$(kubectl get ds -n logging -l app.kubernetes.io/name=fluentbit -o json | jq '.items[] | select(.metadata.name == "infra-fluentbit" and .status.desiredNumberScheduled == .status.numberReady)')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_ds_ready "infra-fluentbit" "logging"
   }
   loop_it test 60 5
   status=${loop_it_result}
@@ -79,8 +77,7 @@ set -o pipefail
 @test "check fluentd" {
   info
   test(){
-    data=$(kubectl get sts -n logging -l app.kubernetes.io/name=fluentd -o json | jq '.items[] | select(.metadata.name == "infra-fluentd" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_sts_ready "infra-fluentd" "logging"
   }
   loop_it test 60 5
   status=${loop_it_result}
@@ -90,8 +87,7 @@ set -o pipefail
 @test "check opensearch-dashboards" {
   info
   test(){
-    data=$(kubectl get deploy -n logging -l app.kubernetes.io/name=opensearch-dashboards -o json | jq '.items[] | select(.metadata.name == "opensearch-dashboards" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_deploy_ready "opensearch-dashboards" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}
@@ -139,8 +135,7 @@ set -o pipefail
 @test "check loki-distributed ingester" {
   info
   test(){
-    data=$(kubectl get sts -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-ingester" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_sts_ready "loki-distributed-ingester" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}
@@ -150,8 +145,7 @@ set -o pipefail
 @test "check loki-distributed querier" {
   info
   test(){
-    data=$(kubectl get deploy -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-querier" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_deploy_ready "loki-distributed-querier" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}
@@ -161,8 +155,7 @@ set -o pipefail
 @test "check loki-distributed query-scheduler" {
   info
   test(){
-    data=$(kubectl get deploy -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-query-scheduler" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_deploy_ready "loki-distributed-query-scheduler" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}
@@ -172,8 +165,7 @@ set -o pipefail
 @test "check loki-distributed index-gateway" {
   info
   test(){
-    data=$(kubectl get sts -n logging -l app.kubernetes.io/instance=loki-distributed -o json | jq '.items[] | select(.metadata.name == "loki-distributed-index-gateway" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_sts_ready "loki-distributed-index-gateway" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}
@@ -183,8 +175,7 @@ set -o pipefail
 @test "check minio-ha" {
   info
   test(){
-    data=$(kubectl get sts -n logging -l app=minio -o json | jq '.items[] | select(.metadata.name == "minio-logging" and .status.replicas == .status.readyReplicas )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_sts_ready "minio-logging" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}
@@ -194,8 +185,7 @@ set -o pipefail
 @test "check minio setup job" {
   info
   test(){
-    data=$(kubectl get job -n logging -l app=minio-logging-buckets-setup -o json | jq '.items[] | select(.metadata.name == "minio-logging-buckets-setup" and .status.succeeded == 1 )')
-    if [ "${data}" == "" ]; then return 1; fi
+    check_job_ready "minio-logging-buckets-setup" "logging"
   }
   loop_it test 400 6
   status=${loop_it_result}

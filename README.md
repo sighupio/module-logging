@@ -44,7 +44,7 @@ The following packages are included in the Logging module:
 | [opensearch-single](katalog/opensearch-single)         | `v2.19.1`                      | Single node opensearch deployment. Not intended for production use.                  |
 | [opensearch-triple](katalog/opensearch-triple)         | `v2.19.1`                      | Three node high-availability opensearch deployment                                   |
 | [opensearch-dashboards](katalog/opensearch-dashboards) | `v2.19.1`                      | Analytics and visualization platform for Opensearch                                  |
-| [logging-operator](katalog/logging-operator)           | `v5.2.0`                       | Banzai logging operator, manages fluentbit/fluentd and their configurations          |
+| [logging-operator](katalog/logging-operator)           | `v6.0.3`                       | Banzai logging operator, manages fluentbit/fluentd and their configurations          |
 | [logging-operated](katalog/logging-operated)           | `-`                            | fluentd and fluentbit deployment using logging operator                              |
 | [configs](katalog/configs)                             | `-`                            | Logging pipeline configs to gather various types of logs and send them to OpenSearch |
 | [loki-configs](katalog/loki-configs)                   | `-`                            | Logging pipeline configs to gather various types of logs and send them to Loki       |
@@ -61,6 +61,7 @@ Click on each package to see its full documentation.
 | `1.30.x`           | :white_check_mark: | No known issues |
 | `1.31.x`           | :white_check_mark: | No known issues |
 | `1.32.x`           | :white_check_mark: | No known issues |
+| `1.33.x`           | :white_check_mark: | No known issues |
 
 Check the [compatibility matrix][compatibility-matrix] for additional information about previous releases of the modules.
 

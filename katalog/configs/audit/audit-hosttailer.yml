@@ -15,7 +15,7 @@ spec:
       buffer_max_size: "256k"
       skip_long_lines: "On"
       containerOverrides:
-        image: registry.sighup.io/fury/fluent/fluent-bit:3.1.8
+        image: registry.sighup.io/fury/fluent/fluent-bit:4.0.3
   workloadMetaOverrides: {}      
   workloadOverrides:
     affinity:

@@ -9,8 +9,8 @@ To maintain the Logging Operator package, you should follow these steps.
 3. Run the following commands:
 
   ```bash
-  VERSION=5.2.0 # update this to the latest chart version
-  IMAGE_TAG="5.2.0" # update this to the latest fury/banzaicloud/logging-operator image tag
+  VERSION=6.0.3 # update this to the latest chart version
+  IMAGE_TAG="6.0.3" # update this to the latest fury/banzaicloud/logging-operator image tag
   helm pull oci://ghcr.io/kube-logging/helm-charts/logging-operator --version $VERSION --untar --untardir /tmp # this command will download the chart in /tmp/logging-operator
   helm template logging-operator /tmp/logging-operator/ --values MAINTENANCE.values.yaml --api-versions "monitoring.coreos.com/v1" --set "image.tag"="$IMAGE_TAG" -n logging > logging-operator-built.yaml
   cp /tmp/logging-operator/crds/* ./crds
