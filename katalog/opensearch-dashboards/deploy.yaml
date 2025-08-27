@@ -11,7 +11,6 @@ metadata:
   labels:
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
-
 ---
 # Source: opensearch-dashboards/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -49,8 +48,8 @@ spec:
     protocol: TCP
     port: 9601
   selector:
-    app: opensearch-dashboards
-    release: "opensearch-dashboards"
+    app.kubernetes.io/name: opensearch-dashboards
+    app.kubernetes.io/instance: opensearch-dashboards
 ---
 # Source: opensearch-dashboards/templates/deployment.yaml
 apiVersion: apps/v1
@@ -66,13 +65,13 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: opensearch-dashboards
-      release: "opensearch-dashboards"
+      app.kubernetes.io/name: opensearch-dashboards
+      app.kubernetes.io/instance: opensearch-dashboards
   template:
     metadata:
       labels:
-        app: opensearch-dashboards
-        release: "opensearch-dashboards"
+        app.kubernetes.io/name: opensearch-dashboards
+        app.kubernetes.io/instance: opensearch-dashboards
     spec:
       securityContext:
         {}
@@ -92,8 +91,14 @@ spec:
             - ALL
           runAsNonRoot: true
           runAsUser: 1000
-        image: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards:2.19.1"
+        image: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards:3.2.0"
         imagePullPolicy: "IfNotPresent"
+        command:
+          - /bin/bash
+          - -c
+          - |
+            /usr/share/opensearch-dashboards/bin/opensearch-dashboards-plugin remove securityDashboards
+            ./opensearch-dashboards-docker-entrypoint.sh opensearch-dashboards
         readinessProbe:
           failureThreshold: 10
           initialDelaySeconds: 10
@@ -118,13 +123,6 @@ spec:
           tcpSocket:
             port: 5601
           timeoutSeconds: 5
-        command:
-          - sh
-          - -c
-          - |
-            /usr/share/opensearch-dashboards/bin/opensearch-dashboards-plugin remove securityDashboards
-            ./opensearch-dashboards-docker-entrypoint.sh opensearch-dashboards
-        args: []
         env:
         - name: OPENSEARCH_HOSTS
           value: "http://opensearch-cluster-master:9200"
@@ -159,13 +157,10 @@ metadata:
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
 spec:
-  namespaceSelector:
-    matchNames:
-    - logging
   selector:
     matchLabels:
-      name: opensearch-dashboards
-      instance: opensearch-dashboards
+      app.kubernetes.io/name: opensearch-dashboards
+      app.kubernetes.io/instance: opensearch-dashboards
   endpoints:
   - port: metrics
     interval: 10s

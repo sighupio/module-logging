@@ -9,8 +9,8 @@ This release delivers enhanced logging capabilities with improved performance, K
 
 | Component               | Supported Version                                                                                  | Previous Version               |
 | ----------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `opensearch`            | [`v2.19.1`](https://github.com/opensearch-project/OpenSearch/releases/tag/2.19.1)                  | `No Update`                    |
-| `opensearch-dashboards` | [`v2.19.1`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/2.19.1)       | `No Update`                    |
+| `opensearch`            | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch/releases/tag/3.2.0)                    | `v2.19.1`                      |
+| `opensearch-dashboards` | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/3.2.0)         | `v2.19.1`                      |
 | `logging-operator`      | [`v6.0.3`](https://github.com/kube-logging/logging-operator/releases/tag/6.0.3)                    | `v5.2.0`                       |
 | `loki-distributed`      | [`v3.4.2`](https://github.com/grafana/loki/releases/tag/v3.4.2)                                    | `No Update`                    |
 | `minio-ha`              | [`RELEASE.2025-02-28T09-55-16Z`](https://github.com/minio/minio/tree/RELEASE.2025-02-28T09-55-16Z) | `No Update`                    |
@@ -27,6 +27,11 @@ Updated logging-operator from v5.2.0 to v6.0.3 with enhanced Kubernetes 1.33 com
 - Increased fluentd's default resource requests (1 CPU, 700 Mi Memory) and limits (2 CPU, 1.5 Gi Memory) based on production usage statistics
 - Increased fluentbit's default requests (CPU: 100m, Memory: 100M) for better resource allocation
 - Enhanced flush performance with increased flush thread counts on all output plugins
+
+### OpenSearch Components
+
+Major version upgrade from v2.19.1 to v3.2.0 delivers significant improvements for log storage and search capabilities.
+
 
 ### Loki Components
 
