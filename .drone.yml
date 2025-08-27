@@ -16,7 +16,7 @@ steps:
       - addlicense -c "SIGHUP s.r.l" -v -l bsd --check .
 
 ---
-name: policeman
+name: linting
 kind: pipeline
 type: docker
 depends_on:
@@ -112,7 +112,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - policeman
+  - linting
 clone:
   depth: 1
 trigger:
@@ -214,7 +214,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - policeman
+  - linting
 clone:
   depth: 1
 trigger:
@@ -316,7 +316,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - policeman
+  - linting
 clone:
   depth: 1
 trigger:
@@ -418,7 +418,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - policeman
+  - linting
 clone:
   depth: 1
 trigger:
@@ -520,7 +520,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - policeman
+  - linting
 clone:
   depth: 1
 trigger:
