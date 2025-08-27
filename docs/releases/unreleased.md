@@ -7,13 +7,13 @@ This release delivers enhanced logging capabilities with improved performance, K
 
 ## Component Images 🚢
 
-| Component               | Supported Version                                                                                  | Previous Version               |
-| ----------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `opensearch`            | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch/releases/tag/3.2.0)                    | `v2.19.1`                      |
-| `opensearch-dashboards` | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/3.2.0)         | `v2.19.1`                      |
-| `logging-operator`      | [`v6.0.3`](https://github.com/kube-logging/logging-operator/releases/tag/6.0.3)                    | `v5.2.0`                       |
-| `loki-distributed`      | [`v3.4.2`](https://github.com/grafana/loki/releases/tag/v3.4.2)                                    | `No Update`                    |
-| `minio-ha`              | [`RELEASE.2025-02-28T09-55-16Z`](https://github.com/minio/minio/tree/RELEASE.2025-02-28T09-55-16Z) | `No Update`                    |
+| Component               | Supported Version                                                                                  | Previous Version |
+| ----------------------- | -------------------------------------------------------------------------------------------------- | ---------------- |
+| `opensearch`            | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch/releases/tag/3.2.0)                    | `v2.19.1`        |
+| `opensearch-dashboards` | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/3.2.0)         | `v2.19.1`        |
+| `logging-operator`      | [`v6.0.3`](https://github.com/kube-logging/logging-operator/releases/tag/6.0.3)                    | `v5.2.0`         |
+| `loki-distributed`      | [`v3.5.3`](https://github.com/grafana/loki/releases/tag/v3.5.3)                                    | `v3.4.2`         |
+| `minio-ha`              | [`RELEASE.2025-02-28T09-55-16Z`](https://github.com/minio/minio/tree/RELEASE.2025-02-28T09-55-16Z) | `No Update`      |
 
 ## New Features 🎉
 
@@ -32,11 +32,9 @@ Updated logging-operator from v5.2.0 to v6.0.3 with enhanced Kubernetes 1.33 com
 
 Major version upgrade from v2.19.1 to v3.2.0 delivers significant improvements for log storage and search capabilities.
 
-
 ### Loki Components
 
-Loki Distributed maintains compatibility at v3.4.2 with configuration improvements:
-- Increased flush thread counts on all output plugins to improve network flush performance
+Updated Loki Distributed from v3.4.2 to v3.5.3 with improved performance and tested against Kubernetes 1.33.
 
 ### MinIO HA
 

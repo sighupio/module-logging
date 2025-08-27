@@ -24,8 +24,10 @@ It does not index the contents of the logs, but rather a set of labels for each 
 
 ## Image repository and tag
 
-- Loki image: `grafana/loki`
+- Loki image: `grafana/loki:3.5.3`
+- nginx gateway: `nginxinc/nginx-unprivileged:1.29-alpine`
 - Loki repo: [Loki on Github][loki-gh]
+- Loki documentation: [Loki at grafana.com][loki-docs]
 
 ## Configuration
 
@@ -57,6 +59,8 @@ kustomize build | kubectl apply -f -
 This project also implements a dynamic Loki datasource that our Grafana from the monitoring stack automatically fetches and configures.
 To see the logs, navigate in Grafana to the [explore section][grafana-explore-doc].
 
+The nginx gateway includes enhanced Grafana integration with X-Query-Tags support for improved dashboard observability and query tracking.
+
 > Note: These instructions are only for installing Loki as a log storage solution.
 > For complete instructions, please refer to the main README of the Logging module.
 
@@ -66,6 +70,7 @@ To see the logs, navigate in Grafana to the [explore section][grafana-explore-do
 [grafana]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/grafana
 [grafana-explore-doc]: https://grafana.com/docs/grafana/latest/explore/
 [loki-gh]: https://github.com/grafana/loki
+[loki-docs]: https://grafana.com/docs/loki/latest/
 
 <!-- </SD-DOCS> -->
 
