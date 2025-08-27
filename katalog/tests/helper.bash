@@ -69,3 +69,11 @@ check_deploy_ready() {
   ready_replicas=$(kubectl get deploy "$name" -n "$namespace" -o jsonpath='{.status.readyReplicas}' 2>/dev/null || echo "0")
   [ "$replicas" -eq "$ready_replicas" ] && [ "$replicas" -gt 0 ]
 }
+
+check_job_ready() {
+  local name=$1
+  local namespace=$2
+  local succeeded
+  succeeded=$(kubectl get job "$name" -n "$namespace" -o jsonpath='{.status.succeeded}' 2>/dev/null || echo "0")
+  [ "$succeeded" -eq 1 ]
+}
