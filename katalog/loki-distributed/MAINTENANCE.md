@@ -14,7 +14,7 @@ Then you can template the chart using the following commands (change the chart v
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
-helm template loki-distributed grafana/loki --version 6.28.0 --values MAINTENANCE.values.yaml -n logging > loki-built.yaml
+helm template loki-distributed grafana/loki --version 6.37.0 --values MAINTENANCE.values.yaml -n logging > loki-built.yaml
 ```
 
 With the `loki-built.yaml` file, check differences with the current `deploy.yml` file and change accordingly.
