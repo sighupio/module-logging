@@ -40,9 +40,6 @@ spec:
   - name: transport
     protocol: TCP
     port: 9300
-  - name: metrics
-    protocol: TCP
-    port: 9108
 ---
 # Source: opensearch/templates/service.yaml
 kind: Service
@@ -76,7 +73,7 @@ metadata:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
   annotations:
-    majorVersion: "2"
+    majorVersion: "3"
 spec:
   serviceName: opensearch-cluster-master-headless
   selector:
@@ -176,7 +173,7 @@ spec:
           runAsGroup: 1000
           runAsNonRoot: true
           runAsUser: 1000
-        image: "registry.sighup.io/fury/opensearchproject/opensearch:2.19.1"
+        image: "registry.sighup.io/fury/opensearchproject/opensearch:3.2.0"
         imagePullPolicy: "IfNotPresent"
         readinessProbe:
           failureThreshold: 3
