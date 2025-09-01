@@ -41,9 +41,9 @@ The following packages are included in the Logging module:
 
 | Package                                                | Version                        | Description                                                                          |
 | ------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------------------ |
-| [opensearch-single](katalog/opensearch-single)         | `v2.19.1`                      | Single node opensearch deployment. Not intended for production use.                  |
-| [opensearch-triple](katalog/opensearch-triple)         | `v2.19.1`                      | Three node high-availability opensearch deployment                                   |
-| [opensearch-dashboards](katalog/opensearch-dashboards) | `v2.19.1`                      | Analytics and visualization platform for Opensearch                                  |
+| [opensearch-single](katalog/opensearch-single)         | `v3.2.0`                       | Single node opensearch deployment. Not intended for production use.                  |
+| [opensearch-triple](katalog/opensearch-triple)         | `v3.2.0`                       | Three node high-availability opensearch deployment                                   |
+| [opensearch-dashboards](katalog/opensearch-dashboards) | `v3.2.0`                       | Analytics and visualization platform for Opensearch                                  |
 | [logging-operator](katalog/logging-operator)           | `v6.0.3`                       | Banzai logging operator, manages fluentbit/fluentd and their configurations          |
 | [logging-operated](katalog/logging-operated)           | `-`                            | fluentd and fluentbit deployment using logging operator                              |
 | [configs](katalog/configs)                             | `-`                            | Logging pipeline configs to gather various types of logs and send them to OpenSearch |

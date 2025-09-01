@@ -27,7 +27,7 @@ extraEnvs:
 image:
   repository: "registry.sighup.io/fury/opensearchproject/opensearch"
   # override image tag, which is .Chart.AppVersion by default
-  tag: ""
+  tag: "3.2.0"
   pullPolicy: "IfNotPresent"
 
 opensearchJavaOpts: "-Xms2G -Xmx2G"

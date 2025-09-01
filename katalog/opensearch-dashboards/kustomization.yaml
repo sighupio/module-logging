@@ -5,22 +5,17 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: logging
-
 resources:
   - deploy.yaml
   - index-patterns-cronjob.yml
-
 images:
   - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
-    newTag: "2.19.1"
-
+    newTag: "3.2.0"
 secretGenerator:
   - name: opensearch-dashboards
     files:
       - configs/opensearch_dashboards.yml
-
 configMapGenerator:
   - name: opensearch-index-patterns
     files:
