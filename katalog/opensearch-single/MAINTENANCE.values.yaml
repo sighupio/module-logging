@@ -119,7 +119,6 @@ enableServiceLinks: true
 protocol: http
 httpPort: 9200
 transportPort: 9300
-metricsPort: 9108
 httpHostPort: ""
 transportHostPort: ""
 

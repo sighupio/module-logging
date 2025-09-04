@@ -16,10 +16,10 @@ resources:
 images:
   - name: docker.io/grafana/loki
     newName: registry.sighup.io/fury/grafana/loki
-    newTag: 3.4.2
+    newTag: 3.5.3
   - name: docker.io/nginxinc/nginx-unprivileged
     newName: registry.sighup.io/fury/nginxinc/nginx-unprivileged
-    newTag: 1.27.3-alpine
+    newTag: 1.29-alpine
 
 secretGenerator:
   - name: loki
