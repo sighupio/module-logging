@@ -9,7 +9,7 @@
 </h1>
 <!-- markdownlint-enable MD033 MD045 -->
 
-![Release](https://img.shields.io/badge/Latest%20Release-v5.1.0-blue)
+![Release](https://img.shields.io/badge/Latest%20Release-v5.2.0-blue)
 ![License](https://img.shields.io/github/license/sighupio/module-logging?label=License)
 ![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)
 
@@ -87,17 +87,17 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
     ```yaml
     bases:
       - name: logging/opensearch-single
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/opensearch-dashboards
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/logging-operator
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/logging-operated
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: minio/minio-ha
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/configs
-        version: "v5.1.0"
+        version: "v5.2.0"
     ```
 
     > See `furyctl` [documentation][furyctl-repo] for additional details about `Furyfile.yml` format.
@@ -134,17 +134,17 @@ kustomize build . | kubectl apply --server-side -f -
     ```yaml
     bases:
       - name: logging/loki-distributed
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/logging-operator
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/logging-operated
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: minio/minio-ha
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/configs
-        version: "v5.1.0"
+        version: "v5.2.0"
       - name: logging/loki-configs
-        version: "v5.1.0"
+        version: "v5.2.0"
     ```
 
     > See `furyctl` [documentation][furyctl-repo] for additional details about `Furyfile.yml` format.
