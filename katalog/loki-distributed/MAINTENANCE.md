@@ -29,4 +29,9 @@ The following has been modified manually on top of what's generated from the cha
 - The components follow the `loki-distributed` naming to maintain compatibility with existing resources.
 - The `loki-memberlist` Service has been renamed to `loki-distributed-memberlist` to maintain compatibility.
 
+## Loki mixins
+
+We added one dashboard from the official [Loki mixins](https://github.com/grafana/loki/tree/main/production/loki-mixin-compiled),
+you can find further instructions on how to update it inside the [dashboards folder](./dashboards/).
+
 [github-releases]: https://github.com/grafana/helm-charts/releases?q=loki-distributed&expanded=true

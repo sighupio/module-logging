@@ -12,6 +12,7 @@ resources:
   - datasource
   - deploy.yaml
   - service-monitor.yaml
+  - dashboards
 
 images:
   - name: docker.io/grafana/loki
