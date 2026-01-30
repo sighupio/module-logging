@@ -19,6 +19,7 @@ Configurations available:
 - [configs/kubernetes](configs/kubernetes): only the cluster wide pods logging configuration (infrastructural namespaced excluded).
 - [configs/infra](configs/infra): only the infrastructural namespaces logs
 - [configs/ingress-nginx](configs/ingress-nginx): only the nginx-ingress-controller logging configuration.
+- [configs/ingress-haproxy](configs/ingress-haproxy): only the haproxy-ingress-controller logging configuration.
 - [configs/audit](configs/audit): all the Kubernetes audit logs related configurations (with master selector and tolerations).
 - [configs/events](configs/events): all the Kubernetes events related configurations (with master selector and tolerations).
 - [configs/systemd](configs/systemd): all the systemd related configurations.

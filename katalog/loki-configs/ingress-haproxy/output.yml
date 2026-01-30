@@ -6,14 +6,14 @@
 apiVersion: logging.banzaicloud.io/v1beta1
 kind: Output
 metadata:
-  name: ingress-nginx
+  name: ingress-haproxy
 spec:
   loki:
     url: http://loki-stack:3100
     extract_kubernetes_labels: true
     configure_kubernetes_labels: true
     extra_labels:
-      flow: ingress-nginx
+      flow: ingress-haproxy
     # dynamic labels from parsed fields
     labels:
       method: $.method
