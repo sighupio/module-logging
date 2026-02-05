@@ -21,7 +21,7 @@ spec:
           patterns:
             # this is the nginx access log format from the ingress controller
             - format: regexp
-              expression: '/^(?<remote_addr>[^ ]*) - (?<remote_user>[^ ]+) \[(?<time_local>[^\]]*)\] "(?<method>\S+)(?: +(?<path>[^\"]*) +\S*)?" (?<status>\d+) (?<body_bytes_sent>\d+) "(?<http_referer>[^ ]*)" "(?<http_user_agent>[^\"]*)" (?<request_length>\d+) (?<request_time>[\d.]+) \[(?<proxy_upstream_name>[^\]]*)\] \[(?<proxy_alternative_upstream_name>[^\]]*)\] (?<upstream_addr>[^ ,]*(?:,\s[^ ,]*)*) (?<upstream_response_length>(?:\d+|-)(?:,\s(?:\d+|-))*) (?<upstream_response_time>(?:[\d.]+|-)(?:,\s(?:[\d.]+|-))*) (?<upstream_status>(?:\d+|-)(?:,\s(?:\d+|-))*) (?<req_id>[[:alnum:]]*)/'
+              expression: '/^(?<remote_addr>[^ ]*) - (?<remote_user>[^ ]+) \[(?<time_local>[^\]]*)\] "(?<hostname>[^\"]*)" "(?<method>\S+)(?: +(?<path>[^\"]*) +\S*)?" (?<status>\d+) (?<body_bytes_sent>\d+) "(?<http_referer>[^\"]*)" "(?<http_user_agent>[^\"]*)" (?<request_length>\d+) (?<request_time>[\d.]+) \[(?<proxy_upstream_name>[^\]]*)\] \[(?<proxy_alternative_upstream_name>[^\]]*)\] (?<upstream_addr>[^ ,]*(?:,\s[^ ,]*)*) (?<upstream_response_length>(?:\d+|-)(?:,\s(?:\d+|-))*) (?<upstream_response_time>(?:[\d.]+|-)(?:,\s(?:[\d.]+|-))*) (?<upstream_status>(?:\d+|-)(?:,\s(?:\d+|-))*) (?<req_id>[[:alnum:]]*)/'
               time_format: "%Y-%m-%dT%H:%M:%S.%L%z"
               types: 'request_length:integer,request_time:float,status:integer,body_bytes_sent:integer,upstream_response_length:string,upstream_response_time:string,upstream_status:string'
             # this handles nginx error log
@@ -35,6 +35,11 @@ spec:
     # we use this filter to remove the message field, setting reserve_data to true has the side effect that it keeps the original (message) field unstransformed too.
     - record_transformer:
         remove_keys: message
+    # add status_class and status_code for label indexing in Loki (status must be string for labels)
+    - record_modifier:
+        records:
+          - status_class: ${record["status"].to_s[0]}xx
+          - status_code: ${record["status"].to_s}
   match:
     - select:
         labels:

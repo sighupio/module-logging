@@ -1,0 +1,8 @@
+{
+  "index_patterns" : ["ingress-haproxy-*"],
+  "settings": {
+    "number_of_shards": 1,
+    "auto_expand_replicas": "0-1",
+    "codec": "best_compression"
+  }
+}

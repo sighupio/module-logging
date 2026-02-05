@@ -1,0 +1,48 @@
+# Copyright (c) 2026 SIGHUP s.r.l All rights reserved.
+# Use of this source code is governed by a BSD-style
+# license that can be found in the LICENSE file.
+
+---
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Flow
+metadata:
+  name: ingress-haproxy
+spec:
+  filters:
+    - dedot:
+        de_dot_separator: "_"
+        de_dot_nested: true
+    - parser:
+        key_name: message
+        # we need to set this to true to keep the kubernetes metadata, otherwise it gets droped
+        reserve_data: true
+        parse:
+          type: multi_format
+          patterns:
+            # this is the haproxy access log format from the ingress controller
+            - format: regexp
+              expression: '/^(?<client_ip>[^ ]*) - - \[(?<time_local>[^\]]*)\] "(?<hostname>[^\"]*)" "(?<method>\S+) (?<path>[^ ]*) (?<http_version>[^\"]*)" (?<status>\d+) (?<body_bytes_sent>\d+) "(?<http_referer>[^\"]*)" "(?<http_user_agent>[^\"]*)" (?<unique_id>\d+) (?<request_time>\d+) \[(?<backend_name>[^\]]*)\] \[\] (?<server_addr>[^ ]*) (?<bytes_read>\d+) (?<response_time>\d+) (?<upstream_status>\d+) (?<request_id>.*)$/'
+              time_format: "%d/%b/%Y:%H:%M:%S %z"
+              types: 'status:integer,body_bytes_sent:integer,unique_id:integer,request_time:integer,bytes_read:integer,response_time:integer,upstream_status:integer'
+            # this handles haproxy info/warning logs
+            - format: regexp
+              expression: '/^(?<logtime>\d{4}\/\d{1,2}\/\d{1,2} \d{1,2}:\d{1,2}:\d{1,2}) (?<log_level>\S+)\s+(?<message>.*)$/'
+              types: 'logtime:string,log_level:string,message:string'
+            # catch all haproxy logs
+            - format: regexp
+              expression: '/^(?<generic>.*)$/'
+              types: 'generic:string'
+    # we use this filter to remove the message field, setting reserve_data to true has the side effect that it keeps the original (message) field unstransformed too.
+    - record_transformer:
+        remove_keys: message
+    # add status_class and status_code for label indexing in Loki (status must be string for labels)
+    - record_modifier:
+        records:
+          - status_class: ${record["status"].to_s[0]}xx
+          - status_code: ${record["status"].to_s}
+  match:
+    - select:
+        labels:
+          k8s-app: haproxy-ingress
+  localOutputRefs:
+    - ingress-haproxy
