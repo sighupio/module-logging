@@ -4,3 +4,4 @@
 {"type":"index-pattern","id":"events","attributes":{"title":"events-*","timeFieldName":"@timestamp"}}
 {"type":"index-pattern","id":"audit","attributes":{"title":"audit-*","timeFieldName":"@timestamp"}}
 {"type":"index-pattern","id":"ingress-controller","attributes":{"title":"ingress-controller-*","timeFieldName":"@timestamp"}}
+{"type":"index-pattern","id":"ingress-haproxy","attributes":{"title":"ingress-haproxy-*","timeFieldName":"@timestamp"}}
