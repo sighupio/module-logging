@@ -85,6 +85,7 @@ loki:
   limits_config:
     allow_structured_metadata: true
     volume_enabled: true
+    discover_log_levels: true
 ######################################################################################################################
 #
 # Chart Testing
