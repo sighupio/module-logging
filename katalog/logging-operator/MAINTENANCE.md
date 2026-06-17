@@ -4,7 +4,7 @@ To maintain the Logging Operator package, you should follow these steps.
 
 1. Take note of the latest chart version from [`logging-operator` chart](https://github.com/kube-logging/logging-operator/releases).
 2. Take note also of the latest pushed version of the [`fury/banzaicloud/logging-operator`](https://registry.sighup.io/harbor/projects/37/repositories/banzaicloud%2Flogging-operator/artifacts-tab`) image in our Harbor registry
-    - If necessary, add a newer version on our [fury-distribution-container-image-sync](https://github.com/sighupio/fury-distribution-container-image-sync/blob/main/modules/logging/images.yml#L156) git repo
+    - If necessary, add a newer version on our [container-image-sync](https://github.com/sighupio/container-image-sync/blob/main/modules/logging/images.yml) git repo
 
 3. Run the following commands:
 
