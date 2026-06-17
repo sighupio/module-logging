@@ -38,6 +38,7 @@ spec:
     scaling:
       replicas: 2
     metrics:
+      enabled: true
       serviceMonitor: true
       prometheusRules: true
     resources:
@@ -72,6 +73,7 @@ spec:
     - operator: Exists
       effect: NoSchedule
   metrics:
+    enabled: true
     serviceMonitor: true
     prometheusRules: true
   resources:

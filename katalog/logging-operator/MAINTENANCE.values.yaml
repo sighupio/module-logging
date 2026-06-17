@@ -9,7 +9,6 @@
 replicaCount: 1
 image:
   repository: registry.sighup.io/fury/banzaicloud/logging-operator
-  tag: ""
   pullPolicy: IfNotPresent
 
 env: []
