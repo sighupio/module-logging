@@ -11,7 +11,7 @@ This is a major release that adds HAProxy ingress controller logging support and
 | `opensearch`            | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch/releases/tag/3.2.0)                    | `No Update`      |
 | `opensearch-dashboards` | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/3.2.0)         | `No Update`      |
 | `logging-operator`      | [`v6.5.1`](https://github.com/kube-logging/logging-operator/releases/tag/6.5.1)                    | `6.0.3`          |
-| `loki-distributed`      | [`v3.5.3`](https://github.com/grafana/loki/releases/tag/v3.5.3)                                    | `No Update`      |
+| `loki-distributed`      | [`v3.7.2`](https://github.com/grafana/loki/releases/tag/v3.7.2)                                    | `v3.5.3`         |
 | `minio-ha`              | [`RELEASE.2025-09-07T16-13-09Z`](https://github.com/minio/minio/tree/RELEASE.2025-09-07T16-13-09Z) | `No Update`      |
 
 ## New Features 🎉
@@ -32,6 +32,10 @@ Enhanced ingress-nginx flow configuration to extract additional fields:
 - `status_class`: HTTP status class (2xx, 3xx, 4xx, 5xx)
 
 For Loki backend, these fields are now indexed as labels for improved query performance.
+
+### Loki Distributed Upgrade to v3.7.2
+
+Loki upgraded from v3.5.3 to v3.7.2. This upgrade adds an `access-log-exporter` sidecar to the gateway for NGINX metrics.
 
 ## Breaking Changes 💔
 
