@@ -2,8 +2,11 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+nameOverride: "loki-distributed"
+
 global:
-# -- Common additional CLI arguments for all jobs (that is, -log.level debug, -config.expand-env=true or -log-config-reverse-order)
+  imageRegistry: registry.sighup.io/fury
+  # -- Common additional CLI arguments for all jobs (that is, -log.level debug, -config.expand-env=true or -log-config-reverse-order)
   # scope: admin-api, backend, bloom-builder, bloom-gateway, bloom-planner, compactor, distributor, index-gateway, ingester, overrides-exporter, pattern-ingester, querier, query-frontend, query-scheduler, read, ruler, write.
   extraArgs:
     - -config.expand-env=true
@@ -15,7 +18,7 @@ global:
   #       name: mysecret
   extraEnvFrom:
     - secretRef:
-        name: minio-credentials
+        name: minio-credentials-loki
 
 # -- Deployment mode lets you specify how to deploy Loki.
 # There are 3 options:
@@ -36,13 +39,13 @@ deploymentMode: Distributed
 # -- Configuration for running Loki
 # @default -- See values.yaml
 loki:
+  auth_enabled: false
+  configStorageType: Secret
+  commonConfig:
+    replication_factor: 1
   storage:
-    # Loki requires a bucket for chunks and the ruler. GEL requires a third bucket for the admin API.
-    # Please provide these values if you are using object storage.
     bucketNames:
       chunks: loki
-    #  ruler: ruler
-    #  admin: admin
     type: s3
     s3:
       endpoint: http://minio-logging.logging.svc.cluster.local:9000
@@ -51,13 +54,9 @@ loki:
       s3ForcePathStyle: true
       insecure: true
     object_store:
-      # Type of object store. Valid options are: s3, gcs, azure
       type: s3
-      # S3 configuration (when type is "s3")
       s3:
-        # S3 endpoint URL
         endpoint: http://minio:minio123@minio-logging.logging.svc.cluster.local:9000
-        # Optional. Enable if using self-signed TLS
         insecure: true
   schemaConfig:
     configs:
@@ -76,16 +75,56 @@ loki:
         schema: v13
         store: tsdb
   ingester:
+     chunk_block_size: 262144
+     chunk_idle_period: 30m
+     chunk_retain_period: 1m
      chunk_encoding: snappy
+     lifecycler:
+       ring:
+         kvstore:
+           store: memberlist
+         replication_factor: 1
   querier:
-    # Default is 4, if you have enough memory and CPU you can increase, reduce if OOMing
     max_concurrent: 4
   pattern_ingester:
     enabled: true
+  distributor:
+    ring:
+      kvstore:
+        store: memberlist
+  frontend:
+    compress_responses: true
+    log_queries_longer_than: 5s
+  query_range:
+    cache_results: true
+    results_cache:
+      cache:
+        embedded_cache:
+          enabled: true
+          ttl: 24h
+  compactor:
+    working_directory: /var/loki/compactor
+    retention_enabled: true
+    retention_delete_delay: 2h
+    retention_delete_worker_count: 150
+    delete_request_store: s3
   limits_config:
     allow_structured_metadata: true
     discover_log_levels: true
+    retention_period: 720h
+    max_label_names_per_series: 30
     volume_enabled: true
+  storage_config:
+    boltdb_shipper:
+      active_index_directory: /var/loki/index
+      cache_location: /var/loki/cache
+      cache_ttl: 24h
+      resync_interval: 5s
+    tsdb_shipper:
+      active_index_directory: /var/loki/index
+      cache_location: /var/loki/cache
+      cache_ttl: 24h
+      resync_interval: 5s
 ######################################################################################################################
 #
 # Chart Testing
@@ -204,13 +243,6 @@ ingester:
   persistence:
     # -- Enable creating PVCs which is required when using boltdb-shipper
     enabled: false
-    # -- Use emptyDir with ramdisk for storage. **Please note that all data in ingester will be lost on pod restart**
-    inMemory: false
-    # -- List of the ingester PVCs
-    # @notationType -- list
-    claims:
-      - name: data
-        size: 10Gi
   # -- Enabling zone awareness on ingesters will create 3 statefulests where all writes will send a replica to each zone.
   # This is primarily intended to accelerate rollout operations by allowing for multiple ingesters within a single
   # zone to be shutdown and restart simultaneously (the remaining 2 zones will be guaranteed to have at least one copy
@@ -272,18 +304,8 @@ querier:
 
   persistence:
     # -- Enable creating PVCs for the querier cache
-    enabled: true
-    # -- Size of persistent disk
-    size: 10Gi
-    # -- Storage class to be used.
-    # If defined, storageClassName: <storageClass>.
-    # If set to "-", storageClassName: "", which disables dynamic provisioning.
-    # If empty or set to null, no storageClassName spec is
-    # set, choosing the default provisioner (gp2 on AWS, standard on GKE, AWS, and OpenStack).
-    storageClass: null
-    # -- Annotations for querier PVCs
-    annotations: {}
-  # -- Adds the appProtocol field to the querier service. This allows querier to work with istio protocol selection.
+    enabled: false
+
 # -- Configuration for the query-frontend
 queryFrontend:
   # -- Number of replicas for the query-frontend
@@ -337,17 +359,14 @@ ruler:
   # -- Number of replicas for the ruler
   replicas: 0
 
-resultsCache:
-  # -- Specifies whether memcached based results-cache should be enabled
+memcached:
   enabled: false
-  # -- Amount of memory allocated to results-cache for object storage (in MB).
-  allocatedMemory: 1024
+
+resultsCache:
+  enabled: false
 
 chunksCache:
-  # -- Specifies whether memcached based chunks-cache should be enabled
   enabled: false
-  # -- Amount of memory allocated to chunks-cache for object storage (in MB).
-  allocatedMemory: 2048
 
 backend:
    replicas: 0
@@ -358,3 +377,7 @@ write:
 
 singleBinary:
    replicas: 0
+
+monitoring:
+  serviceMonitor:
+    enabled: true
