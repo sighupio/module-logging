@@ -3,7 +3,7 @@
 <!-- <SD-DOCS> -->
 
 Loki is a horizontally scalable, highly available, multi-tenant log aggregation system inspired by Prometheus.
-It is designed to be very cost effective and easy to operate.
+It is designed to be very cost-effective and easy to operate.
 It does not index the contents of the logs, but rather a set of labels for each log stream.
 
 > [!NOTE]
@@ -24,8 +24,8 @@ It does not index the contents of the logs, but rather a set of labels for each 
 
 ## Image repository and tag
 
-- Loki image: `grafana/loki:3.5.3`
-- nginx gateway: `nginxinc/nginx-unprivileged:1.29-alpine`
+- Loki image: `grafana/loki:3.7.2`
+- nginx gateway: `nginxinc/nginx-unprivileged:1.31-alpine`
 - Loki repo: [Loki on Github][loki-gh]
 - Loki documentation: [Loki at grafana.com][loki-docs]
 
