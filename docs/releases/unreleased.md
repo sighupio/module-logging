@@ -1,4 +1,4 @@
-# Logging Core Module Release v6.0.0
+# Logging Core Module Release v5.4.0
 
 Welcome to the latest release of the `logging` module of [`SIGHUP Distribution`](https://github.com/sighupio/distribution) maintained by team SIGHUP by ReeVo.
 
