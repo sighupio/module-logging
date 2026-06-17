@@ -7,10 +7,10 @@ This is a major release that adds HAProxy ingress controller logging support and
 ## Component Images 🚢
 
 | Component               | Supported Version                                                                                  | Previous Version |
-| ----------------------- | -------------------------------------------------------------------------------------------------- | ---------------- |
+| ----------------------- |----------------------------------------------------------------------------------------------------|------------------|
 | `opensearch`            | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch/releases/tag/3.2.0)                    | `No Update`      |
 | `opensearch-dashboards` | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/3.2.0)         | `No Update`      |
-| `logging-operator`      | [`v6.0.3`](https://github.com/kube-logging/logging-operator/releases/tag/6.0.3)                    | `No Update`      |
+| `logging-operator`      | [`v6.5.1`](https://github.com/kube-logging/logging-operator/releases/tag/6.5.1)                    | `6.0.3`          |
 | `loki-distributed`      | [`v3.5.3`](https://github.com/grafana/loki/releases/tag/v3.5.3)                                    | `No Update`      |
 | `minio-ha`              | [`RELEASE.2025-09-07T16-13-09Z`](https://github.com/minio/minio/tree/RELEASE.2025-09-07T16-13-09Z) | `No Update`      |
 
