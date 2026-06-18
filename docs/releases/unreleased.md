@@ -12,7 +12,7 @@ This is a major release that adds HAProxy ingress controller logging support and
 | `opensearch-dashboards` | [`v3.2.0`](https://github.com/opensearch-project/OpenSearch-Dashboards/releases/tag/3.2.0)         | `No Update`      |
 | `logging-operator`      | [`v6.5.1`](https://github.com/kube-logging/logging-operator/releases/tag/6.5.1)                    | `6.0.3`          |
 | `loki-distributed`      | [`v3.7.2`](https://github.com/grafana/loki/releases/tag/v3.7.2)                                    | `v3.5.3`         |
-| `minio-ha`              | [`RELEASE.2025-09-07T16-13-09Z`](https://github.com/minio/minio/tree/RELEASE.2025-09-07T16-13-09Z) | `No Update`      |
+| `minio-ha`              | [`RELEASE.2026-05-20T23-44-52Z`](https://github.com/chainguard-forks/minio/tree/RELEASE.2026-05-20T23-44-52Z) | `RELEASE.2025-09-07T16-13-09Z` |
 
 ## New Features 🎉
 
@@ -36,6 +36,10 @@ For Loki backend, these fields are now indexed as labels for improved query perf
 ### Loki Distributed Upgrade to v3.7.2
 
 Loki upgraded from v3.5.3 to v3.7.2. This upgrade adds an `access-log-exporter` sidecar to the gateway for NGINX metrics.
+
+### MinIO Chainguard Fork
+
+The `minio-ha` image is now built from the [Chainguard fork](https://github.com/chainguard-forks/minio) of MinIO.
 
 ## Breaking Changes 💔
 

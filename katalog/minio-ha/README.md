@@ -17,7 +17,7 @@ In order to achieve high availability (HA) for MinIO, a cluster of multiple MinI
 
 ## Image repository and tag
 
-* MinIO image: `minio/minio`
+* MinIO image: `minio/minio` (Chainguard fork)
 * MinIO repo: [MinIO on GitHub][minio-gh]
 
 ## Configuration
@@ -39,7 +39,7 @@ kustomize build | kubectl apply -f -
 <!-- Links -->
 
 [prometheus-operator]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/prometheus-operator
-[minio-gh]: https://github.com/minio/minio
+[minio-gh]: https://github.com/chainguard-forks/minio
 
 <!-- </SD-DOCS> -->
 
