@@ -100,6 +100,9 @@ spec:
       labels:
         app: minio
         release: minio-logging
+      annotations:
+        checksum/secrets: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
+        checksum/config: 23f56eac9814f0fef566bd80bff0495dc90ffd414b289b3ede9543e01332276e
     spec:
       securityContext:
         fsGroup: 1000
@@ -109,13 +112,9 @@ spec:
       serviceAccountName: minio-sa
       containers:
         - name: minio
-          image: registry.sighup.io/fury/minio:RELEASE.2025-09-07T16-13-09Z
+          image: registry.sighup.io/fury/minio:RELEASE.2026-05-20T23-44-52Z-chainguard
           imagePullPolicy: IfNotPresent
-          command: [
-            "/bin/sh",
-            "-ce",
-            "/usr/bin/docker-entrypoint.sh minio server http://minio-logging-{0...2}.minio-logging-svc.logging.svc/export-{0...1} -S /etc/minio/certs/ --address :9000 --console-address :9001"
-          ]
+          command: ["/bin/sh", "-ce", "/usr/bin/docker-entrypoint.sh minio server http://minio-logging-{0...2}.minio-logging-svc.logging.svc/export-{0...1} -S /etc/minio/certs/ --address :9000 --console-address :9001"]
           volumeMounts:
             - name: export-0
               mountPath: /export-0
@@ -148,26 +147,26 @@ spec:
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: release
-                  operator: In
-                  values:
-                  - minio-logging
-              topologyKey: kubernetes.io/hostname
-            weight: 100
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: release
+                      operator: In
+                      values:
+                        - minio-logging
+                topologyKey: kubernetes.io/hostname
+              weight: 100
       volumes:
         - name: minio-user
           secret:
-            secretName: minio-logging        
+            secretName: minio-logging
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
       metadata:
         name: export-0
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 10Gi
@@ -176,7 +175,7 @@ spec:
       metadata:
         name: export-1
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes: ["ReadWriteOnce"]
         resources:
           requests:
             storage: 10Gi
@@ -200,7 +199,7 @@ spec:
   targets:
     staticConfig:
       static:
-      - minio-logging.logging
+        - minio-logging.logging
 ---
 # Source: minio/templates/servicemonitor.yaml
 apiVersion: monitoring.coreos.com/v1
