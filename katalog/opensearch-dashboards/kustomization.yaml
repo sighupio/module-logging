@@ -2,21 +2,20 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: logging
 resources:
-  - deploy.yaml
-  - index-patterns-cronjob.yml
+- deploy.yaml
+- index-patterns-cronjob.yml
 images:
-  - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
-    newTag: "3.2.0"
+- name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+  newTag: 3.7.0
 secretGenerator:
-  - name: opensearch-dashboards
-    files:
-      - configs/opensearch_dashboards.yml
+- files:
+  - configs/opensearch_dashboards.yml
+  name: opensearch-dashboards
 configMapGenerator:
-  - name: opensearch-index-patterns
-    files:
-      - configs/index-patterns.ndjson
+- files:
+  - configs/index-patterns.ndjson
+  name: opensearch-index-patterns

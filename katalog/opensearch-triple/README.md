@@ -6,7 +6,7 @@ OpenSearch is an open-source distributed search and analytics engine used for
 log analytics. This package deploys a three-node OpenSearch cluster on
 Kubernetes.
 
-`opensearch-triple` is a high availability setup of OpenSearch, that sets
+`opensearch-triple` is a high-availability setup of OpenSearch, that sets
 up a 3-node cluster of `OpenSearch` for a robust and reliable setup.
 
 ## Requirements
@@ -37,7 +37,7 @@ OpenSearch Triple is deployed with the following configuration:
 - Requires `30Gi` storage
 - Each OpenSearch node is running in a different Kubernetes node
 - Prometheus exporter to expose OpenSearch metrics
-- Metrics are scraped by Prometheus every `30s`
+- Prometheus scrapes metrics every `30s`
 
 ## Deployment
 
