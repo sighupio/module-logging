@@ -3,9 +3,9 @@
 The upgrade is handled automatically by `upgrade.sh`. First, find the latest chart version:
 
 ```bash
-helm repo add opensearch https://opensearch-project.github.io/helm-charts/
+helm repo add opensearch https://opensearch-project.github.io/helm-charts
 helm repo update
-helm search repo opensearch-dashboard -o json
+helm search repo opensearch-dashboard
 ```
 
 Then run:
