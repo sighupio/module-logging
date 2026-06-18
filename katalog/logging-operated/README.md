@@ -15,9 +15,9 @@ It also deploys a MinIO instance for storing all the logs rejected from the conf
 
 ## Image repository and tag
 
-- Fluentd: `ghcr.io/kube-logging/logging-operator/fluentd:6.0.3-full`
-- Fluent Bit: `ghcr.io/fluent/fluent-bit:4.0.3`
-- Config Reloader: `ghcr.io/kube-logging/logging-operator/config-reloader:6.0.3`
+- Fluentd: `ghcr.io/kube-logging/logging-operator/fluentd:6.5.1-full`
+- Fluent Bit: `ghcr.io/fluent/fluent-bit:5.0.5`
+- Config Reloader: `ghcr.io/kube-logging/logging-operator/config-reloader:6.5.1`
 
 ## Configuration
 
