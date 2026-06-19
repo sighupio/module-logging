@@ -1,19 +1,19 @@
 # OpenSearch - maintenance
 
 
-The upgrade is handled automatically by `upgrade.sh`. First, find the latest chart version:
+The upgrade is handled automatically by the `upgrade` task. First, find the available chart versions:
 
 ```bash
-helm repo add opensearch https://opensearch-project.github.io/helm-charts
-helm repo update
-helm search repo opensearch/opensearch
+mise run chart-versions
 ```
 
 Then run:
 
 ```bash
-OPENSEARCH_CHART_VERSION=3.7.0 ./upgrade.sh
+mise run upgrade 3.7.0
 ```
+
+**NOTE:** the chart version here MUST be kept in sync with [`opensearch-dashboards`](../opensearch-dashboards/MAINTENANCE.md).
 
 The provided values will deploy a custom `fsgroups` initContainer, because the one provided with vanilla values
 does not change the `fs.file-max` value with `sysctl`.
@@ -30,6 +30,6 @@ Then, Kustomize will automate the following changes:
 The upstream chart exposes a `metrics` port (`9600`) for OpenSearch's performance analyzer.
 We disable the performance analyzer and use an `elasticsearch-exporter` sidecar instead.
 
-`upgrade.sh` adds a `prom-metrics` port (`9108`) to both services so the ServiceMonitor (`sm.yml`) scrapes the exporter sidecar.
+The `upgrade` task adds a `prom-metrics` port (`9108`) to both services so the ServiceMonitor (`sm.yml`) scrapes the exporter sidecar.
 
 [opensearch-helm-charts]: https://github.com/opensearch-project/helm-charts/releases

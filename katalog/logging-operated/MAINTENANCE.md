@@ -6,6 +6,8 @@ Container Images for Fluentd and Fluent-bit compatibility with logging-operator 
 
 Replace all images used in [`fluentd-fluentbit.yml`] with the ones you found in the above link.
 
+**NOTE:** these image versions MUST be kept in sync with the chart version used in [`logging-operator`](../logging-operator/MAINTENANCE.md).
+
 ## Version 6.5.1 Compatible Images
 
 For logging-operator v6.5.1, use the following compatible versions:

@@ -1,0 +1,30 @@
+[tasks.chart-versions]
+description = "Show all Helm chart versions from opensearch/opensearch-dashboard"
+run = '''
+helm repo add opensearch https://opensearch-project.github.io/helm-charts --force-update
+helm repo update
+helm search repo opensearch/opensearch-dashboard --versions | head -11
+'''
+
+[tasks.upgrade]
+description = "Upgrade the component with the specified chart version"
+usage = '''
+arg "<chart_version>" help="Chart version to use for the upgrade"
+'''
+run = '''
+echo "Updating chart with version ${usage_chart_version}"
+
+helm template opensearch-dashboards opensearch/opensearch-dashboards \
+  --version ${usage_chart_version} \
+  --values MAINTENANCE.values.yaml \
+  -n logging > deploy.yaml
+echo "Generated template in deploy.yaml"
+
+OPENSEARCH_APP_VERSION=$(helm show chart opensearch/opensearch-dashboards --version ${usage_chart_version} | yq '.appVersion')
+echo "Found app version ${OPENSEARCH_APP_VERSION}"
+
+kustomize edit set image registry.sighup.io/fury/opensearchproject/opensearch-dashboards:${OPENSEARCH_APP_VERSION}
+echo "Patched kustomization.yaml with OpenSearch Dashboards version ${OPENSEARCH_APP_VERSION}"
+
+mise run //:add-license
+'''

@@ -1,18 +1,21 @@
-#!/bin/bash
-# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
-# Use of this source code is governed by a BSD-style
-# license that can be found in the LICENSE file.
+[tasks.chart-versions]
+description = "Show all Helm chart versions from grafana-community/loki"
+run = '''
+helm repo add grafana-community https://grafana-community.github.io/helm-charts
+helm repo update
+helm search repo grafana-community/loki --versions | head -11
+'''
 
-set -euo pipefail
-
-if [ -z "${LOKI_CHART_VERSION:-}" ]; then
-  echo "Usage: LOKI_CHART_VERSION=17.4.4 ./upgrade.sh"
-  exit 1
-fi
-echo "Using chart version ${LOKI_CHART_VERSION}"
+[tasks.upgrade]
+description = "Upgrade the component with the specified chart version"
+usage = '''
+arg "<chart_version>" help="Chart version to use for the upgrade"
+'''
+run = '''
+echo "Updating chart with version ${usage_chart_version}"
 
 helm template loki-distributed grafana-community/loki \
-  --version "${LOKI_CHART_VERSION}" \
+  --version "${usage_chart_version}" \
   --values MAINTENANCE.values.yaml \
   --api-versions "monitoring.coreos.com/v1/ServiceMonitor" \
   -n logging > deploy.yaml
@@ -30,10 +33,11 @@ echo "Removed loki Secret and gateway ConfigMap from deploy.yaml"
 yq -i '(. | select(.kind == "Service" and .metadata.name == "loki-distributed-gateway").metadata.name) = "loki-stack"' deploy.yaml
 echo "Renamed gateway Service to loki-stack"
 
-LOKI_APP_VERSION=$(helm show chart grafana-community/loki --version ${LOKI_CHART_VERSION} | yq '.appVersion')
+LOKI_APP_VERSION=$(helm show chart grafana-community/loki --version ${usage_chart_version} | yq '.appVersion')
 echo "Found app version ${LOKI_APP_VERSION}"
 
-(cd dashboards && VERSION="v${LOKI_APP_VERSION}" mise run download_mixins)
+mise run //katalog/loki-distributed/dashboards:download_mixins "v${LOKI_APP_VERSION}"
 echo "Downloaded Loki mixins dashboard"
 
-mise run add-license
+mise run //:add-license
+'''
