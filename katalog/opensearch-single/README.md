@@ -19,8 +19,8 @@ Kubernetes.
 
 ## Image repository and tag
 
-- OpenSearch image: `opensearchproject/opensearch:3.2.0`
-- OpenSearch repo: [OpenSearch on Github][opensearch-gh]
+- OpenSearch image: `opensearchproject/opensearch:3.7.0`
+- OpenSearch repo: [OpenSearch on GitHub][opensearch-gh]
 - OpenSearch documentation: [OpenSearch Homepage][opensearch-doc]
 
 ## Configuration
@@ -32,7 +32,7 @@ Fury distribution OpenSearch Single is deployed with the following configuration
 - Resource limits are `2000m` for CPU and `4G` for memory
 - Requires `30Gi` storage
 - Prometheus exporter to expose OpenSearch metrics
-- Metrics are scraped by Prometheus every `30s`
+- Prometheus scrapes metrics every `30s`
 
 ## Deployment
 
@@ -48,7 +48,7 @@ kustomize build | kubectl apply -f -
 Since we are configuring a `ServiceMonitor` in this package, the following Prometheus [alerts][opensearch-rules] are already defined:
 
 | Alert                          | Description                                                          | Severity | Interval |
-| ------------------------------ | -------------------------------------------------------------------- | -------- | :------: |
+|--------------------------------|----------------------------------------------------------------------|----------|:--------:|
 | OpenSearchClusterRed           | This alert fires when the health of the opensearch cluster is RED    | critical |   30m    |
 | OpenSearchYellow               | This alert fires when the health of the opensearch cluster is YELLOW | warning  |   30m    |
 | OpenSearchOfRelocationShards   | This alert fires when there are relocating shards for 30 minutes     | warning  |   30m    |

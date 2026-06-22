@@ -12,7 +12,7 @@ metadata:
 spec:
   endpoints:
   - interval: 30s
-    port: metrics
+    port: prom-metrics
   jobLabel: k8s-app
   namespaceSelector:
     matchNames:

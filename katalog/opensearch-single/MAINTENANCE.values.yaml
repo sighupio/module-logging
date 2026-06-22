@@ -16,6 +16,8 @@ roles:
   - data
   - remote_cluster_client
 replicas: 1
+global:
+  dockerRegistry: registry.sighup.io/fury/
 opensearchHome: /usr/share/opensearch
 config: null
 extraEnvs:
@@ -25,9 +27,6 @@ extraEnvs:
     value: "true"
 
 image:
-  repository: "registry.sighup.io/fury/opensearchproject/opensearch"
-  # override image tag, which is .Chart.AppVersion by default
-  tag: "3.2.0"
   pullPolicy: "IfNotPresent"
 
 opensearchJavaOpts: "-Xms2G -Xmx2G"
@@ -61,7 +60,7 @@ extraVolumeMounts:
 
 extraContainers:
   - name: exporter
-    image: "quay.io/prometheuscommunity/elasticsearch-exporter"
+    image: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter
     args:
       - '--es.uri=http://localhost:9200'
       - '--collector.clustersettings'
@@ -70,7 +69,7 @@ extraContainers:
       - '--web.listen-address=:9108'
     ports:
       - containerPort: 9108
-        name: metrics
+        name: prom-metrics
     resources:
       limits:
         cpu: 200m
@@ -81,7 +80,7 @@ extraContainers:
 
 extraInitContainers:
   - name: fsgroup-volume
-    image: alpine
+    image: registry.sighup.io/fury/alpine
     command: ['sh', '-c']
     args:
       - |

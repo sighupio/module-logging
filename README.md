@@ -26,12 +26,12 @@ If you are new to SD please refer to the [official documentation][kfd-docs] on h
 The central piece of the stack is the open source search engine [opensearch][opensearch-page], combined
 with its analytics and visualization platform [opensearch-dashboards][opensearch-dashboards-page].
 The logs are collected using a node-level data collection and enrichment agent [fluentbit][fluentbit-page],
-pushing it to the OpenSearch via [fluentd][fluentd-page]. The fluentbit and fluentd stack is managed by Banzai Logging Operator.
+pushing it to the OpenSearch via [fluentd][fluentd-page]. The fluentbit and fluentd stack are managed by Banzai Logging Operator.
 We are also providing an alternative to OpenSearch: [loki][loki-page].
 
 All the components are deployed in the `logging` namespace in the cluster.
 
-High level diagram of the stack:
+High-level diagram of the stack:
 
 ![logging module](docs/images/diagram.png "Logging Module")
 
@@ -41,8 +41,8 @@ The following packages are included in the Logging module:
 
 | Package                                                | Version                        | Description                                                                          |
 |--------------------------------------------------------|--------------------------------|--------------------------------------------------------------------------------------|
-| [opensearch-single](katalog/opensearch-single)         | `v3.2.0`                       | Single node opensearch deployment. Not intended for production use.                  |
-| [opensearch-triple](katalog/opensearch-triple)         | `v3.2.0`                       | Three node high-availability opensearch deployment                                   |
+| [opensearch-single](katalog/opensearch-single)         | `v3.7.0`                       | Single node opensearch deployment. Not intended for production use.                  |
+| [opensearch-triple](katalog/opensearch-triple)         | `v3.7.0`                       | Three node high-availability opensearch deployment                                   |
 | [opensearch-dashboards](katalog/opensearch-dashboards) | `v3.7.0`                       | Analytics and visualization platform for Opensearch                                  |
 | [logging-operator](katalog/logging-operator)           | `v6.5.1`                       | Banzai logging operator, manages fluentbit/fluentd and their configurations          |
 | [logging-operated](katalog/logging-operated)           | `-`                            | fluentd and fluentbit deployment using logging operator                              |
@@ -109,21 +109,21 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
 
 4. Define a `kustomization.yaml` that includes the `./vendor/katalog/logging` directory as resource.
 
-```yaml
-resources:
-- ./vendor/katalog/logging/opensearch-single
-- ./vendor/katalog/logging/opensearch-dashboards
-- ./vendor/katalog/logging/logging-operator
-- ./vendor/katalog/logging/logging-operated
-- ./vendor/katalog/logging/minio-ha
-- ./vendor/katalog/logging/configs
-``
+   ```yaml
+   resources:
+   - ./vendor/katalog/logging/opensearch-single
+   - ./vendor/katalog/logging/opensearch-dashboards
+   - ./vendor/katalog/logging/logging-operator
+   - ./vendor/katalog/logging/logging-operated
+   - ./vendor/katalog/logging/minio-ha
+   - ./vendor/katalog/logging/configs
+   ```
 
 5. To deploy the packages to your cluster, execute:
 
-```bash
-kustomize build . | kubectl apply --server-side -f -
-```
+   ```bash
+   kustomize build . | kubectl apply --server-side -f -
+   ```
 
 > Note: When installing the packages, you need to ensure that the Prometheus operator is also installed.
 > Otherwise, the API server will reject all ServiceMonitor resources.
@@ -156,29 +156,29 @@ kustomize build . | kubectl apply --server-side -f -
 
 4. Define a `kustomization.yaml` that includes the `./vendor/katalog/logging` directory as resource.
 
-```yaml
-resources:
-- ./vendor/katalog/logging/loki-distributed
-- ./vendor/katalog/logging/logging-operator
-- ./vendor/katalog/logging/logging-operated
-- ./vendor/katalog/logging/minio-ha
-- ./vendor/katalog/logging/loki-configs
-``
+   ```yaml
+   resources:
+   - ./vendor/katalog/logging/loki-distributed
+   - ./vendor/katalog/logging/logging-operator
+   - ./vendor/katalog/logging/logging-operated
+   - ./vendor/katalog/logging/minio-ha
+   - ./vendor/katalog/logging/loki-configs
+   ```
 
 5. To deploy the packages to your cluster, execute:
 
-```bash
-kustomize build . | kubectl apply --server-side -f -
-```
+   ```bash
+   kustomize build . | kubectl apply --server-side -f -
+   ```
 
 > Note: When installing the packages, you need to ensure that the Prometheus operator is also installed.
 > Otherwise, the API server will reject all ServiceMonitor resources.
 
-### Common Customisations
+### Common Customizations
 
 #### Setup a high-availability three-node OpenSearch
 
-Logging module offers an out of the box, highly-available setup for `opensearch` instead of a single node version. To set this up, in the `Furyfile` and `kustomization`, you can replace `opensearch-single` with `opensearch-triple`.
+Logging module offers an out-of-the-box, highly available setup for `opensearch` instead of a single node version. To set this up, in the `Furyfile` and `kustomization`, you can replace `opensearch-single` with `opensearch-triple`.
 
 #### Configure tolerations and node selectors
 
@@ -211,6 +211,6 @@ In case you experience any problems with the module, please [open a new issue](h
 
 ## License
 
-This module is open-source and it's released under the following [LICENSE](LICENSE)
+This module is open-source, and it's released under the following [LICENSE](LICENSE)
 
 <!-- </FOOTER> -->

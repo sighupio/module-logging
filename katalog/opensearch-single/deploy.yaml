@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -9,8 +9,12 @@ kind: PodDisruptionBudget
 metadata:
   name: "opensearch-cluster-master-pdb"
   labels:
+    helm.sh/chart: opensearch-3.7.0
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: opensearch-cluster-master
 spec:
   maxUnavailable: 1
   selector:
@@ -24,22 +28,31 @@ apiVersion: v1
 metadata:
   name: opensearch-cluster-master
   labels:
+    helm.sh/chart: opensearch-3.7.0
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
-  annotations:
-    {}
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: opensearch-cluster-master
+  annotations: {}
 spec:
   type: ClusterIP
   selector:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
   ports:
-  - name: http
-    protocol: TCP
-    port: 9200
-  - name: transport
-    protocol: TCP
-    port: 9300
+    - name: http
+      protocol: TCP
+      port: 9200
+    - name: transport
+      protocol: TCP
+      port: 9300
+    - name: metrics
+      protocol: TCP
+      port: 9600
+    - name: prom-metrics
+      protocol: TCP
+      port: 9108
 ---
 # Source: opensearch/templates/service.yaml
 kind: Service
@@ -47,8 +60,12 @@ apiVersion: v1
 metadata:
   name: opensearch-cluster-master-headless
   labels:
+    helm.sh/chart: opensearch-3.7.0
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: opensearch-cluster-master
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
 spec:
@@ -59,10 +76,15 @@ spec:
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
   ports:
-  - name: http
-    port: 9200
-  - name: transport
-    port: 9300
+    - name: http
+      port: 9200
+    - name: transport
+      port: 9300
+    - name: metrics
+      port: 9600
+    - name: prom-metrics
+      protocol: TCP
+      port: 9108
 ---
 # Source: opensearch/templates/statefulset.yaml
 apiVersion: apps/v1
@@ -70,8 +92,12 @@ kind: StatefulSet
 metadata:
   name: opensearch-cluster-master
   labels:
+    helm.sh/chart: opensearch-3.7.0
     app.kubernetes.io/name: opensearch
     app.kubernetes.io/instance: opensearch
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: opensearch-cluster-master
   annotations:
     majorVersion: "3"
 spec:
@@ -85,20 +111,25 @@ spec:
   updateStrategy:
     type: RollingUpdate
   volumeClaimTemplates:
-  - metadata:
-      name: opensearch-cluster-master
-    spec:
-      accessModes:
-      - "ReadWriteOnce"
-      resources:
-        requests:
-          storage: "30Gi"
+    - metadata:
+        name: opensearch-cluster-master
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "30Gi"
   template:
     metadata:
       name: "opensearch-cluster-master"
       labels:
+        helm.sh/chart: opensearch-3.7.0
         app.kubernetes.io/name: opensearch
         app.kubernetes.io/instance: opensearch
+        app.kubernetes.io/version: "3.7.0"
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: opensearch-cluster-master
+      annotations:
     spec:
       securityContext:
         fsGroup: 1000
@@ -107,147 +138,149 @@ spec:
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 1
-            podAffinityTerm:
-              topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchExpressions:
-                - key: app.kubernetes.io/instance
-                  operator: In
-                  values:
-                  - opensearch
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values:
-                  - opensearch
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/instance
+                      operator: In
+                      values:
+                        - opensearch
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - opensearch
       terminationGracePeriodSeconds: 120
       volumes:
-      # Currently some extra blocks accept strings
-      # to continue with backwards compatibility this is being kept
-      # whilst also allowing for yaml to be specified too.
-      - configMap:
-          name: opensearch-cluster-master-config
-        name: config
-      enableServiceLinks: true
-      initContainers:
-      # Currently some extra blocks accept strings
-      # to continue with backwards compatibility this is being kept
-      # whilst also allowing for yaml to be specified too.
-      - args:
-        - |
-          sysctl -a
-          MAX_MAP_COUNT=$(sysctl -a | grep max_map_count | cut -d " " -f3)
-          if [ "$MAX_MAP_COUNT" -gt "262143" ]; then
-            echo "Nothing to do, vm.max_map_count value is high enough"
-          else
-            echo "Changing vm.max_map_count value to 262144"
-            sysctl -w vm.max_map_count=262144
-            sysctl -p
-          fi
-          FILE_MAX=$(sysctl -a | grep file-max | cut -d " " -f3)
-          if [ "$FILE_MAX" -gt "524287" ]; then
-            echo "Nothing to do, fs.file-max value is high enough"
-          else
-            echo "Changing fs.file-max value to 524288"
-            sysctl -w fs.file-max=524288
-            sysctl -p
-          fi
-          chown -R 1000:1000 /usr/share/opensearch/data
-        command:
-        - sh
-        - -c
-        image: alpine
-        name: fsgroup-volume
-        securityContext:
-          privileged: true
-          runAsUser: 0
-        volumeMounts:
-        - mountPath: /usr/share/opensearch/data
-          name: opensearch-cluster-master
-      containers:
-      - name: "opensearch"
-        securityContext:
-          capabilities:
-            drop:
-            - ALL
-          runAsGroup: 1000
-          runAsNonRoot: true
-          runAsUser: 1000
-        image: "registry.sighup.io/fury/opensearchproject/opensearch:3.2.0"
-        imagePullPolicy: "IfNotPresent"
-        readinessProbe:
-          failureThreshold: 3
-          periodSeconds: 5
-          tcpSocket:
-            port: 9200
-          timeoutSeconds: 3
-        startupProbe:
-          failureThreshold: 30
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          tcpSocket:
-            port: 9200
-          timeoutSeconds: 3
-        ports:
-        - name: http
-          containerPort: 9200
-        - name: transport
-          containerPort: 9300
-        resources:
-          limits:
-            cpu: 2000m
-            memory: 4G
-          requests:
-            cpu: 1500m
-            memory: 3G
-        env:
-        - name: node.name
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: cluster.initial_master_nodes
-          value: "opensearch-cluster-master-0,"
-        - name: discovery.seed_hosts
-          value: "opensearch-cluster-master-headless"
-        - name: cluster.name
-          value: "opensearch-cluster"
-        - name: network.host
-          value: "0.0.0.0"
-        - name: OPENSEARCH_JAVA_OPTS
-          value: "-Xms2G -Xmx2G"
-        - name: node.roles
-          value: "master,ingest,data,remote_cluster_client,"
-        - name: DISABLE_INSTALL_DEMO_CONFIG
-          value: "true"
-        - name: DISABLE_PERFORMANCE_ANALYZER_AGENT_CLI
-          value: "true"
-        volumeMounts:
-        - name: "opensearch-cluster-master"
-          mountPath: /usr/share/opensearch/data
         # Currently some extra blocks accept strings
         # to continue with backwards compatibility this is being kept
         # whilst also allowing for yaml to be specified too.
-        - mountPath: /usr/share/opensearch/config/opensearch.yml
+        - configMap:
+            name: opensearch-cluster-master-config
           name: config
-          subPath: opensearch.yml
-      # Currently some extra blocks accept strings
-      # to continue with backwards compatibility this is being kept
-      # whilst also allowing for yaml to be specified too.
-      - args:
-        - --es.uri=http://localhost:9200
-        - --collector.clustersettings
-        - --es.indices
-        - --collector.snapshots
-        - --web.listen-address=:9108
-        image: quay.io/prometheuscommunity/elasticsearch-exporter
-        name: exporter
-        ports:
-        - containerPort: 9108
-          name: metrics
-        resources:
-          limits:
-            cpu: 200m
-            memory: 400Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
+      enableServiceLinks: true
+      initContainers:
+        # Currently some extra blocks accept strings
+        # to continue with backwards compatibility this is being kept
+        # whilst also allowing for yaml to be specified too.
+        - args:
+            - |
+              sysctl -a
+              MAX_MAP_COUNT=$(sysctl -a | grep max_map_count | cut -d " " -f3)
+              if [ "$MAX_MAP_COUNT" -gt "262143" ]; then
+                echo "Nothing to do, vm.max_map_count value is high enough"
+              else
+                echo "Changing vm.max_map_count value to 262144"
+                sysctl -w vm.max_map_count=262144
+                sysctl -p
+              fi
+              FILE_MAX=$(sysctl -a | grep file-max | cut -d " " -f3)
+              if [ "$FILE_MAX" -gt "524287" ]; then
+                echo "Nothing to do, fs.file-max value is high enough"
+              else
+                echo "Changing fs.file-max value to 524288"
+                sysctl -w fs.file-max=524288
+                sysctl -p
+              fi
+              chown -R 1000:1000 /usr/share/opensearch/data
+          command:
+            - sh
+            - -c
+          image: registry.sighup.io/fury/alpine
+          name: fsgroup-volume
+          securityContext:
+            privileged: true
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /usr/share/opensearch/data
+              name: opensearch-cluster-master
+      containers:
+        - name: "opensearch"
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            runAsGroup: 1000
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: "registry.sighup.io/fury/opensearchproject/opensearch:3.7.0"
+          imagePullPolicy: "IfNotPresent"
+          readinessProbe:
+            failureThreshold: 3
+            periodSeconds: 5
+            tcpSocket:
+              port: 9200
+            timeoutSeconds: 3
+          startupProbe:
+            failureThreshold: 30
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            tcpSocket:
+              port: 9200
+            timeoutSeconds: 3
+          ports:
+            - name: http
+              containerPort: 9200
+            - name: transport
+              containerPort: 9300
+            - name: metrics
+              containerPort: 9600
+          resources:
+            limits:
+              cpu: 2000m
+              memory: 4G
+            requests:
+              cpu: 1500m
+              memory: 3G
+          env:
+            - name: node.name
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: cluster.initial_master_nodes
+              value: "opensearch-cluster-master-0,"
+            - name: discovery.seed_hosts
+              value: "opensearch-cluster-master-headless"
+            - name: cluster.name
+              value: "opensearch-cluster"
+            - name: network.host
+              value: "0.0.0.0"
+            - name: OPENSEARCH_JAVA_OPTS
+              value: "-Xms2G -Xmx2G"
+            - name: node.roles
+              value: "master,ingest,data,remote_cluster_client,"
+            - name: DISABLE_INSTALL_DEMO_CONFIG
+              value: "true"
+            - name: DISABLE_PERFORMANCE_ANALYZER_AGENT_CLI
+              value: "true"
+          volumeMounts:
+            - name: "opensearch-cluster-master"
+              mountPath: /usr/share/opensearch/data
+            # Currently some extra blocks accept strings
+            # to continue with backwards compatibility this is being kept
+            # whilst also allowing for yaml to be specified too.
+            - mountPath: /usr/share/opensearch/config/opensearch.yml
+              name: config
+              subPath: opensearch.yml
+        # Currently some extra blocks accept strings
+        # to continue with backwards compatibility this is being kept
+        # whilst also allowing for yaml to be specified too.
+        - args:
+            - --es.uri=http://localhost:9200
+            - --collector.clustersettings
+            - --es.indices
+            - --collector.snapshots
+            - --web.listen-address=:9108
+          image: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter
+          name: exporter
+          ports:
+            - containerPort: 9108
+              name: prom-metrics
+          resources:
+            limits:
+              cpu: 200m
+              memory: 400Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi

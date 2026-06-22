@@ -2,30 +2,25 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
----
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: logging
 images:
-  - name: registry.sighup.io/fury/opensearchproject/opensearch
-    newTag: "3.2.0"
-  - name: quay.io/prometheuscommunity/elasticsearch-exporter
-    newName: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter
-    newTag: "v1.8.0"
-  - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
-    newTag: "3.2.0"
-  - name: alpine
-    newName: registry.sighup.io/fury/alpine
-    newTag: "3.14"
+- name: registry.sighup.io/fury/alpine
+  newTag: "3.24"
+- name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+  newTag: 3.7.0
+- name: registry.sighup.io/fury/prometheuscommunity/elasticsearch-exporter
+  newTag: v1.10.0
 resources:
-  - deploy.yaml
-  - sm.yml
-  - rules.yml
-  - ism-policy-cronjob.yml
+- deploy.yaml
+- sm.yml
+- rules.yml
+- ism-policy-cronjob.yml
 configMapGenerator:
-  - name: opensearch-cluster-master-config
-    files:
-      - configs/opensearch.yml
-  - name: opensearch-ism-policies
-    files:
-      - configs/retention.json
+- files:
+  - configs/opensearch.yml
+  name: opensearch-cluster-master-config
+- files:
+  - configs/retention.json
+  name: opensearch-ism-policies

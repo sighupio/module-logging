@@ -10,7 +10,7 @@ The upgrade is handled automatically by `upgrade.sh`. First, find the latest cha
 ```bash
 helm repo add grafana-community https://grafana-community.github.io/helm-charts
 helm repo update
-helm search repo grafana-community/loki -o json
+helm search repo grafana-community/loki
 ```
 
 Then run:
