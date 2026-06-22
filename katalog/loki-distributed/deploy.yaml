@@ -10,7 +10,7 @@ metadata:
   name: loki-distributed-gateway
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -24,7 +24,7 @@ metadata:
   name: loki-distributed
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -37,7 +37,7 @@ metadata:
   name: loki-distributed-runtime
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -50,7 +50,7 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -66,7 +66,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: loki-distributed-clusterrolebinding
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -86,7 +86,7 @@ metadata:
   name: "loki-distributed-compactor"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -120,7 +120,7 @@ metadata:
   name: "loki-distributed-compactor-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -157,7 +157,7 @@ metadata:
   name: "loki-distributed-distributor"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -191,7 +191,7 @@ metadata:
   name: "loki-distributed-distributor-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -228,7 +228,7 @@ metadata:
   name: loki-distributed-gateway-exporter
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -253,7 +253,7 @@ metadata:
   name: loki-stack
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -279,7 +279,7 @@ metadata:
   name: "loki-distributed-index-gateway"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -313,7 +313,7 @@ metadata:
   name: "loki-distributed-index-gateway-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -350,7 +350,7 @@ metadata:
   name: "loki-distributed-ingester"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -384,7 +384,7 @@ metadata:
   name: "loki-distributed-ingester-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -421,7 +421,7 @@ metadata:
   name: "loki-distributed-querier"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -455,7 +455,7 @@ metadata:
   name: "loki-distributed-querier-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -492,7 +492,7 @@ metadata:
   name: "loki-distributed-query-frontend"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -526,7 +526,7 @@ metadata:
   name: "loki-distributed-query-frontend-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -563,7 +563,7 @@ metadata:
   name: "loki-distributed-query-scheduler"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -597,7 +597,7 @@ metadata:
   name: "loki-distributed-query-scheduler-headless"
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -634,7 +634,7 @@ metadata:
   name: loki-distributed-memberlist
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -659,7 +659,7 @@ metadata:
   name: "loki-distributed-distributor"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -681,7 +681,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "distributor"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -801,7 +801,7 @@ metadata:
   name: loki-distributed-gateway
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -944,7 +944,7 @@ metadata:
   name: "loki-distributed-querier"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -967,7 +967,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "querier"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -1096,7 +1096,7 @@ metadata:
   name: "loki-distributed-query-frontend"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1119,7 +1119,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "query-frontend"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -1239,7 +1239,7 @@ metadata:
   name: "loki-distributed-query-scheduler"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1263,7 +1263,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "query-scheduler"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -1374,7 +1374,7 @@ metadata:
   name: loki-distributed-distributor
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1401,7 +1401,7 @@ metadata:
   name: loki-distributed-gateway
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1428,7 +1428,7 @@ metadata:
   name: loki-distributed-ingester
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1455,7 +1455,7 @@ metadata:
   name: loki-distributed-querier
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1482,7 +1482,7 @@ metadata:
   name: loki-distributed-query-frontend
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1509,7 +1509,7 @@ metadata:
   name: "loki-distributed-compactor"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1533,7 +1533,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "compactor"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -1653,7 +1653,7 @@ metadata:
   name: "loki-distributed-index-gateway"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1675,7 +1675,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "index-gateway"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -1786,7 +1786,7 @@ metadata:
   name: "loki-distributed-ingester"
   namespace: "logging"
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"
@@ -1808,7 +1808,7 @@ spec:
         checksum/config: abadb566f40bf0911ed91ceddf864469ee438f2ae8855eeb1f43c4aa840d7398
         kubectl.kubernetes.io/default-container: "ingester"
       labels:
-        helm.sh/chart: loki-17.4.4
+        helm.sh/chart: loki-17.4.7
         app.kubernetes.io/name: loki-distributed
         app.kubernetes.io/instance: loki-distributed
         app.kubernetes.io/version: "3.7.2"
@@ -1938,7 +1938,7 @@ metadata:
   name: loki-distributed
   namespace: logging
   labels:
-    helm.sh/chart: loki-17.4.4
+    helm.sh/chart: loki-17.4.7
     app.kubernetes.io/name: loki-distributed
     app.kubernetes.io/instance: loki-distributed
     app.kubernetes.io/version: "3.7.2"

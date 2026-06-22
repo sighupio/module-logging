@@ -4,8 +4,8 @@ The dashboards in this project are copied over from [Loki mixins](https://github
 
 ## Customizations
 
-Just update the Loki version in [mise.toml](./mise.toml) and run from this dir:
+Run from this dir with the desired Loki version:
 
 ```bash
-mise run download_mixins
+mise run download_mixins v3.4.2
 ```

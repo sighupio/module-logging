@@ -1,18 +1,18 @@
 # Opensearch Dashboards - maintenance
 
-The upgrade is handled automatically by `upgrade.sh`. First, find the latest chart version:
+The upgrade is handled automatically by the `upgrade` task. First, find the available chart versions:
 
 ```bash
-helm repo add opensearch https://opensearch-project.github.io/helm-charts
-helm repo update
-helm search repo opensearch-dashboard
+mise run chart-versions
 ```
 
 Then run:
 
 ```bash
-OPENSEARCH_CHART_VERSION=3.7.0 ./upgrade.sh
+mise run upgrade 3.7.0
 ```
+
+**NOTE:** the chart version here MUST be kept in sync with [`opensearch-single`](../opensearch-single/MAINTENANCE.md).
 
 What was customized:
 

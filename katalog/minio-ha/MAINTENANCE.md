@@ -2,15 +2,17 @@
 
 To maintain the MinIO package, you should follow these steps.
 
-1. Check the latest MinIO version: https://github.com/chainguard-forks/minio/releases
-2. Check the latest MC version: https://github.com/minio/mc/releases
-3. Check the latest Prometheus rules version: https://github.com/samber/awesome-prometheus-alerts/releases
+1. Find the latest versions:
+   ```bash
+   mise run minio-versions
+   mise run mc-versions
+   mise run prometheus-alerts-versions
+   ```
 
-Then run the upgrade script:
-
-```bash
-MINIO_VERSION=RELEASE.2026-05-20T23-44-52Z MC_VERSION=RELEASE.2025-08-13T08-35-41Z PROMETHEUS_ALERTS_VERSION=2026-04-10.1 ./upgrade.sh
-```
+2. Run the upgrade task with the desired versions:
+   ```bash
+   mise run upgrade RELEASE.2026-05-20T23-44-52Z RELEASE.2025-08-13T08-35-41Z 2026-04-10.1
+   ```
 
 What was customized:
 

@@ -1,6 +1,7 @@
 # Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
+monorepo_root = true
 
 [tools]
 kind = "0.32.0"
@@ -13,6 +14,16 @@ bats = "1.11.0"
 dyff = "1.9.0"
 drone = "1.9.0"
 "ubi:google/addlicense" = "v1.1.1"
+
+[monorepo]
+config_roots = [
+    "katalog/logging-operator",
+    "katalog/loki-distributed",
+    "katalog/loki-distributed/dashboards",
+    "katalog/minio-ha",
+    "katalog/opensearch-dashboards",
+    "katalog/opensearch-single"
+]
 
 # Development task definitions
 [tasks.add-license]

@@ -1,19 +1,20 @@
-#!/bin/bash
-# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
-# Use of this source code is governed by a BSD-style
-# license that can be found in the LICENSE file.
+[tasks.chart-versions]
+description = "Show all versions from kube-logging/logging-operator"
+run = '''
+curl -s https://api.github.com/repos/kube-logging/logging-operator/releases | jq -r '.[].tag_name' | head -10
+'''
 
-set -euo pipefail
-
-if [ -z "${LOGGING_CHART_VERSION:-}" ]; then
-  echo "Usage: LOGGING_CHART_VERSION=6.7.0 ./upgrade.sh"
-  exit 1
-fi
-echo "Using chart version ${LOGGING_CHART_VERSION}"
+[tasks.upgrade]
+description = "Upgrade the component with the specified chart version"
+usage = '''
+arg "<chart_version>" help="Chart version to use for the upgrade"
+'''
+run = '''
+echo "Updating chart with version ${usage_chart_version}"
 
 rm -rf /tmp/logging-operator
 helm template logging-operator oci://ghcr.io/kube-logging/helm-charts/logging-operator \
-  --version "${LOGGING_CHART_VERSION}" \
+  --version "${usage_chart_version}" \
   --values MAINTENANCE.values.yaml \
   --api-versions "monitoring.coreos.com/v1" \
   -n logging > deploy.yaml
@@ -24,10 +25,11 @@ echo "Removed OpenShift SCC permissions from CusterRole logging-operator"
 yq -i 'select(.kind == "ClusterRole" and .metadata.name == "logging-operator-edit") |= (.metadata.labels |= with_entries(select(.key | test("^rbac"))))' deploy.yaml
 echo "Filtered labels from ClusterRole logging-operator-edit"
 
-helm pull oci://ghcr.io/kube-logging/helm-charts/logging-operator --version "${LOGGING_CHART_VERSION}" --untar --untardir /tmp
+helm pull oci://ghcr.io/kube-logging/helm-charts/logging-operator --version "${usage_chart_version}" --untar --untardir /tmp
 cp /tmp/logging-operator/crds/* ./crds
 (cd ./crds && for f in logging*; do kustomize edit add resource "$f" 2>/dev/null; done)
 echo "Copied CRDs to ./crds"
 
 rm -rf /tmp/logging-operator
-mise run add-license
+mise run //:add-license
+'''

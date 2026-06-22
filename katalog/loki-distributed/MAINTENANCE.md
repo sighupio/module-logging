@@ -5,18 +5,16 @@
 > From version 5.0.0 of the logging module the package has been migrated to use the `Loki` chart instead as
 > upstream.
 
-The upgrade is handled automatically by `upgrade.sh`. First, find the latest chart version:
+The upgrade is handled automatically by the `upgrade` task. First, find the available chart versions:
 
 ```bash
-helm repo add grafana-community https://grafana-community.github.io/helm-charts
-helm repo update
-helm search repo grafana-community/loki
+mise run chart-versions
 ```
 
 Then run:
 
 ```bash
-LOKI_CHART_VERSION=17.4.4 ./upgrade.sh
+mise run upgrade 17.4.4
 ```
 
 The script performs the following operations on top of the chart output:
@@ -39,6 +37,6 @@ All components follow the `loki-distributed` naming to maintain compatibility wi
 ## Loki mixins
 
 The official [Loki mixins](https://github.com/grafana/loki/tree/main/production/loki-mixin-compiled) dashboard
-and rules are downloaded and customized automatically by `upgrade.sh`, matching the Loki version of the chart.
+and rules are downloaded and customized automatically by the `upgrade` task, matching the Loki version of the chart.
 
 [github-releases]: https://github.com/grafana/helm-charts/releases?q=helm-loki&expanded=true
