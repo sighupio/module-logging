@@ -39,8 +39,8 @@ These MinIO instances are configured to have a 7-day file retention.
 
 <!-- Links -->
 
-[logging-operator]: https://github.com/sighup-io/fury-kubernetes-logging/blob/master/katalog/logging-operator
-[prometheus-operator]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/prometheus-operator
+[logging-operator]: https://github.com/sighupio/module-logging/tree/main/katalog/logging-operator
+[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/main/katalog/prometheus-operator
 
 <!-- </SD-DOCS> -->
 

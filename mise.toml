@@ -18,6 +18,7 @@ drone = "1.9.0"
 [monorepo]
 config_roots = [
     "katalog/logging-operator",
+    "katalog/logging-operated",
     "katalog/loki-distributed",
     "katalog/loki-distributed/dashboards",
     "katalog/minio-ha",
@@ -60,7 +61,7 @@ echo "✅ Development environment ready!"
 '''
 
 [tasks.e2e]
-description = "Run complete E2E test suite with Kind cluster (K8s 1.33)"
+description = "Run complete E2E test suite with Kind cluster (K8s 1.35)"
 run = '''
 #!/bin/bash
 set -e
@@ -69,7 +70,7 @@ echo "🚀 Starting E2E Test Suite for Module Logging"
 echo "============================================="
 
 # Configuration
-KUBE_VERSION="1.34.0"
+KUBE_VERSION="1.35.0"
 export DRONE_BUILD_NUMBER="${DRONE_BUILD_NUMBER:-9999}"
 export DRONE_REPO_NAME="${DRONE_REPO_NAME:-module-logging}"
 CLUSTER_NAME="${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-${KUBE_VERSION}"

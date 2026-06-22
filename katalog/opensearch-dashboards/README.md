@@ -10,7 +10,7 @@ stored in OpenSearch indices.
 ## Requirements
 
 - Kubernetes >= `1.23.0`
-- Kustomize = `v3.5.3`
+- Kustomize >= `5.6.0`
 
 ## Image repository and tag
 

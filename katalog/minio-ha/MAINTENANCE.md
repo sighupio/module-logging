@@ -16,6 +16,6 @@ To maintain the MinIO package, you should follow these steps.
 
 What was customized:
 
-- Secret `minio-logging` is generated from Kustomize, so it must be removed from `minio-built.yaml`
+- Secret `minio-logging` is generated from Kustomize, so it must be removed from `deploy.yaml`
 - ConfigMap `minio-logging` is removed as it was not used
 - Added a custom init job to create buckets and add 7-day retention

@@ -27,7 +27,6 @@ The script performs the following operations on top of the chart output:
 The following are handled by helm values in `MAINTENANCE.values.yaml` (no manual patching needed):
 
 - `configStorageType: Secret` — Loki config is stored as a Secret instead of a ConfigMap
-- `migrate.fromDistributed.enabled` — preserves memberlist compatibility during upgrade
 - `extraEnvFrom` — injects minio credentials Secret
 - `memcached.enabled: false` — disables unused memcached ServiceAccount
 - `monitoring.serviceMonitor.enabled: true` — chart generates the ServiceMonitor natively
@@ -38,5 +37,3 @@ All components follow the `loki-distributed` naming to maintain compatibility wi
 
 The official [Loki mixins](https://github.com/grafana/loki/tree/main/production/loki-mixin-compiled) dashboard
 and rules are downloaded and customized automatically by the `upgrade` task, matching the Loki version of the chart.
-
-[github-releases]: https://github.com/grafana/helm-charts/releases?q=helm-loki&expanded=true

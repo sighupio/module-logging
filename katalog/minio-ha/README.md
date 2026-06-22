@@ -9,7 +9,7 @@ In order to achieve high availability (HA) for MinIO, a cluster of multiple MinI
 ## Requirements
 
 - Kubernetes >= `1.23.0`
-- Kustomize >= `v3.5.3`
+- Kustomize >= `5.6.0`
 - [prometheus-operator from SD monitoring module][prometheus-operator]
 
 > Prometheus Operator is necessary since we configure a `ServiceMonitor` to make
@@ -38,7 +38,7 @@ kustomize build | kubectl apply -f -
 
 <!-- Links -->
 
-[prometheus-operator]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/prometheus-operator
+[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/main/katalog/prometheus-operator
 [minio-gh]: https://github.com/chainguard-forks/minio
 
 <!-- </SD-DOCS> -->

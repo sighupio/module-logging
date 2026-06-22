@@ -11,6 +11,8 @@
 
 server.host: '0'
 
+explore.enabled: true
+
 ## If security is enabled, the following settings are required
 #opensearch.ssl.verificationMode: none
 #opensearch.username: kibanaserver

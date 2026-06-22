@@ -1,0 +1,20 @@
+[tasks.upgrade]
+description = "Upgrade Fluentd, Config-reloader and Fluent Bit images to match a logging-operator chart version"
+usage = '''
+arg "<fluentd_version>" help="Fluentd version to use for the upgrade"
+arg "<config_reloader_version>" help="Config reloader version to use for the upgrade"
+arg "<fluent_bit_version>" help="Fluent bit version to use for the upgrade"
+'''
+run = '''
+echo "Updating images: fluentd=${usage_fluentd_version}, config-reloader=${usage_config_reloader_version}, fluent-bit=${usage_fluent_bit_version}"
+
+yq -i 'select(.kind == "Logging").spec.fluentd.image.tag = strenv(usage_fluentd_version)' fluentd-fluentbit.yml
+yq -i 'select(.kind == "Logging").spec.fluentd.configReloaderImage.tag = strenv(usage_config_reloader_version)' fluentd-fluentbit.yml
+yq -i 'select(.kind == "FluentbitAgent").spec.image.tag = strenv(usage_fluent_bit_version)' fluentd-fluentbit.yml
+
+yq -i '.spec.fileTailers[0].containerOverrides.image = "registry.sighup.io/fury/fluent/fluent-bit:" + strenv(usage_fluent_bit_version)' ../configs/audit/audit-hosttailer.yml
+yq -i '.spec.systemdTailers[].containerOverrides.image = "registry.sighup.io/fury/fluent/fluent-bit:" + strenv(usage_fluent_bit_version)' ../configs/systemd/common/hosttrailer.yml
+yq -i '.spec.systemdTailers[0].containerOverrides.image = "registry.sighup.io/fury/fluent/fluent-bit:" + strenv(usage_fluent_bit_version)' ../configs/systemd/etcd/hosttrailer.yml
+
+echo "Update done"
+'''
