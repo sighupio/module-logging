@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
+# Copyright (c) 2017-present SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
@@ -9,16 +9,22 @@ kind: ServiceAccount
 metadata:
   name: opensearch-dashboards-dashboards
   labels:
+    helm.sh/chart: opensearch-dashboards-3.7.0
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
 ---
 # Source: opensearch-dashboards/templates/rolebinding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
+    helm.sh/chart: opensearch-dashboards-3.7.0
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
   name: opensearch-dashboards-dashboards-rolebinding
 roleRef:
   kind: Role
@@ -35,8 +41,11 @@ kind: Service
 metadata:
   name: opensearch-dashboards
   labels:
+    helm.sh/chart: opensearch-dashboards-3.7.0
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
   ports:
@@ -57,8 +66,11 @@ kind: Deployment
 metadata:
   name: opensearch-dashboards
   labels:
+    helm.sh/chart: opensearch-dashboards-3.7.0
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   strategy:
@@ -72,6 +84,7 @@ spec:
       labels:
         app.kubernetes.io/name: opensearch-dashboards
         app.kubernetes.io/instance: opensearch-dashboards
+      annotations:
     spec:
       securityContext:
         {}
@@ -91,14 +104,8 @@ spec:
             - ALL
           runAsNonRoot: true
           runAsUser: 1000
-        image: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards:3.2.0"
+        image: "registry.sighup.io/fury/opensearchproject/opensearch-dashboards:3.7.0"
         imagePullPolicy: "IfNotPresent"
-        command:
-          - /bin/bash
-          - -c
-          - |
-            /usr/share/opensearch-dashboards/bin/opensearch-dashboards-plugin remove securityDashboards
-            ./opensearch-dashboards-docker-entrypoint.sh opensearch-dashboards
         readinessProbe:
           failureThreshold: 10
           initialDelaySeconds: 10
@@ -132,6 +139,16 @@ spec:
         - containerPort: 5601
           name: http
           protocol: TCP
+        command:
+          - sh
+          - -c
+          - |
+            #!/usr/bin/bash
+            set -e
+            if ./bin/opensearch-dashboards-plugin list | grep -q securityDashboards; then
+              ./bin/opensearch-dashboards-plugin remove securityDashboards
+            fi
+            bash opensearch-dashboards-docker-entrypoint.sh opensearch-dashboards
         resources:
           limits:
             cpu: 100m
@@ -154,8 +171,11 @@ metadata:
   name: opensearch-dashboards-service-monitor
   namespace: logging
   labels:
+    helm.sh/chart: opensearch-dashboards-3.7.0
     app.kubernetes.io/name: opensearch-dashboards
     app.kubernetes.io/instance: opensearch-dashboards
+    app.kubernetes.io/version: "3.7.0"
+    app.kubernetes.io/managed-by: Helm
 spec:
   selector:
     matchLabels:

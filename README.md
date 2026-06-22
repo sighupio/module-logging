@@ -40,10 +40,10 @@ High level diagram of the stack:
 The following packages are included in the Logging module:
 
 | Package                                                | Version                        | Description                                                                          |
-| ------------------------------------------------------ | ------------------------------ | ------------------------------------------------------------------------------------ |
+|--------------------------------------------------------|--------------------------------|--------------------------------------------------------------------------------------|
 | [opensearch-single](katalog/opensearch-single)         | `v3.2.0`                       | Single node opensearch deployment. Not intended for production use.                  |
 | [opensearch-triple](katalog/opensearch-triple)         | `v3.2.0`                       | Three node high-availability opensearch deployment                                   |
-| [opensearch-dashboards](katalog/opensearch-dashboards) | `v3.2.0`                       | Analytics and visualization platform for Opensearch                                  |
+| [opensearch-dashboards](katalog/opensearch-dashboards) | `v3.7.0`                       | Analytics and visualization platform for Opensearch                                  |
 | [logging-operator](katalog/logging-operator)           | `v6.5.1`                       | Banzai logging operator, manages fluentbit/fluentd and their configurations          |
 | [logging-operated](katalog/logging-operated)           | `-`                            | fluentd and fluentbit deployment using logging operator                              |
 | [configs](katalog/configs)                             | `-`                            | Logging pipeline configs to gather various types of logs and send them to OpenSearch |
@@ -56,7 +56,7 @@ Click on each package to see its full documentation.
 ## Compatibility
 
 | Kubernetes Version |   Compatibility    | Notes           |
-| ------------------ | :----------------: | --------------- |
+|--------------------|:------------------:|-----------------|
 | `1.29.x`           | :white_check_mark: | No known issues |
 | `1.30.x`           | :white_check_mark: | No known issues |
 | `1.31.x`           | :white_check_mark: | No known issues |
@@ -71,13 +71,13 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
 > [!NOTE]
 > Instructions below are for deploying the module using a legacy version of furyctl, that required manual intervention and managing each module individually.
 >
-> Latest versions of furyctl automate the whole cluster lifecycle and it is recommended to use the latest version of furyctl instead.
+> Latest versions of furyctl automate the whole cluster lifecycle, and it is recommended to use the latest version of furyctl instead.
 
 
 ### Prerequisites
 
 | Tool                        | Version    | Description                                                                                                                                                    |
-| --------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|-----------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [furyctl][furyctl-repo]     | `>=0.25.0` | The recommended tool to download and manage SD modules and their packages. To learn more about `furyctl` read the [official documentation][furyctl-repo].      |
 | [kustomize][kustomize-repo] | `>=3.10.0` | Packages are customized using `kustomize`. To learn how to create your customization layer with `kustomize`, please refer to the [repository][kustomize-repo]. |
 
