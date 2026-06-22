@@ -33,13 +33,17 @@ Enhanced ingress-nginx flow configuration to extract additional fields:
 
 For Loki backend, these fields are now indexed as labels for improved query performance.
 
-### Loki Distributed Upgrade to v3.7.2
+### Loki Distributed
 
-Loki upgraded from v3.5.3 to v3.7.2. This upgrade adds an `access-log-exporter` sidecar to the gateway for NGINX metrics.
+This upgrade adds an `access-log-exporter` sidecar to the gateway for NGINX metrics.
 
 ### MinIO Chainguard Fork
 
 The `minio-ha` image is now built from the [Chainguard fork](https://github.com/chainguard-forks/minio) of MinIO.
+
+### OpenSearch Dashboards Explore
+
+OpenSearch Dashboards 3.7.0 enables the **Explore** feature (`explore.enabled: true`), allowing users to query and visualize logs directly from the Dashboards interface.
 
 ## Breaking Changes 💔
 
