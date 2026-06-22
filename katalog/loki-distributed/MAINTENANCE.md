@@ -5,33 +5,40 @@
 > From version 5.0.0 of the logging module the package has been migrated to use the `Loki` chart instead as
 > upstream.
 
-To maintain the Loki package, you should follow these steps.
-
-Search the latest `Helm Loki` (and not `loki-distributed`) chart from [Grafana Helm Charts releases][github-releases] (there are other charts in the releases page).
-
-Then you can template the chart using the following commands (change the chart version accordingly in the last command):
+The upgrade is handled automatically by `upgrade.sh`. First, find the latest chart version:
 
 ```bash
-helm repo add grafana https://grafana.github.io/helm-charts
+helm repo add grafana-community https://grafana-community.github.io/helm-charts
 helm repo update
-helm template loki-distributed grafana/loki --version 6.37.0 --values MAINTENANCE.values.yaml -n logging > loki-built.yaml
+helm search repo grafana-community/loki -o json | jq -r '.[0].version'
 ```
 
-With the `loki-built.yaml` file, check differences with the current `deploy.yml` file and change accordingly.
+Then run:
 
-The following has been modified manually on top of what's generated from the chart:
+```bash
+LOKI_CHART_VERSION=17.4.4 ./upgrade.sh
+```
 
-- Loki configuration has been moved on it's own file `configs/config.yaml`
-- Gateway service has been renamed from `loki-distributed-gateway` to `loki-stack` to maintain compatibility with existing loki-configs
-- Configmap loki has been changed to a secret
-- The ServiceMonitors are not supported anymore with the new chart (they can still be used, when created manually, but will not be created automatically
-  when using the new chart). Hence they have been moved into the service-monitor.yaml file.
-- The components follow the `loki-distributed` naming to maintain compatibility with existing resources.
-- The `loki-memberlist` Service has been renamed to `loki-distributed-memberlist` to maintain compatibility.
+The script performs the following operations on top of the chart output:
+
+- Extracts the Loki config and gateway config from the chart-generated resources to `configs/`
+- Removes the chart-generated Secret and ConfigMap from `deploy.yaml` (recreated by kustomize generators)
+- Renames the gateway Service from `loki-distributed-gateway` to `loki-stack` for backward compatibility
+- Downloads and customizes Loki mixins (dashboards and rules) matching the chart version
+
+The following are handled by helm values in `MAINTENANCE.values.yaml` (no manual patching needed):
+
+- `configStorageType: Secret` — Loki config is stored as a Secret instead of a ConfigMap
+- `migrate.fromDistributed.enabled` — preserves memberlist compatibility during upgrade
+- `extraEnvFrom` — injects minio credentials Secret
+- `memcached.enabled: false` — disables unused memcached ServiceAccount
+- `monitoring.serviceMonitor.enabled: true` — chart generates the ServiceMonitor natively
+
+All components follow the `loki-distributed` naming to maintain compatibility with existing resources.
 
 ## Loki mixins
 
-We added one dashboard from the official [Loki mixins](https://github.com/grafana/loki/tree/main/production/loki-mixin-compiled),
-you can find further instructions on how to update it inside the [dashboards folder](./dashboards/).
+The official [Loki mixins](https://github.com/grafana/loki/tree/main/production/loki-mixin-compiled) dashboard
+and rules are downloaded and customized automatically by `upgrade.sh`, matching the Loki version of the chart.
 
-[github-releases]: https://github.com/grafana/helm-charts/releases?q=loki-distributed&expanded=true
+[github-releases]: https://github.com/grafana/helm-charts/releases?q=helm-loki&expanded=true

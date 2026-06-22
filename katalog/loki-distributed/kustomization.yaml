@@ -5,27 +5,22 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-
 namespace: logging
-
 resources:
   - datasource
   - deploy.yaml
-  - service-monitor.yaml
   - dashboards
-
-images:
-  - name: docker.io/grafana/loki
-    newName: registry.sighup.io/fury/grafana/loki
-    newTag: 3.5.3
-  - name: docker.io/nginxinc/nginx-unprivileged
-    newName: registry.sighup.io/fury/nginxinc/nginx-unprivileged
-    newTag: 1.29-alpine
-
+generatorOptions:
+  disableNameSuffixHash: true
 secretGenerator:
-  - name: loki
+  - name: loki-distributed
     files:
       - configs/config.yaml
   - name: minio-credentials-loki
     envs:
       - minio-credentials.env
+configMapGenerator:
+  - name: loki-distributed-gateway
+    files:
+      - configs/nginx.conf
+      - configs/access-log-exporter.yaml
