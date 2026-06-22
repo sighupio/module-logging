@@ -4,7 +4,11 @@ This folder contains tailor-made files to deploy the Fluentd and Fluent-bit stac
 
 Container Images for Fluentd and Fluent-bit compatibility with logging-operator can be found here: <https://kube-logging.dev/docs/image-versions/>
 
-Replace all images used in [`fluentd-fluentbit.yml`] with the ones you found in the above link.
+The images in [`fluentd-fluentbit.yml`] and in all the `HostTailer` configs under [`configs`](../configs) are updated automatically by the `upgrade` task:
+
+```bash
+mise run upgrade-images <fluentd_version> <config_reloader_version> <fluent_bit_version>
+```
 
 **NOTE:** these image versions MUST be kept in sync with the chart version used in [`logging-operator`](../logging-operator/MAINTENANCE.md).
 

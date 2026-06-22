@@ -18,6 +18,7 @@ drone = "1.9.0"
 [monorepo]
 config_roots = [
     "katalog/logging-operator",
+    "katalog/logging-operated",
     "katalog/loki-distributed",
     "katalog/loki-distributed/dashboards",
     "katalog/minio-ha",

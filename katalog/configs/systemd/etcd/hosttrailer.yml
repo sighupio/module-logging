@@ -1,8 +1,6 @@
 # Copyright (c) 2022 SIGHUP s.r.l All rights reserved.
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
-
----
 apiVersion: logging-extensions.banzaicloud.io/v1alpha1
 kind: HostTailer
 metadata:
@@ -14,7 +12,7 @@ spec:
       maxEntries: 100
       systemdFilter: etcd.service
       containerOverrides:
-        image: registry.sighup.io/fury/fluent/fluent-bit:4.0.3
+        image: registry.sighup.io/fury/fluent/fluent-bit:5.0.5
   workloadMetaOverrides: {}
   workloadOverrides:
     affinity:
