@@ -23,7 +23,7 @@ Configurations available (patched from the base [configs](../configs) ) :
 - [loki-configs/audit](audit): all the Kubernetes audit logs related configurations (with master selector and tolerations).
 - [loki-configs/events](events): all the Kubernetes events related configurations (with master selector and tolerations).
 - [loki-configs/systemd](systemd): all the systemd related configurations.
-- [loki-configs/systemd/kubelet](systemd/common): kubelet, docker, ssh systemd service logs configuration.
+- [loki-configs/systemd/common](systemd/common): kubelet, docker, containerd, ssh systemd service logs configuration.
 - [loki-configs/systemd/etcd](systemd/etcd): only the etcd service logs configuration (with master selector and tolerations).
 
 ## Deployment

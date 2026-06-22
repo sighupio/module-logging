@@ -7,5 +7,5 @@ The dashboards in this project are copied over from [Loki mixins](https://github
 Run from this dir with the desired Loki version:
 
 ```bash
-mise run download_mixins v3.4.2
+mise run download_mixins v3.7.2
 ```
