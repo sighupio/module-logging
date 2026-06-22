@@ -11,7 +11,7 @@ Kubernetes.
 ## Requirements
 
 - Kubernetes >= `1.24.0`
-- Kustomize = `v3.10.0`
+- Kustomize >= `5.6.0`
 - [prometheus-operator][prometheus-operator]
 
 > Prometheus Operator is necessary since we configure a `ServiceMonitor` to make
@@ -63,7 +63,7 @@ Since we are configuring a `ServiceMonitor` in this package, the following Prome
 [opensearch-rules]: https://awesome-prometheus-alerts.grep.to/rules.html#elasticsearch-1
 [opensearch-gh]: https://github.com/opensearch-project/OpenSearch
 [opensearch-doc]: https://opensearch.org/docs/latest
-[prometheus-operator]: https://github.com/sighupio/fury-kubernetes-monitoring/tree/master/katalog/prometheus-operator
+[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/master/katalog/prometheus-operator
 
 <!-- </SD-DOCS> -->
 

@@ -2,7 +2,7 @@
 
 Welcome to the latest release of the `logging` module of [`SIGHUP Distribution`](https://github.com/sighupio/distribution) maintained by team SIGHUP by ReeVo.
 
-This is a major release that adds HAProxy ingress controller logging support and improves ingress-nginx log parsing with hostname field extraction.
+This is a minor release that adds HAProxy ingress controller logging support and improves ingress-nginx log parsing with hostname field extraction.
 
 ## Component Images 🚢
 

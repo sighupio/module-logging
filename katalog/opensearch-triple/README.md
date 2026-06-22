@@ -12,7 +12,7 @@ up a 3-node cluster of `OpenSearch` for a robust and reliable setup.
 ## Requirements
 
 - Kubernetes >= `1.24.0`
-- Kustomize >= `v3.10.X`
+- Kustomize >= `5.6.0`
 - [prometheus-operator][prometheus-operator]
 
 > Prometheus Operator is necessary since we configure a `ServiceMonitor` to make
@@ -22,7 +22,7 @@ up a 3-node cluster of `OpenSearch` for a robust and reliable setup.
 
 ## Image repository and tag
 
-- OpenSearch image: `opensearchproject/opensearch:2.17.1`
+- OpenSearch image: `opensearchproject/opensearch:3.7.0`
 - OpenSearch repo: [OpenSearch on Github][opensearch-gh]
 - OpenSearch documentation: [OpenSearch Homepage][opensearch-doc]
 
@@ -51,7 +51,7 @@ kustomize build | kubectl apply -f -
 
 [opensearch-gh]: https://github.com/opensearch-project/OpenSearch
 [opensearch-doc]: https://opensearch.org/docs/latest
-[prometheus-operator]: https://github.com/sighupio/fury-kubernetes-monitoring/tree/master/katalog/prometheus-operator
+[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/master/katalog/prometheus-operator
 
 <!-- </SD-DOCS> -->
 

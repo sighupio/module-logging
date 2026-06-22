@@ -14,7 +14,7 @@ It does not index the contents of the logs, but rather a set of labels for each 
 ## Requirements
 
 - Kubernetes >= `1.24.0`
-- Kustomize >= `v3.10.0`
+- Kustomize >= `5.6.0`
 - [prometheus-operator from SD monitoring module][prometheus-operator]
 - [grafana from SD monitoring module][grafana] (module version `>=1.15.0`)
 - [minio-ha](../minio-ha)
@@ -66,8 +66,8 @@ The nginx gateway forwards Grafana metadata (dashboard, panel and alerting rule 
 
 <!-- Links -->
 
-[prometheus-operator]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/prometheus-operator
-[grafana]: https://github.com/sighup-io/fury-kubernetes-monitoring/blob/master/katalog/grafana
+[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/main/katalog/prometheus-operator
+[grafana]: https://github.com/sighupio/module-monitoring/tree/main/katalog/grafana
 [grafana-explore-doc]: https://grafana.com/docs/grafana/latest/explore/
 [loki-gh]: https://github.com/grafana/loki
 [loki-docs]: https://grafana.com/docs/loki/latest/
