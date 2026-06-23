@@ -2,75 +2,24 @@
 
 <!-- <SD-DOCS> -->
 
-Loki is a horizontally scalable, highly available, multi-tenant log aggregation system inspired by Prometheus.
-It is designed to be very cost-effective and easy to operate.
-It does not index the contents of the logs, but rather a set of labels for each log stream.
+## Overview
 
-> [!NOTE]
-> This package is named Loki Distributed because it was created using the upstream chart with the same name.
-> From version 5.0.0 of the logging module the package has been migrated to use the `Loki` chart instead as
-> upstream.
+Loki is a horizontally scalable, highly available, multi-tenant log aggregation system inspired by Prometheus. It is cost-effective and easy to operate because it does not index the contents of the logs, but rather a set of labels for each log stream. This package also provides a dynamic Loki datasource that Grafana from the Monitoring Module fetches and configures automatically.
 
-## Requirements
+## Upstream project
 
-- Kubernetes >= `1.24.0`
-- Kustomize >= `5.6.0`
-- [prometheus-operator from SD monitoring module][prometheus-operator]
-- [grafana from SD monitoring module][grafana] (module version `>=1.15.0`)
-- [minio-ha](../minio-ha)
-
-> Prometheus Operator is necessary since we configure a `ServiceMonitor` to make
-> some metrics available from `loki` on prometheus
-
-## Image repository and tag
-
-- Loki image: `grafana/loki:3.7.2`
-- nginx gateway: `nginxinc/nginx-unprivileged:1.31-alpine`
-- Loki repo: [Loki on Github][loki-gh]
-- Loki documentation: [Loki at grafana.com][loki-docs]
-
-## Configuration
-
-Loki Distributed is deployed in the following configuration:
-
-- Each microservice has its own Deployment/StatefulSet
-- Each Deployment has its own HPA
-- Common resources set as:
-
-```yaml
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
-  limits:
-    cpu: 500m
-    memory: 1024Mi
-```
+This package is based on the upstream [Loki][loki-gh].
 
 ## Deployment
 
-You can deploy Loki Distributed by running the following command in the root of
-the project:
-
-```shell
-kustomize build | kubectl apply -f -
-```
-
-This project also implements a dynamic Loki datasource that our Grafana from the monitoring stack automatically fetches and configures.
-To see the logs, navigate in Grafana to the [explore section][grafana-explore-doc].
-
-The nginx gateway forwards Grafana metadata (dashboard, panel and alerting rule information) to Loki via the `X-Query-Tags` header on `/loki/api/v1/` query routes, so queries can be attributed to their origin in Loki logs. This is stock upstream behavior from the chart.
-
-> Note: These instructions are only for installing Loki as a log storage solution.
-> For complete instructions, please refer to the main README of the Logging module.
+This package is deployed as part of **Logging Module** when you create a cluster with `furyctl`. You can customize it under `spec.distribution.modules.logging.loki` in your `furyctl.yaml`. See the [module documentation](../../README.md) and the configuration reference ([EKSCluster][schema-reference-eks], [KFDDistribution][schema-reference-kfd], [OnPremises][schema-reference-onprem]) for the available options.
 
 <!-- Links -->
 
-[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/main/katalog/prometheus-operator
-[grafana]: https://github.com/sighupio/module-monitoring/tree/main/katalog/grafana
-[grafana-explore-doc]: https://grafana.com/docs/grafana/latest/explore/
 [loki-gh]: https://github.com/grafana/loki
-[loki-docs]: https://grafana.com/docs/loki/latest/
+[schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
+[schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
+[schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging
 
 <!-- </SD-DOCS> -->
 
