@@ -714,7 +714,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
@@ -1009,7 +1009,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
@@ -1152,7 +1152,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
@@ -1296,7 +1296,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
@@ -1566,7 +1566,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
@@ -1708,7 +1708,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
@@ -1850,7 +1850,7 @@ spec:
           emptyDir: {}
         - name: config
           secret:
-            secretName: loki-distributed
+            secretName: loki
         - name: runtime-config
           configMap:
             name: loki-distributed-runtime
