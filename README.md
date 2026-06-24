@@ -27,6 +27,10 @@ The central piece of the stack is the open source search engine [OpenSearch][ope
 
 All the components are deployed in the `logging` namespace in the cluster.
 
+High-level diagram of the stack:
+
+![logging module](docs/images/diagram.png "Logging Module")
+
 ## Packages
 
 The following packages are included in the Logging module:
