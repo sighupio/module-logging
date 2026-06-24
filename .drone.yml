@@ -524,7 +524,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - E2E Tests on kind clusters version 1.29.0
 clone:
   depth: 1
 trigger:
@@ -626,7 +626,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - E2E Tests on kind clusters version 1.30.4
 clone:
   depth: 1
 trigger:
@@ -727,7 +727,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - E2E Tests on kind clusters version 1.31.1
 clone:
   depth: 1
 trigger:

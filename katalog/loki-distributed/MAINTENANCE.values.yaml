@@ -41,6 +41,7 @@ deploymentMode: Distributed
 loki:
   auth_enabled: false
   configStorageType: Secret
+  configObjectName: loki
   commonConfig:
     replication_factor: 1
   storage:
