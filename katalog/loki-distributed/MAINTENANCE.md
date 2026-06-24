@@ -27,6 +27,7 @@ The script performs the following operations on top of the chart output:
 The following are handled by helm values in `MAINTENANCE.values.yaml` (no manual patching needed):
 
 - `configStorageType: Secret` — Loki config is stored as a Secret instead of a ConfigMap
+  - `configObjectName` overrides the Secret name
 - `extraEnvFrom` — injects minio credentials Secret
 - `memcached.enabled: false` — disables unused memcached ServiceAccount
 - `monitoring.serviceMonitor.enabled: true` — chart generates the ServiceMonitor natively
