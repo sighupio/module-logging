@@ -5,6 +5,10 @@
 > From version 5.0.0 of the logging module the package has been migrated to use the `Loki` chart instead as
 > upstream.
 
+> [!WARNING]
+> Ensure that changes made in this package are also aligned with the corresponding patches in the
+> [distribution](https://github.com/sighupio/distribution/tree/main/templates/distribution/manifests/logging/patches) if needed.
+
 The upgrade is handled automatically by the `upgrade` task. First, find the available chart versions:
 
 ```bash
