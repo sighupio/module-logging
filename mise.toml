@@ -13,6 +13,7 @@ go = "1.23"
 bats = "1.11.0"
 dyff = "1.9.0"
 drone = "1.9.0"
+kube-linter = "0.8.3"
 "ubi:google/addlicense" = "v1.1.1"
 
 [monorepo]
@@ -49,6 +50,14 @@ kustomize build katalog/loki-configs > /dev/null && echo "  ✅ loki-configs"
 kustomize build katalog/loki-distributed > /dev/null && echo "  ✅ loki-distributed"
 kustomize build katalog/minio-ha > /dev/null && echo "  ✅ minio-ha"
 echo "✅ All manifests validated!"
+'''
+
+[tasks.lint]
+description = "Lint all katalog manifests with kube-linter"
+run = '''
+echo "🔍 Linting katalog/ with kube-linter..."
+kube-linter lint --config .kube-linter.yaml katalog/
+echo "✅ All manifests passed linting!"
 '''
 
 [tasks.setup]
