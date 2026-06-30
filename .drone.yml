@@ -28,7 +28,7 @@ steps:
       - mise run check-license
 
 ---
-name: validation
+name: validate
 kind: pipeline
 type: docker
 node:
@@ -89,7 +89,7 @@ steps:
     image: us-docker.pkg.dev/fairwinds-ops/oss/pluto:v5
     pull: always
     depends_on:
-      - render
+      - lint
     commands:
       # we use --ignore-deprecations because we don't want the CI to fail when the API has not been removed yet.
       - /pluto detect $${KUBERNETES_MANIFESTS} --ignore-deprecations --target-versions=k8s=v1.35.0
@@ -144,7 +144,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - validation
+  - validate
 clone:
   depth: 1
 trigger:
@@ -243,7 +243,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - validation
+  - validate
 clone:
   depth: 1
 trigger:
@@ -342,7 +342,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - validation
+  - validate
 clone:
   depth: 1
 trigger:
@@ -441,7 +441,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - validation
+  - validate
 clone:
   depth: 1
 trigger:
