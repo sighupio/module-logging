@@ -2,45 +2,24 @@
 
 <!-- <SD-DOCS> -->
 
-The Logging operated package deploys the Fluentd and Fluent-bit stack via Logging operator CRDs.
-It also deploys a MinIO instance for storing all the logs rejected from the configured outputs.
+## Overview
 
-## Requirements
+The Logging Operated package deploys the Fluentd and Fluent Bit stack through the Logging Operator CRDs. Logs that the configured outputs reject are collected by an in-cluster MinIO instance with a 7-day retention, for debugging purposes.
 
-- Kubernetes >= `1.22.0`
-- Kustomize >= `v5.6.0`
-- [logging-operator][logging-operator]
-- [prometheus-operator][prometheus-operator]
-- [minio-ha](../minio-ha)
+## Upstream project
 
-## Image repository and tag
-
-- Fluentd: `ghcr.io/kube-logging/logging-operator/fluentd:6.5.1-full`
-- Fluent Bit: `ghcr.io/fluent/fluent-bit:5.0.5`
-- Config Reloader: `ghcr.io/kube-logging/logging-operator/config-reloader:6.5.1`
-
-## Configuration
-
-See the file [fluentd-fluentbit.yaml](fluentd-fluentbit.yml) in the root of the project for the stack configuration.
+This package is based on the upstream [Logging Operator][logging-operator-github].
 
 ## Deployment
 
-You can deploy Logging operated by running the following command in the root of the project:
-
-```shell
-kustomize build | kubectl apply -f - --server-side
-```
-
-## Error logs
-
-All logs with errors in being sent to their outputs are collected by two MinIO instances.
-These instances serve for debugging purposes and to understand why the collected logs are not being sent.
-These MinIO instances are configured to have a 7-day file retention.
+This package is deployed as part of **Logging Module** when you create a cluster with `furyctl`. You can customize it under `spec.distribution.modules.logging.operator` in your `furyctl.yaml`. See the [module documentation](../../README.md) and the configuration reference ([EKSCluster][schema-reference-eks], [KFDDistribution][schema-reference-kfd], [OnPremises][schema-reference-onprem]) for the available options.
 
 <!-- Links -->
 
-[logging-operator]: https://github.com/sighupio/module-logging/tree/main/katalog/logging-operator
-[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/main/katalog/prometheus-operator
+[logging-operator-github]: https://github.com/kube-logging/logging-operator
+[schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
+[schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
+[schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging
 
 <!-- </SD-DOCS> -->
 

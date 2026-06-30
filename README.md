@@ -15,19 +15,15 @@
 
 <!-- <SD-DOCS> -->
 
-**Logging Module** provides a logging stack for the [SIGHUP Distribution (SD)][kfd-repo].
+**Logging Module** provides a logging stack for [SIGHUP Distribution (SD)][kfd-repo].
 
 If you are new to SD please refer to the [official documentation][kfd-docs] on how to get started with SD.
 
 ## Overview
 
-**Logging Module** uses a collection of open source tools to provide the most resilient and robust logging stack for the cluster.
+**Logging Module** uses a collection of open source tools to provide a resilient and robust logging stack for the cluster.
 
-The central piece of the stack is the open source search engine [opensearch][opensearch-page], combined
-with its analytics and visualization platform [opensearch-dashboards][opensearch-dashboards-page].
-The logs are collected using a node-level data collection and enrichment agent [fluentbit][fluentbit-page],
-pushing it to the OpenSearch via [fluentd][fluentd-page]. The fluentbit and fluentd stack are managed by Banzai Logging Operator.
-We are also providing an alternative to OpenSearch: [loki][loki-page].
+The central piece of the stack is the open source search engine [OpenSearch][opensearch-page], combined with its analytics and visualization platform [OpenSearch Dashboards][opensearch-dashboards-page]. Logs are collected by a node-level data collection and enrichment agent, [Fluent Bit][fluentbit-page], and pushed to OpenSearch through [Fluentd][fluentd-page]. The Fluent Bit and Fluentd stack is managed by the Logging Operator. [Loki][loki-page] is also available as an alternative log storage backend to OpenSearch.
 
 All the components are deployed in the `logging` namespace in the cluster.
 
@@ -69,121 +65,42 @@ Check the [compatibility matrix][compatibility-matrix] for additional informatio
 
 ## Usage
 
-> [!NOTE]
-> Instructions below are for deploying the module using a legacy version of furyctl, that required manual intervention and managing each module individually.
->
-> Latest versions of furyctl automate the whole cluster lifecycle, and it is recommended to use the latest version of furyctl instead.
+**Logging Module** is part of SIGHUP Distribution (SD) and is deployed automatically by [`furyctl`][furyctl-repo] when you create or update a cluster. You don't need to download, vendor or install its packages manually.
 
+### Configuration
 
-### Prerequisites
+You configure the module under `spec.distribution.modules.logging` in your `furyctl.yaml`. The `type` field selects the logging stack to deploy: `opensearch`, `loki`, `customOutputs`, or `none` to disable the module. When using OpenSearch, `opensearch.type` selects a `single` or `triple` node deployment. The other fields are optional and fall back to sensible defaults.
 
-| Tool                        | Version    | Description                                                                                                                                                    |
-|-----------------------------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [furyctl][furyctl-repo]     | `>=0.25.0` | The recommended tool to download and manage SD modules and their packages. To learn more about `furyctl` read the [official documentation][furyctl-repo].      |
-| [kustomize][kustomize-repo] | `>=3.10.0` | Packages are customized using `kustomize`. To learn how to create your customization layer with `kustomize`, please refer to the [repository][kustomize-repo]. |
+```yaml
+apiVersion: kfd.sighup.io/v1alpha2
+kind: KFDDistribution
+spec:
+  distribution:
+    modules:
+      logging:
+        type: opensearch
+        opensearch:
+          type: single
+          storageSize: 150Gi
+```
 
-### Deployment with OpenSearch
+To use Loki as the log storage backend instead, set `type: loki` and choose the Loki storage backend with `loki.backend` (`minio` for an in-cluster MinIO deployment, or `externalEndpoint` for an external S3-compatible object storage):
 
-1. List the packages you want to deploy and their version in a `Furyfile.yml`
+```yaml
+apiVersion: kfd.sighup.io/v1alpha2
+kind: KFDDistribution
+spec:
+  distribution:
+    modules:
+      logging:
+        type: loki
+        loki:
+          backend: minio
+```
 
-    ```yaml
-    bases:
-      - name: logging/opensearch-single
-        version: "v5.4.0"
-      - name: logging/opensearch-dashboards
-        version: "v5.4.0"
-      - name: logging/logging-operator
-        version: "v5.4.0"
-      - name: logging/logging-operated
-        version: "v5.4.0"
-      - name: minio/minio-ha
-        version: "v5.4.0"
-      - name: logging/configs
-        version: "v5.4.0"
-    ```
+See the configuration reference for your cluster kind for the full list of available options: [EKSCluster][schema-reference-eks], [KFDDistribution][schema-reference-kfd] or [OnPremises][schema-reference-onprem].
 
-    > See `furyctl` [documentation][furyctl-repo] for additional details about `Furyfile.yml` format.
-
-2. Execute `furyctl legacy vendor -H` to download the packages
-
-3. Inspect the download packages under `./vendor/katalog/logging`.
-
-4. Define a `kustomization.yaml` that includes the `./vendor/katalog/logging` directory as resource.
-
-   ```yaml
-   resources:
-   - ./vendor/katalog/logging/opensearch-single
-   - ./vendor/katalog/logging/opensearch-dashboards
-   - ./vendor/katalog/logging/logging-operator
-   - ./vendor/katalog/logging/logging-operated
-   - ./vendor/katalog/logging/minio-ha
-   - ./vendor/katalog/logging/configs
-   ```
-
-5. To deploy the packages to your cluster, execute:
-
-   ```bash
-   kustomize build . | kubectl apply --server-side -f -
-   ```
-
-> Note: When installing the packages, you need to ensure that the Prometheus operator is also installed.
-> Otherwise, the API server will reject all ServiceMonitor resources.
-
-### Deployment with Loki
-
-1. List the packages you want to deploy and their version in a `Furyfile.yml`
-
-    ```yaml
-    bases:
-      - name: logging/loki-distributed
-        version: "v5.4.0"
-      - name: logging/logging-operator
-        version: "v5.4.0"
-      - name: logging/logging-operated
-        version: "v5.4.0"
-      - name: minio/minio-ha
-        version: "v5.4.0"
-      - name: logging/configs
-        version: "v5.4.0"
-      - name: logging/loki-configs
-        version: "v5.4.0"
-    ```
-
-    > See `furyctl` [documentation][furyctl-repo] for additional details about `Furyfile.yml` format.
-
-2. Execute `furyctl legacy vendor -H` to download the packages
-
-3. Inspect the download packages under `./vendor/katalog/logging`.
-
-4. Define a `kustomization.yaml` that includes the `./vendor/katalog/logging` directory as resource.
-
-   ```yaml
-   resources:
-   - ./vendor/katalog/logging/loki-distributed
-   - ./vendor/katalog/logging/logging-operator
-   - ./vendor/katalog/logging/logging-operated
-   - ./vendor/katalog/logging/minio-ha
-   - ./vendor/katalog/logging/loki-configs
-   ```
-
-5. To deploy the packages to your cluster, execute:
-
-   ```bash
-   kustomize build . | kubectl apply --server-side -f -
-   ```
-
-> Note: When installing the packages, you need to ensure that the Prometheus operator is also installed.
-> Otherwise, the API server will reject all ServiceMonitor resources.
-
-### Common Customizations
-
-#### Setup a high-availability three-node OpenSearch
-
-Logging module offers an out-of-the-box, highly available setup for `opensearch` instead of a single node version. To set this up, in the `Furyfile` and `kustomization`, you can replace `opensearch-single` with `opensearch-triple`.
-
-#### Configure tolerations and node selectors
-
-If you need to specify tolerations and/or node selectors, you can find some snippets in [examples/tolerations](examples/tolerations) and its subfolders.
+To install SD from scratch, follow the [Getting started][getting-started] guide.
 
 <!-- Links -->
 
@@ -194,9 +111,12 @@ If you need to specify tolerations and/or node selectors, you can find some snip
 [loki-page]: https://grafana.com/oss/loki/
 [kfd-repo]: https://github.com/sighupio/distribution
 [furyctl-repo]: https://github.com/sighupio/furyctl
-[kustomize-repo]: https://github.com/kubernetes-sigs/kustomize
 [kfd-docs]: https://docs.sighup.io/docs/distribution/
-[compatibility-matrix]: https://github.com/sighupio/module-logging/blob/master/docs/COMPATIBILITY_MATRIX.md
+[schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
+[schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
+[schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging
+[getting-started]: https://docs.sighup.io/docs/getting-started/
+[compatibility-matrix]: https://github.com/sighupio/module-logging/blob/main/docs/COMPATIBILITY_MATRIX.md
 
 <!-- </SD-DOCS> -->
 
@@ -204,7 +124,7 @@ If you need to specify tolerations and/or node selectors, you can find some snip
 
 ## Contributing
 
-Before contributing, please read first the [Contributing Guidelines](docs/CONTRIBUTING.md).
+Before contributing, please read first the [Contributing Guidelines](https://github.com/sighupio/distribution/blob/main/docs/CONTRIBUTING.md).
 
 ### Reporting Issues
 
