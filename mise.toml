@@ -4,15 +4,15 @@
 monorepo_root = true
 
 [tools]
+bats = "1.11.0"
+drone = "1.9.0"
+dyff = "1.9.0"
+helm = "3.15.0"
 kind = "0.32.0"
+kube-linter = "0.8.3"
 kubectl = "1.35.6"
 kustomize = "5.6.0"
-helm = "3.15.0"
 yq = "4.53.3"
-go = "1.23"
-bats = "1.11.0"
-dyff = "1.9.0"
-drone = "1.9.0"
 "ubi:google/addlicense" = "v1.1.1"
 
 [monorepo]
@@ -35,6 +35,14 @@ addlicense -c "SIGHUP s.r.l" -y "2017-present" -v -l bsd .
 echo "✅ License headers added!"
 '''
 
+[tasks.check-license]
+description = "Check that all files have license headers"
+run = '''
+echo "🔍 Checking license headers..."
+addlicense -c "SIGHUP s.r.l" -y "2017-present" -v -l bsd --check .
+echo "✅ All files have license headers!"
+'''
+
 [tasks.validate-manifests]
 description = "Validate all manifests can be built"
 run = '''
@@ -51,13 +59,12 @@ kustomize build katalog/minio-ha > /dev/null && echo "  ✅ minio-ha"
 echo "✅ All manifests validated!"
 '''
 
-[tasks.setup]
-description = "Complete development environment setup"
+[tasks.lint]
+description = "Lint all katalog manifests with kube-linter"
 run = '''
-echo "🚀 Setting up development environment..."
-mise run add-license
-mise run validate-manifests
-echo "✅ Development environment ready!"
+echo "🔍 Linting katalog/ with kube-linter..."
+kube-linter lint --config .kube-linter.yaml katalog/
+echo "✅ All manifests passed linting!"
 '''
 
 [tasks.e2e]

@@ -9,16 +9,26 @@ node:
    performance: low
 clone:
   depth: 1
+volumes:
+  - name: mise-cache
+    host:
+      path: /root/mise_data_dir
 steps:
   - name: check
-    image: docker.io/library/golang:1.23
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
+    environment:
+      MISE_DATA_DIR: /mise-data
+      GITHUB_TOKEN:
+        from_secret: github_token
+    volumes:
+      - name: mise-cache
+        path: /mise-data
     commands:
-      - go install github.com/google/addlicense@v1.1.1
-      - addlicense -c "SIGHUP s.r.l" -v -l bsd --check .
+      - mise run check-license
 
 ---
-name: linting
+name: validation
 kind: pipeline
 type: docker
 node:
@@ -36,11 +46,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: render
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       GITHUB_TOKEN:
         from_secret: github_token
     volumes:
@@ -49,9 +58,8 @@ steps:
     depends_on:
       - clone
     commands:
-      - |
-        mise use kustomize@5.6.0
-        eval "$(mise activate bash --shims)"
+      - eval "$(mise activate bash --shims)"
+      - kustomize build katalog/opensearch-single > opensearch-single.yml
       - kustomize build katalog/opensearch-triple > opensearch-triple.yml
       - kustomize build katalog/opensearch-dashboards > opensearch-dashboard.yml
       - kustomize build katalog/logging-operator > logging-operator.yml
@@ -60,6 +68,21 @@ steps:
       - kustomize build katalog/loki-configs > loki-configs.yml
       - kustomize build katalog/loki-distributed > loki-distributed.yml
       - kustomize build katalog/minio-ha > minio-ha.yml
+
+  - name: lint
+    image: quay.io/sighup/mise:v2026.6.14
+    pull: always
+    environment:
+      MISE_DATA_DIR: /mise-data
+      GITHUB_TOKEN:
+        from_secret: github_token
+    volumes:
+      - name: mise-cache
+        path: /mise-data
+    depends_on:
+      - clone
+    commands:
+      - mise run lint
 
   - &check-deprecated-apis
     name: check-deprecated-apis
@@ -72,6 +95,11 @@ steps:
       - /pluto detect $${KUBERNETES_MANIFESTS} --ignore-deprecations --target-versions=k8s=v1.35.0
     environment:
       KUBERNETES_MANIFESTS: opensearch-triple.yml
+
+  - <<: *check-deprecated-apis
+    name: check-deprecated-apis-opensearch-single
+    environment:
+      KUBERNETES_MANIFESTS: opensearch-single.yml
 
   - <<: *check-deprecated-apis
     name: check-deprecated-apis-logging-operator
@@ -116,7 +144,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - validation
 clone:
   depth: 1
 trigger:
@@ -132,11 +160,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.29.1"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -160,12 +187,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.29.1"
       KUBECONFIG: kubeconfig-129
       GITHUB_TOKEN:
@@ -183,11 +209,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.29.1"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-129
@@ -218,7 +243,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - validation
 clone:
   depth: 1
 trigger:
@@ -234,11 +259,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.30.5"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -262,12 +286,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.30.5"
       KUBECONFIG: kubeconfig-130
       GITHUB_TOKEN:
@@ -285,11 +308,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.30.5"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-130
@@ -320,7 +342,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - validation
 clone:
   depth: 1
 trigger:
@@ -336,11 +358,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.31.1"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -364,12 +385,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.31.1"
       KUBECONFIG: kubeconfig-131
       GITHUB_TOKEN:
@@ -387,11 +407,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.31.1"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-131
@@ -422,7 +441,7 @@ platform:
   os: linux
   arch: amd64
 depends_on:
-  - linting
+  - validation
 clone:
   depth: 1
 trigger:
@@ -438,11 +457,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.32.2"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -466,12 +484,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.32.2"
       KUBECONFIG: kubeconfig-132
       GITHUB_TOKEN:
@@ -489,11 +506,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.32.2"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-132
@@ -540,11 +556,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.33.4"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -568,12 +583,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.33.4"
       KUBECONFIG: kubeconfig-133
       GITHUB_TOKEN:
@@ -591,11 +605,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.33.4"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-133
@@ -642,11 +655,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.34.0"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -670,12 +682,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.34.0"
       KUBECONFIG: kubeconfig-134
       GITHUB_TOKEN:
@@ -693,11 +704,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.29.0"
       KUBECTL_VERSION: "1.34.0"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-134
@@ -743,11 +753,10 @@ volumes:
       path: /root/mise_data_dir
 steps:
   - name: Create Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.32.0"
       KUBECTL_VERSION: "1.35.6"
       KIND_CONFIG: ./katalog/tests/kind/config.yml
@@ -771,12 +780,11 @@ steps:
       - clone
 
   - name: End-to-End Tests
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     network_mode: host
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KUBECTL_VERSION: "1.35.6"
       KUBECONFIG: kubeconfig-135
       GITHUB_TOKEN:
@@ -794,11 +802,10 @@ steps:
       - Create Kind Cluster
 
   - name: Destroy Kind Cluster
-    image: quay.io/sighup/mise:v2025.4.4
+    image: quay.io/sighup/mise:v2026.6.14
     pull: always
     environment:
       MISE_DATA_DIR: /mise-data
-      MISE_OVERRIDE_CONFIG_FILENAMES: "mise.ci.toml"
       KIND_VERSION: "0.32.0"
       KUBECTL_VERSION: "1.35.6"
       CLUSTER_NAME: ${DRONE_REPO_NAME}-${DRONE_BUILD_NUMBER}-135
