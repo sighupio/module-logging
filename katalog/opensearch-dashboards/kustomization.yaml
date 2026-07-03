@@ -11,11 +11,13 @@ resources:
 images:
 - name: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
   newTag: 3.7.0
+- name: registry.sighup.io/fury/alpine
+  newTag: "3.24"
 secretGenerator:
 - files:
   - configs/opensearch_dashboards.yml
   name: opensearch-dashboards
 configMapGenerator:
 - files:
-  - configs/index-patterns.ndjson
+  - configs/index-patterns.json
   name: opensearch-index-patterns
