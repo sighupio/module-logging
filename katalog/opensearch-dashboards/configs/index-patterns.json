@@ -1,0 +1,9 @@
+[
+  "kubernetes-*",
+  "infra-*",
+  "systemd-*",
+  "events-*",
+  "audit-*",
+  "ingress-controller-*",
+  "ingress-haproxy-*"
+]
