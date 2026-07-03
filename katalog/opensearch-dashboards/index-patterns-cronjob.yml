@@ -13,8 +13,8 @@ spec:
       template:
         metadata:
           labels:
-            app.kubernetes.io/name: opensearch-dashboards
-            app.kubernetes.io/instance: opensearch-dashboards
+            app.kubernetes.io/name: opensearch-dashboards-patterns-job
+            app.kubernetes.io/instance: opensearch-dashboards-patterns-job
         spec:
           containers:
           - name: index-patterns
@@ -24,23 +24,38 @@ spec:
                   - ALL
               runAsNonRoot: true
               runAsUser: 1000
-            image: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+            image: registry.sighup.io/fury/curl-jq:3.24.1
             imagePullPolicy: IfNotPresent
             command:
             - /bin/sh
             - -c
             - |
-              curl -X POST "http://opensearch-dashboards:5601/api/saved_objects/_import?overwrite=true" -H "osd-xsrf: true" --form file=@/tmp/index-patterns.ndjson
+              set -euo pipefail
+              for pattern in $(jq -r '.[]' /tmp/index-patterns.json); do
+                id="${pattern%-*}"
+                RESPONSE=$(curl -s --retry 3 --retry-delay 2 --retry-connrefused -G "http://opensearch-dashboards:5601/api/index_patterns/_fields_for_wildcard" \
+                      --data-urlencode "pattern=$pattern" \
+                      --data-urlencode "meta_fields=_source" \
+                      --data-urlencode "meta_fields=_id" \
+                      --data-urlencode "meta_fields=_type" \
+                      --data-urlencode "meta_fields=_index" \
+                      --data-urlencode "meta_fields=_score")
+              
+                BODY=$(echo "$RESPONSE" | jq -c --arg title "$pattern" '{attributes:{title:$title,timeFieldName:"@timestamp",fields:(.fields//[]|tostring)}}')
+                curl -s --retry 3 --retry-delay 2 --retry-connrefused -o /dev/null -w "$id: %{http_code}\n" \
+                  -X POST "http://opensearch-dashboards:5601/api/saved_objects/index-pattern/$id?overwrite=true" \
+                  -H "osd-xsrf: true" -H "Content-Type: application/json" -d "$BODY"
+              done
             volumeMounts:
               - name: config-volume
-                mountPath: /tmp/index-patterns.ndjson
-                subPath: index-patterns.ndjson
+                mountPath: /tmp/index-patterns.json
+                subPath: index-patterns.json
           volumes:
             - name: config-volume
               configMap:
                 name: opensearch-index-patterns
                 items:
-                  - key: index-patterns.ndjson
-                    path: index-patterns.ndjson
+                  - key: index-patterns.json
+                    path: index-patterns.json
           restartPolicy: OnFailure
   schedule: "0 * * * *"

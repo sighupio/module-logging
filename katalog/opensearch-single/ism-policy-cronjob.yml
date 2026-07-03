@@ -13,8 +13,8 @@ spec:
       template:
         metadata:
           labels:
-            app.kubernetes.io/name: opensearch
-            app.kubernetes.io/instance: opensearch
+            app.kubernetes.io/name: opensearch-ism-policy-job
+            app.kubernetes.io/instance: opensearch-ism-policy-job
         spec:
           containers:
             - name: policy
@@ -24,7 +24,7 @@ spec:
                     - ALL
                 runAsNonRoot: true
                 runAsUser: 1000
-              image: registry.sighup.io/fury/opensearchproject/opensearch-dashboards
+              image: registry.sighup.io/fury/curl-jq:3.24.1
               imagePullPolicy: IfNotPresent
               command:
                 - /bin/sh
