@@ -17,5 +17,5 @@ secretGenerator:
   name: opensearch-dashboards
 configMapGenerator:
 - files:
-  - configs/index-patterns.ndjson
+  - configs/index-patterns.json
   name: opensearch-index-patterns
