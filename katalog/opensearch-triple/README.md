@@ -2,56 +2,24 @@
 
 <!-- <SD-DOCS> -->
 
-OpenSearch is an open-source distributed search and analytics engine used for
-log analytics. This package deploys a three-node OpenSearch cluster on
-Kubernetes.
+## Overview
 
-`opensearch-triple` is a high-availability setup of OpenSearch, that sets
-up a 3-node cluster of `OpenSearch` for a robust and reliable setup.
+OpenSearch is an open source distributed search and analytics engine used for log analytics. This package deploys a high-availability, three-node OpenSearch cluster on Kubernetes for a robust and reliable setup, with each node scheduled on a different Kubernetes node.
 
-## Requirements
+## Upstream project
 
-- Kubernetes >= `1.24.0`
-- Kustomize >= `5.6.0`
-- [prometheus-operator][prometheus-operator]
-
-> Prometheus Operator is necessary since we configure a `ServiceMonitor` to make
-> some metrics available from `opensearch` on prometheus. Please refer,
-> [`opensearch-single](../opensearch-single/README.md#alerts) to read
-> about the available Prometheus rules.
-
-## Image repository and tag
-
-- OpenSearch image: `opensearchproject/opensearch:3.7.0`
-- OpenSearch repo: [OpenSearch on Github][opensearch-gh]
-- OpenSearch documentation: [OpenSearch Homepage][opensearch-doc]
-
-## Configuration
-
-OpenSearch Triple is deployed with the following configuration:
-
-- OpenSearch cluster with `3` nodes
-- Listens on port `9200` for client connections
-- Listens on port `9300` for node-to-node connections
-- Resource limits are `2000m` for CPU and `4G` for memory
-- Requires `30Gi` storage
-- Each OpenSearch node is running in a different Kubernetes node
-- Prometheus exporter to expose OpenSearch metrics
-- Prometheus scrapes metrics every `30s`
+This package is based on the upstream [OpenSearch][opensearch-gh].
 
 ## Deployment
 
-You can deploy OpenSearch Triple by running the following command in the root of the project:
-
-```shell
-kustomize build | kubectl apply -f -
-```
+This package is deployed as part of **Logging Module** when you create a cluster with `furyctl`. You can customize it under `spec.distribution.modules.logging.opensearch` in your `furyctl.yaml` (set `opensearch.type` to `single` or `triple`). See the [module documentation](../../README.md) and the configuration reference ([EKSCluster][schema-reference-eks], [KFDDistribution][schema-reference-kfd], [OnPremises][schema-reference-onprem]) for the available options.
 
 <!-- Links -->
 
 [opensearch-gh]: https://github.com/opensearch-project/OpenSearch
-[opensearch-doc]: https://opensearch.org/docs/latest
-[prometheus-operator]: https://github.com/sighupio/module-monitoring/tree/master/katalog/prometheus-operator
+[schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
+[schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
+[schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging
 
 <!-- </SD-DOCS> -->
 

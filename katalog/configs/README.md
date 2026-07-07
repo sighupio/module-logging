@@ -1,51 +1,16 @@
 # Logging operator configs for OpenSearch
 
-This package is a collection of logging operator Flow/ClusterFlow and Output/ClusterOutput configs to be used together with **OpenSearch**.
+<!-- <SD-DOCS> -->
 
-> [!WARNING]
-> This package cannot be used together with `loki-configs` package, one excludes the other.
+## Overview
 
-## Requirements
-
-- Kustomize >= `5.6.0`
-- [logging-operated](../logging-operated)
-- [logging-operator](../logging-operator)
-
-## Configuration
-
-Configurations available:
-
-- [configs](.): all the configurations.
-- [configs/kubernetes](./kubernetes): only the cluster wide pods logging configuration (infrastructural namespaced excluded).
-- [configs/infra](./infra): only the infrastructural namespaces logs
-- [configs/ingress-nginx](./ingress-nginx): only the nginx-ingress-controller logging configuration.
-- [configs/ingress-haproxy](./ingress-haproxy): only the haproxy-ingress-controller logging configuration.
-- [configs/audit](./audit): all the Kubernetes audit logs related configurations (with master selector and tolerations).
-- [configs/events](./events): all the Kubernetes events related configurations (with master selector and tolerations).
-- [configs/systemd](./systemd): all the systemd-related configurations.
-- [configs/systemd/kubelet](./systemd/common): kubelet, docker, ssh systemd service logs configuration.
-- [configs/systemd/etcd](./systemd/etcd): only the etcd service logs configuration (with master selector and tolerations).
+This package is a collection of Logging Operator `Flow`/`ClusterFlow` and `Output`/`ClusterOutput` resources that route the collected logs (Kubernetes pods, infrastructural namespaces, ingress controllers, audit, events and systemd services) to **OpenSearch**. It is mutually exclusive with the `loki-configs` package: one excludes the other.
 
 ## Deployment
 
-You can deploy all the configurations by running the following command in the `configs` folder:
+This package is deployed as part of **Logging Module** when you create a cluster with `furyctl`. See the [module documentation](../../README.md) to learn how the Logging Module is installed and configured.
 
-```shell
-kustomize build | kubectl apply -f -
-```
-
-You can also deploy only a configuration subset by running some of the following commands (for example):
-
-```shell
-kustomize build kubernetes | kubectl apply -f -
-kustomize build infra | kubectl apply -f -
-kustomize build ingress-nginx | kubectl apply -f -
-kustomize build audit | kubectl apply -f -
-kustomize build events | kubectl apply -f -
-kustomize build systemd | kubectl apply -f -
-kustomize build systemd/common | kubectl apply -f -
-kustomize build systemd/etcd | kubectl apply -f -
-```
+<!-- </SD-DOCS> -->
 
 ## License
 

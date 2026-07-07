@@ -2,43 +2,24 @@
 
 <!-- <SD-DOCS> -->
 
-Logging operator for Kubernetes based on Fluentd and Fluent-bit.
+## Overview
 
-The Logging operator automates the deployment and configuration of a Kubernetes logging pipeline. The operator deploys
-and configures a Fluent-bit DaemonSet on every node to collect container and application logs from the node file system
-and a Fluentd StatefulSet that receive logs from Fluent-bit and send them to various outputs.
+The Logging Operator automates the deployment and configuration of a Kubernetes logging pipeline based on Fluentd and Fluent Bit. It deploys a Fluent Bit DaemonSet on every node to collect container and application logs from the node file system, and a Fluentd StatefulSet that receives logs from Fluent Bit and forwards them to the configured outputs.
 
-## Requirements
+## Upstream project
 
-- Kubernetes >= `1.22.0`
-- Kustomize >= `5.6.0`
-
-## Image repository and tag
-
-- Logging operator: `ghcr.io/kube-logging/logging-operator:6.5.1`
-- Logging operator repo: [Logging operator on GitHub][logging-operator-github]
-
-## Configuration
-
-In SIGHUP Distribution, Logging operator is deployed with the following default configuration:
-
-- Replica number: `1`
-- Resource limits are `100m` for CPU and `500Mi` for memory
+This package is based on the upstream [Logging Operator][logging-operator-github].
 
 ## Deployment
 
-You can deploy Logging operator by running the following command in the root of the project:
-
-```shell
-kustomize build | kubectl apply -f - --server-side
-```
-
-See [logging-operated](../logging-operated) for the fluentd and fluentbit stack deployment, [configs](../configs)
-for OpenSearch Flow/Clusterflow and Output/ClusterOutput configuration and [loki-configs](../loki-configs) for Loki Flow/Clusterflow and Output/ClusterOutput configuration.
+This package is deployed as part of **Logging Module** when you create a cluster with `furyctl`. You can customize it under `spec.distribution.modules.logging.operator` in your `furyctl.yaml`. See the [module documentation](../../README.md) and the configuration reference ([EKSCluster][schema-reference-eks], [KFDDistribution][schema-reference-kfd], [OnPremises][schema-reference-onprem]) for the available options.
 
 <!-- Links -->
 
 [logging-operator-github]: https://github.com/kube-logging/logging-operator
+[schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
+[schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
+[schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging
 
 <!-- </SD-DOCS> -->
 
