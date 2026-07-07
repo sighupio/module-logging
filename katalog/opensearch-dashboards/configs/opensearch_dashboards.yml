@@ -12,6 +12,7 @@
 server.host: '0'
 
 explore.enabled: true
+home.disableExperienceModal: true
 
 ## If security is enabled, the following settings are required
 #opensearch.ssl.verificationMode: none
