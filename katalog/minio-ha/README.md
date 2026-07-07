@@ -8,7 +8,7 @@ MinIO is a distributed object storage system. This package deploys a highly avai
 
 ## Upstream project
 
-This package is based on the upstream [MinIO][minio-gh].
+This package is based on the upstream [MinIO Chainguard][minio-chainguard-gh].
 
 ## Deployment
 
@@ -16,7 +16,7 @@ This package is deployed as part of **Logging Module** when you create a cluster
 
 <!-- Links -->
 
-[minio-gh]: https://github.com/minio/minio
+[minio-chainguard-gh]: https://github.com/chainguard-forks/minio
 [schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
 [schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
 [schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging

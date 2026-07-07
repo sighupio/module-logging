@@ -8,7 +8,7 @@ Loki is a horizontally scalable, highly available, multi-tenant log aggregation 
 
 ## Upstream project
 
-This package is based on the upstream [Loki][loki-gh].
+This package is based on the upstream [Loki][loki-community-gh].
 
 ## Deployment
 
@@ -16,7 +16,7 @@ This package is deployed as part of **Logging Module** when you create a cluster
 
 <!-- Links -->
 
-[loki-gh]: https://github.com/grafana/loki
+[loki-community-gh]: https://github.com/grafana-community/helm-charts
 [schema-reference-eks]: https://docs.sighup.io/docs/reference/ekscluster#specdistributionmoduleslogging
 [schema-reference-kfd]: https://docs.sighup.io/docs/reference/kfddistribution#specdistributionmoduleslogging
 [schema-reference-onprem]: https://docs.sighup.io/docs/reference/onpremises#specdistributionmoduleslogging
