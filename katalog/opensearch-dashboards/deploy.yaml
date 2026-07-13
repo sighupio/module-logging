@@ -163,25 +163,3 @@ spec:
           - mountPath: /usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
             name: opensearch-dashboards
             subPath: opensearch_dashboards.yml
----
-# Source: opensearch-dashboards/templates/serviceMonitor.yaml
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: opensearch-dashboards-service-monitor
-  namespace: logging
-  labels:
-    helm.sh/chart: opensearch-dashboards-3.7.0
-    app.kubernetes.io/name: opensearch-dashboards
-    app.kubernetes.io/instance: opensearch-dashboards
-    app.kubernetes.io/version: "3.7.0"
-    app.kubernetes.io/managed-by: Helm
-spec:
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: opensearch-dashboards
-      app.kubernetes.io/instance: opensearch-dashboards
-  endpoints:
-  - port: metrics
-    interval: 10s
-    path: /_prometheus/metrics
