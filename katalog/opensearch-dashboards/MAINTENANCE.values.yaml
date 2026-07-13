@@ -283,18 +283,4 @@ plugins:
 # ServiceMonitor Configuration for Prometheus
 # Enabling this option will create a ServiceMonitor resource that allows Prometheus to scrape metrics from the OpenSearch service.
 serviceMonitor:
-  # Set to true to enable the ServiceMonitor resource for OpenSearch Dashboards
-  enabled: true
-
-  # HTTP path where metrics are exposed by OpenSearch Dashboards.
-  # Ensure this path is correctly set in your service.
-  path: /_prometheus/metrics
-
-  # Frequency at which Prometheus will scrape metrics.
-  # Modify as needed for your monitoring requirements.
-  interval: 10s
-
-  # additional labels to be added to the ServiceMonitor
-  # labels:
-  #  k8s.example.com/prometheus: kube-prometheus
-  labels: { }
+  enabled: false
