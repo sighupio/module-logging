@@ -19,6 +19,7 @@ spec:
           - logging
           - monitoring
           - ingress-nginx
+          - ingress-haproxy
           - cert-manager
           - tigera-operator
           - calico-system
@@ -28,6 +29,9 @@ spec:
           - gatekeeper-system
           - tracing
           - kyverno
+          - forecastle
+          - external-dns
+          - headlamp
     - select: {}
   globalOutputRefs:
     - kubernetes
