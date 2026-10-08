@@ -31,6 +31,11 @@ spec:
           app: ingress
           type: internal
     - exclude:
+        namespaces:
+          - ingress-haproxy
+        labels:
+          k8s-app: haproxy-ingress
+    - exclude:
         labels:
           app.kubernetes.io/name: host-tailer
     - exclude:
@@ -42,6 +47,7 @@ spec:
           - logging
           - monitoring
           - ingress-nginx
+          - ingress-haproxy
           - cert-manager
           - tigera-operator
           - calico-system
@@ -51,5 +57,8 @@ spec:
           - gatekeeper-system
           - tracing
           - kyverno
+          - forecastle
+          - external-dns
+          - headlamp
   globalOutputRefs:
     - infra
