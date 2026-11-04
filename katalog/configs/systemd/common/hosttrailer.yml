@@ -28,7 +28,14 @@ spec:
     - name: systemd-ssh-hosttailer
       disabled: false
       maxEntries: 100
-      systemdFilter: ssh.service
+      systemdFilter: SYSLOG_IDENTIFIER=sshd
+      containerOverrides:
+        image: registry.sighup.io/fury/fluent/fluent-bit:5.1.0
+    # OpenSSH 9.8 and later logs the session lines as sshd-session.
+    - name: systemd-sshd-session-hosttailer
+      disabled: false
+      maxEntries: 100
+      systemdFilter: SYSLOG_IDENTIFIER=sshd-session
       containerOverrides:
         image: registry.sighup.io/fury/fluent/fluent-bit:5.1.0
   workloadMetaOverrides: {}
