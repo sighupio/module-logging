@@ -5,8 +5,6 @@
 name: license
 kind: pipeline
 type: docker
-node:
-   performance: low
 clone:
   depth: 1
 volumes:
@@ -31,8 +29,6 @@ steps:
 name: validate
 kind: pipeline
 type: docker
-node:
-   performance: low
 depends_on:
   - license
 clone:
@@ -536,8 +532,6 @@ steps:
 name: release
 kind: pipeline
 type: docker
-node:
-   performance: low
 clone:
   depth: 1
 depends_on:
