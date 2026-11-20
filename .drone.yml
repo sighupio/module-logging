@@ -2,6 +2,15 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 
+# NOTE: MISE_DATA_DIR points at a shared host volume (/root/mise_data_dir) and the E2E
+# pipelines below run in parallel, so several containers can cold-install the same tool
+# version into it simultaneously. mise's install is not atomic against other processes on
+# that volume: the version directory becomes visible before extraction finishes, so a
+# racing container considers the tool installed and then fails with "No executable found
+# for configured tool". Installs are therefore serialized per runner with flock on
+# /mise-data/.mise-install.lock. The lock is held on a file descriptor, so the kernel
+# releases it even if a container is killed mid-install.
+
 name: license
 kind: pipeline
 type: docker
@@ -175,7 +184,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - kind create cluster --name $${CLUSTER_NAME} --image registry.sighup.io/fury/kindest/node:$${CLUSTER_VERSION} --config $${KIND_CONFIG}
       - kind get kubeconfig --name $${CLUSTER_NAME} > $${KUBECONFIG}
@@ -197,7 +206,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
+        flock -w 600 /mise-data/.mise-install.lock mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
         eval "$(mise activate bash --shims)"
       - until kubectl get serviceaccount default > /dev/null 2>&1; do echo "waiting for control-plane" && sleep 1; done
       - bats -t ./katalog/tests/tests.sh
@@ -221,7 +230,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - "kind delete cluster --name $${CLUSTER_NAME} || true"
     depends_on:
@@ -274,7 +283,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - kind create cluster --name $${CLUSTER_NAME} --image registry.sighup.io/fury/kindest/node:$${CLUSTER_VERSION} --config $${KIND_CONFIG}
       - kind get kubeconfig --name $${CLUSTER_NAME} > $${KUBECONFIG}
@@ -296,7 +305,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
+        flock -w 600 /mise-data/.mise-install.lock mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
         eval "$(mise activate bash --shims)"
       - until kubectl get serviceaccount default > /dev/null 2>&1; do echo "waiting for control-plane" && sleep 1; done
       - bats -t ./katalog/tests/tests.sh
@@ -320,7 +329,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - "kind delete cluster --name $${CLUSTER_NAME} || true"
     depends_on:
@@ -373,7 +382,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - kind create cluster --name $${CLUSTER_NAME} --image registry.sighup.io/fury/kindest/node:$${CLUSTER_VERSION} --config $${KIND_CONFIG}
       - kind get kubeconfig --name $${CLUSTER_NAME} > $${KUBECONFIG}
@@ -395,7 +404,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
+        flock -w 600 /mise-data/.mise-install.lock mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
         eval "$(mise activate bash --shims)"
       - until kubectl get serviceaccount default > /dev/null 2>&1; do echo "waiting for control-plane" && sleep 1; done
       - bats -t ./katalog/tests/tests.sh
@@ -419,7 +428,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - "kind delete cluster --name $${CLUSTER_NAME} || true"
     depends_on:
@@ -472,7 +481,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - kind create cluster --name $${CLUSTER_NAME} --image registry.sighup.io/fury/kindest/node:$${CLUSTER_VERSION} --config $${KIND_CONFIG}
       - kind get kubeconfig --name $${CLUSTER_NAME} > $${KUBECONFIG}
@@ -494,7 +503,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
+        flock -w 600 /mise-data/.mise-install.lock mise use bats@1.11.0 kubectl@$${KUBECTL_VERSION} kustomize@5.6.0
         eval "$(mise activate bash --shims)"
       - until kubectl get serviceaccount default > /dev/null 2>&1; do echo "waiting for control-plane" && sleep 1; done
       - bats -t ./katalog/tests/tests.sh
@@ -518,7 +527,7 @@ steps:
         path: /mise-data
     commands:
       - |
-        mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
+        flock -w 600 /mise-data/.mise-install.lock mise use kind@$${KIND_VERSION} kubectl@$${KUBECTL_VERSION}
         eval "$(mise activate bash --shims)"
       - "kind delete cluster --name $${CLUSTER_NAME} || true"
     depends_on:
