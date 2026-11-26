@@ -9,7 +9,7 @@
 </h1>
 <!-- markdownlint-enable MD033 MD045 -->
 
-![Release](https://img.shields.io/badge/Latest%20Release-v5.5.0-blue)
+![Release](https://img.shields.io/badge/Latest%20Release-v5.5.1-blue)
 ![License](https://img.shields.io/github/license/sighupio/module-logging?label=License)
 ![Slack](https://img.shields.io/badge/slack-@kubernetes/fury-yellow.svg?logo=slack&label=Slack)
 
